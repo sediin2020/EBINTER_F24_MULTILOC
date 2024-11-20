@@ -1,0 +1,98 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>@Html.GetConfiguration().RagioneSociale.Nome</title>
+    @*<style>
+            body {
+                /*            background: url(/content/images/sfondoHome.png) no-repeat center center fixed;
+                        background-repeat: no-repeat;
+                        background-size: 100% 100%;
+            */
+            }
+        </style>*@
+
+    @{
+        var _thema = $"Content/bootstrap-themes/bootstrap.{Html.GetConfiguration().Thema.BootstrapCss}.min.css";
+    }
+    <link href="~/fontawesome-free-6.2.1-web/css/all.css" rel="stylesheet" />
+    <link href="~/@_thema" rel="stylesheet" id="bootstrapcss" />
+    @Styles.Render("~/Content/css")
+
+</head>
+
+
+<body class="d-flex flex-column min-vh-100">
+    <div class="container body-content">
+
+        <div class="row">
+            <div class="col-md-8">
+                <img class="img-fluid rounded col-md-3" style="margin-bottom: 40px;mix-blend-mode: multiply;"
+                     src="@Html.GetConfiguration().LogoBase64" />
+            </div>
+            <div class="col-md-4 text-end">
+
+
+
+                <div class="mt-4 text-primary">
+
+                    <a class="btn btn-outline-warning p-4" href="~/Uploads/MANUALE_PIATTAFORMA_REGIONALE_EBAC.pdf" target="_blank">
+                        <div class="text-primary">
+                            <i class="far fa-hand-point-right" style="font-size:24px"></i>
+                            <span class="ml-2 fw-bold">Scarica il manuale utente</span>
+                        </div>
+                    </a>
+
+                </div>
+
+            </div>
+
+        </div>
+
+
+        @RenderBody()
+    </div>
+
+    <footer class="mt-auto container-fluid">
+        <div class="row">
+            <div class="col-md-6">
+                <strong>@Html.GetConfiguration().RagioneSociale.Nome</strong>
+                <br />
+                <small>
+                    @Html.GetConfiguration().RagioneSociale.Indirizzo - @Html.GetConfiguration().RagioneSociale.Cap @Html.GetConfiguration().RagioneSociale.Citta (@Html.GetConfiguration().RagioneSociale.Provincia)
+                    <br />Tel: @Html.GetConfiguration().RagioneSociale.Telefono - Email: <a style="color:white !important" href="mailto:@Html.GetConfiguration().RagioneSociale.Email">@Html.GetConfiguration().RagioneSociale.Email</a> - Sito: <a style="color:white !important" href="@Html.GetConfiguration().RagioneSociale.SitoWeb" target="_blank">@Html.GetConfiguration().RagioneSociale.SitoWeb</a>
+                </small>
+            </div>
+            <div class="col-md-6 text-end">
+                <strong>
+                    © Tutti i diritti riservati.
+                    <a href="/Home/Privacy" data-ajax="true"
+                       data-ajax-success="alertClose();showModal('Informativa privacy', data)"
+                       data-ajax-begin="alertWaid()"
+                       class="text-warning">Leggi l’informativa privacy</a>
+                </strong>
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        function onSuccessGet(title, data) {
+            alertClose();
+            showModal_NoFooter(title, data);
+        }
+    </script>
+
+    @Scripts.Render("~/bundles/modernizr")
+    @Scripts.Render("~/bundles/jquery")
+    <script src="~/Scripts/jquery.unobtrusive-ajax.js"></script>
+    @Scripts.Render("~/bundles/jqueryval")
+    @Scripts.Render("~/bundles/jqueryui")
+    @Scripts.Render("~/bundles/globalize")
+    @Scripts.Render("~/bundles/utils")
+    @Scripts.Render("~/bundles/bootstrap")
+    <script src="~/Scripts/soundmanager2-jsmin.js"></script>
+    @RenderSection("scripts", required: false)
+</body>
+</html>

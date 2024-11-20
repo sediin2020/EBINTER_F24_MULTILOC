@@ -1,0 +1,69 @@
+﻿@model Sediin.PraticheRegionali.WebUI.Areas.Admin.Models.LogsRicercaViewModel
+
+@if (Model.TotalRecords == 0)
+{
+    @Html.AlertDanger("Nessun Log trovato");
+    return;
+}
+else
+{
+
+    <div class="table-responsive">
+        <table class="table table-striped table-bordered table-hover">
+            <thead>
+                <tr class="text-center bg-dark text-white">
+                    <th>Nome Completo</th>
+                    <th>Username</th>
+                    <th>Data</th>
+                    <th style="width:125px"></th>
+                </tr>
+            </thead>
+            <tbody>
+
+                @foreach (var item in Model.Result)
+                {
+                    <tr>
+
+                        <td>
+                            @Html.DisplayFor(modelItem => item.Action) - @Html.DisplayFor(modelItem => item.Data)<br />
+                            @Html.DisplayFor(modelItem => item.Message)
+                        </td>
+                       
+                        <td>
+                            @Html.DisplayFor(modelItem => item.Username)
+                        </td>
+                        
+                       
+                        <td class="text-center">
+                            @Html.DisplayFor(modelItem => item.Data)
+                        </td>
+                        
+                        <td class="text-center">
+
+                            @Ajax.EncodedAjaxActionLink("Dettaglio", "Log", "Logs", new
+                       {
+                           id = item.LogsId
+                       }, new AjaxOptions
+                       {
+                           OnBegin = "alertWaid()",
+                           OnSuccess = "showModal('Dettaglio log errore', data); alertClose()",
+                           OnFailure = "handleError"
+                       }, new { @class = "btn btn-primary btn-sm " })
+                        </td>
+                    </tr>
+                }
+
+            </tbody>
+        </table>
+    </div>
+
+
+    @Html.PagingAjax(Model.PageSize, Model.CurrentPage, Model.TotalRecords,
+        Url.Action("Ricerca"), Model.Filtri,
+        new AjaxOptions
+        {
+            UpdateTargetId = "resultRicerca",
+            HttpMethod = "post",
+            OnFailure = "handleError"
+        }, Url.Action("RicercaExcel"))
+}

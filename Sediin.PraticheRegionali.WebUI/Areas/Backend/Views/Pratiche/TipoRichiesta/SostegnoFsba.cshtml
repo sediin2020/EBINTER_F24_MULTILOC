@@ -1,0 +1,157 @@
+﻿@model Sediin.PraticheRegionali.WebUI.Areas.Backend.Models.PraticheAzienda_SostegnoFsba
+@using System.Globalization;
+
+@Html.HiddenFor(x => x.Mesi)
+@Html.HiddenFor(x => x.MeseSelezionato)
+
+<div class="row">
+
+    <h4>
+        <span class="badge bg-secondary">Mesi per cui è richiesta la prestazione (max 3)</span>
+    </h4>
+
+    @if (!Model.ReadOnly.GetValueOrDefault())
+    {
+        <div class="col-md-8">
+            @{
+                List<SelectListItem> _mesi = new List<SelectListItem>();
+                for (int mese = 1; mese <= 12; mese++)
+                {
+                    string nomeMese = CultureInfo.CurrentCulture.DateTimeFormat.GetMonthName(mese);
+                    nomeMese = char.ToUpper(nomeMese[0]) + nomeMese.Substring(1);
+                    _mesi.Add(new SelectListItem { Value = nomeMese, Text = nomeMese });
+                }
+            }
+            <div class="form-group">
+                <div class="dropdown">
+                    <a onmouseover="this.style.background=''"
+                       class="btn btn-outline-dark dropdown-toggle w-100 text-start"
+                       href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                        <span data-mese-text="[Seleziona mese]" style="white-space: pre-wrap;">[Seleziona mese]</span>
+                    </a>
+
+                    <ul class="dropdown-menu">
+                        <li>
+                            <a class="dropdown-item"
+                               data-mese-id=""
+                               data-mese-nome="Seleziona mese"
+                               style="white-space: pre-wrap;"
+                               onclick=""
+                               href="javascript:void(0)">[Seleziona mese]</a>
+                        </li>
+
+                        @foreach (var item in _mesi)
+                        {
+                            <li id="li-@item.Text">
+                                <a class="dropdown-item"
+                                   data-mese-id="@item.Value"
+                                   data-mese-nome="@item.Text"
+                                   style="white-space: pre-wrap;"
+                                   onclick=""
+                                   href="javascript:void(0)">@Html.Raw(item.Value)</a>
+                            </li>
+                        }
+
+                    </ul>
+                </div>
+                @Html.ValidationMessageFor(model => model.Mesi, "", new { @class = "text-danger" })
+            </div>
+        </div>
+        <div class="col-md-4">
+            <input type="button" id="btnAggiungi" class="btn btn-secondary" value="Aggiungi" disabled />
+        </div>
+    }
+    <div class="row mt-3">
+        <div class="col-md-12" id="container">
+
+        </div>
+    </div>
+</div>
+
+
+<hr />
+
+@{Html.RenderPartial("~/Areas/Backend/Views/Pratiche/CalcoloRimborso.cshtml", new Sediin.PraticheRegionali.WebUI.Areas.Backend.Models.PraticheAzienda_Calcolo
+    {
+        ImportoRichiesto = Model.ImportoRichiesto,
+        AliquoteIRPEF = Model.AliquoteIRPEF,
+        ContributoFisso = Model.ContributoFisso,
+        ContributoImportoMassimo = Model.ContributoImportoMassimo,
+        ContributoImportoMinimo = Model.ContributoImportoMinimo,
+        ImportoContributo = Model.ImportoContributo,
+        ImportoContributoNetto = Model.ImportoContributoNetto,
+        ImportoIRPEF = Model.ImportoIRPEF,
+        PercentualeContributo = Model.PercentualeContributo,
+        StatoPraticaId = Model.StatoPraticaId
+    }); }
+
+<script>
+    var arrayMesi = new Array;
+
+    $(document).ready(function () {
+        arrayMesi = JSON.parse($("#Mesi").val());
+
+        arrayMesi.forEach((element) => { $("#li-" + element).attr("hidden", "hidden"); })
+
+        popolaMesi();
+    })
+
+    $("[data-mese-id]").on("click", function () {
+
+        var _id = $(this).data("mese-id");
+        var _nome = $(this).data("mese-nome");
+
+        $("[data-mese-text]").html(_nome);
+
+        if (arrayMesi.length < 3) {
+            if (_id == "" || _id == undefined) {
+                $("#btnAggiungi").attr("disabled", "disabled");
+            }
+            else {
+                $("#btnAggiungi").removeAttr("disabled");
+                $("#MeseSelezionato").val(_nome);
+            }
+        }
+        else {
+            $("#btnAggiungi").attr("disabled", "disabled");
+        }
+    });
+
+    $("#btnAggiungi").on("click", function () {
+        var _m = $("#MeseSelezionato").val();
+        arrayMesi.push(_m);
+        $("#Mesi").val(JSON.stringify(arrayMesi));
+        $("#li-" + _m).attr("hidden", "hidden");
+        $("[data-mese-text]").html("[Seleziona tipo documento]");
+        $("#btnAggiungi").attr("disabled", "disabled");
+
+        popolaMesi();
+
+        $("#MeseSelezionato").val(null);
+    });
+
+    function deletemese(index) {
+        $("#li-" + arrayMesi[index]).removeAttr("hidden");
+        arrayMesi.splice(index, 1);
+        $("#Mesi").val(JSON.stringify(arrayMesi));
+
+        popolaMesi();
+    };
+
+    function popolaMesi() {
+        var _table = "<ul class=\"list-group\">";
+        for (var i = 0; i < arrayMesi.length; i++) {
+            _table += "<li class=\"list-group-item text-dark\">";
+            @if (!Model.ReadOnly.GetValueOrDefault())
+            {
+                 @:_table += "<a data-index=\"" + i + "\" onclick=\"deletemese(" + i + ")\" href=\"javascript:void(0)\"><i class=\"fas fa-trash-alt text-danger mr-3\"></i></a>";
+            }
+            _table += "<a>" + arrayMesi[i] + "</a>";
+            _table += "</li>";
+        }
+        _table += "</ul>";
+
+        $("#container").html(_table);
+    }
+
+</script>

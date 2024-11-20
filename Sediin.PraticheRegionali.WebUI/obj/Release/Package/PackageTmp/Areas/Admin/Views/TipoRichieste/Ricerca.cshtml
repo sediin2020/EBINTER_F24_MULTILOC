@@ -1,0 +1,16 @@
+﻿@model  Sediin.PraticheRegionali.WebUI.Areas.Admin.Models.TipoRichiesteRicercaModel
+<div class="row mb-4">
+    <div class="col-md-12">
+
+        @Ajax.EncodedAjaxActionLink("Nuovo Tipo richiesta", "Modifica", "TipoRichieste", null, new AjaxOptions
+        {
+            OnBegin = "alertWaid()",
+            OnSuccess = "showModalFullScreen_NoHeaderFooter(data); alertClose()",
+            OnFailure = "handleError"
+        }, new { @class = "btn btn-primary" })
+    </div>
+</div>
+
+@Html.RicercaModulo(Html.Partial("RicercaModulo", Model), "Ricerca Tipo Richieste")
+
+@Html.UpdateListRicerca(Url.Action("Ricerca", "TipoRichieste"), true)

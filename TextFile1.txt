@@ -1,0 +1,7 @@
+use [PraticheRegionali]
+
+update Azioni set 
+[SuccessModalFullScreen] = 0,
+[SuccessModalOffcanvas]=1
+
+where [Action] = 'Revisione' or  [Action] = 'Annulla'

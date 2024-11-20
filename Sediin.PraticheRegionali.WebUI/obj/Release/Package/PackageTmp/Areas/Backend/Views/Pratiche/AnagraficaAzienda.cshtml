@@ -1,0 +1,143 @@
+﻿@model Sediin.PraticheRegionali.WebUI.Areas.Backend.Models.AziendaPrestazioniRegionaliViewModel
+
+@{ Layout = null;}
+@if (Model == null)
+{
+    return;
+}
+
+
+<div class="row">
+    <h4>
+        <span class="badge bg-secondary">Dati Azienda</span>
+    </h4>
+
+    @if (!Model.AziendaCoperta)
+    {
+        <div class="col-md-12">
+            <div class="alert alert-danger">
+                <i class="fas fa-exclamation-triangle mr-3"></i><strong>L'azienda non risulta in regola con i contributi</strong>
+            </div>
+        </div>
+    }
+
+    <div class="col-md-12">
+
+        <div class="form-group">
+            @Html.Label("Ragione Sociale", htmlAttributes: new { @class = "control-label" })
+            <div class="col-md-12">
+                @Model.RagioneSociale
+            </div>
+        </div>
+    </div>
+
+
+    <div class="col-md-4">
+        <div class="form-group">
+            @Html.Label("Codice Fiscale", htmlAttributes: new { @class = "control-label" })
+            <div class="col-md-12 text-uppercase">
+                @Model.CodiceFiscale
+            </div>
+        </div>
+    </div>
+
+    <div class="col-md-4">
+
+        <div class="form-group">
+            @Html.Label("Partita Iva", htmlAttributes: new { @class = "control-label" })
+            <div class="col-md-12">
+                @Model.PartitaIva
+            </div>
+        </div>
+
+
+    </div>
+
+    <div class="col-md-4">
+        <div class="form-group">
+            @Html.Label("Matricola Inps", htmlAttributes: new { @class = "control-label" })
+            <div class="col-md-12">
+                @Model.MatricolaInps
+            </div>
+        </div>
+    </div>
+
+    <div class="col-md-4">
+        <div class="form-group">
+            @Html.Label("Indirizzo", htmlAttributes: new { @class = "control-label" })
+            <div class="col-md-12">
+                @Model.Indirizzoazienda
+            </div>
+        </div>
+    </div>
+
+    <div class="col-md-3">
+        <div class="form-group">
+            @Html.Label("Comune", htmlAttributes: new { @class = "control-label" })
+            <div class="col-md-12">
+                @Model.Comuneazienda
+            </div>
+        </div>
+    </div>
+
+    <div class="col-md-3">
+        <div class="form-group">
+            @Html.Label("Provincia", htmlAttributes: new { @class = "control-label" })
+            <div class="col-md-12">
+                @Model.Provinciaazienda
+            </div>
+        </div>
+    </div>
+
+    <div class="col-md-2">
+        <div class="form-group">
+            @Html.Label("CAP", htmlAttributes: new { @class = "control-label" })
+            <div class="col-md-12">
+                @Model.Capazienda
+            </div>
+        </div>
+    </div>
+
+    <div class="col-md-12">
+        <div class="form-group">
+            @Html.Label("Tipo Attivita'", htmlAttributes: new { @class = "control-label" })
+            <div class="col-md-12">
+                @Model.Tipoattivita
+            </div>
+        </div>
+    </div>
+
+    <div class="col-md-4">
+        <div class="form-group">
+            @Html.Label("Email", htmlAttributes: new { @class = "control-label" })
+            <div class="col-md-12">
+                @Model.EMailazienda
+            </div>
+        </div>
+    </div>
+
+    <div class="col-md-4">
+        <div class="form-group">
+            @Html.Label("Telefono", htmlAttributes: new { @class = "control-label" })
+            <div class="col-md-12">
+                @Model.Telefonoazienda
+            </div>
+        </div>
+    </div>
+
+    @if (Model.IbanRequired)
+    {
+        <div class="col-md-4">
+            <div class="form-group">
+                @Html.Label("Iban Azienda", htmlAttributes: new { @class = "control-label" })<span class="text-danger"> *</span>
+                <div class="col-md-12">
+                    @Html.TextBoxForReadOnly(model => model.Iban, new { @class = "form-control" })
+                    @Html.ValidationMessageFor(model => model.Iban, "", new { @class = "text-danger" })
+                </div>
+            </div>
+        </div>
+    }
+
+</div>
+
+<hr />

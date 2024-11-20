@@ -1,0 +1,32 @@
+﻿@model Sediin.PraticheRegionali.WebUI.Areas.Backend.Models.AziendaRicercaModel
+@using Sediin.PraticheRegionali.WebUI
+
+<div class="row mb-4">
+    <div class="col-md-12">
+
+
+        @Ajax.EncodedAjaxActionLink("Nuova Azienda", "Anagrafica", "Azienda", null, new AjaxOptions
+        {
+        OnBegin = "alertWaid()",
+        OnSuccess = "showModalFullScreen_NoHeaderFooter(data); alertClose()",
+        OnFailure = "handleError"
+        }, new { @class = "btn btn-info" })
+
+        @if (User.IsInRole(IdentityHelper.Roles.Sp_Consulente.ToString())
+        || User.IsInRole(IdentityHelper.Roles.Sp_Datoriale.ToString())
+        || User.IsInRole(IdentityHelper.Roles.Sp_Ebac.ToString())
+        || User.IsInRole(IdentityHelper.Roles.Sp_Sindacale.ToString()))
+        {
+            @Ajax.EncodedAjaxActionLink("Associa Azienda", "AssociaAziendaRicerca", "Azienda", null, new AjaxOptions
+            {
+                OnBegin = "alertWaid()",
+                OnSuccess = "showModal_NoFooter('Associa Azienda',data); alertClose()",
+                OnFailure = "handleError"
+       }, new { @class = "btn btn-danger" })
+        }
+
+    </div>
+</div>
+@Html.RicercaModulo(Html.Partial("RicercaModulo", Model), "Anagrafiche Aziende")
+
+@Html.UpdateListRicerca(Url.Action("Ricerca", "Azienda"), true)

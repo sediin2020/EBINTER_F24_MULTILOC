@@ -1,0 +1,80 @@
+﻿@model Sediin.PraticheRegionali.WebUI.Areas.Admin.Models.MotivazioniRichiestaModelRicercaViewModel
+@using Sediin.PraticheRegionali.DOM;
+
+ @{ 
+     Sediin.PraticheRegionali.DOM.DAL.UnitOfWork unitofwork = new Sediin.PraticheRegionali.DOM.DAL.UnitOfWork();
+ }
+@if (Model.TotalRecords == 0)
+{
+    @Html.AlertDanger("Nessuna Motivazione Richiesta è stata trovata");
+    return;
+}
+else
+{
+    <div class="table-responsive">
+        <table class="table table-striped table-bordered table-hover">
+            <thead>
+                <tr class="text-center bg-dark text-white">
+                    <th>Descrizione</th>
+                    <th>TipoRichiestaId</th>
+                    <th style="width:150px"></th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var item in Model.Result)
+                {
+                <tr>
+                    <td>@item.Motivazione</td>
+                    <td>
+                      @{
+                            var _TipoRichiesta = unitofwork.TipoRichiestaRepository.Get(x => x.TipoRichiestaId == item.TipoRichiestaId).FirstOrDefault();
+                            @_TipoRichiesta.Descrizione
+                      }
+                      (@item.TipoRichiestaId)
+                    </td>
+                    <td class="text-center">
+                        <button class="btn btn-primary dropdown-toggle" type="button" id="dropdownMenuButton1" data-bs-toggle="dropdown" aria-expanded="false">
+                            Azioni
+                        </button>
+                        <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton1">
+                            <li>
+                                @Ajax.EncodedAjaxActionLink("Modifica", "Modifica", "MotivazioniRichiesta", new
+                           {
+                               id = item.MotivazioniRichiestaId
+                           }, new AjaxOptions
+                           {
+                               OnBegin = "alertWaid()",
+                               OnSuccess = "showModalFullScreen_NoHeaderFooter(data); alertClose()",
+                               OnFailure = "handleError"
+                           }, new { @class = "dropdown-item" })
+                            </li>
+                            <li>
+                                @Ajax.EncodedAjaxActionLink("Elimina", "Elimina", "MotivazioniRichiesta", new
+                           {
+                               motivazionirichiestaId = item.MotivazioniRichiestaId,
+                           }, new AjaxOptions
+                           {
+                               OnBegin = "alertWaid()",
+                               OnSuccess = "showModal_NoHeaderFooter(data); alertClose()",
+                               OnFailure = "handleError"
+                           }, new { @class = "dropdown-item" })
+                            </li>
+                        </ul>
+                    </td>
+                </tr>
+                }
+            </tbody>
+        </table>
+    </div>
+
+}
+
+
+@Html.PagingAjax(Model.PageSize, Model.CurrentPage, Model.TotalRecords,
+      Url.Action("Ricerca"), Model.Filtri,
+      new AjaxOptions
+      {
+          UpdateTargetId = "resultRicerca",
+          HttpMethod = "post",
+          OnFailure = "handleError"
+      }, Url.Action("RicercaExcel"))

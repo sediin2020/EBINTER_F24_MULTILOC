@@ -1,0 +1,430 @@
+﻿@model Sediin.PraticheRegionali.WebUI.Areas.Admin.Models.Thema
+
+@{
+    if (Request.IsAjaxRequest())
+    {
+        Layout = null;
+    }
+}
+
+@using (Ajax.BeginForm("Bootstrap", new AjaxOptions
+{
+    OnBegin = "alertWaid()",
+    OnSuccess = "onSuccessBootstrap",
+    OnFailure = "handleError"
+}))
+{
+    @Html.AntiForgeryToken()
+
+    <div class="row">
+        <div class="col-lg-5">
+            <div class="row">
+                @{ var i = 0;}
+                @foreach (var item in Model.BootstrapThema)
+                {
+                    var _checked = "";
+                    if (item.Nome == Model.BootstrapCss)
+                    {
+                        _checked = "checked";
+                    }
+
+                    <div class="col-md-3 mb-2">
+                        <div class="form-check">
+
+                            <input @_checked class="form-check-input" onchange="changeCss('@item.Nome')" type="radio" value="@item.Nome" name="BootstrapCss" id="btnradio_@i">
+                            <label class="form-check-label" for="btnradio_@i">
+                                @item.Nome
+                            </label>
+                        </div>
+                    </div>
+                    i++;
+                }
+
+                <hr />
+                <div class="col-md-12">
+                    <h4>Nav bar</h4>
+
+                    <div class="row">
+                        <div class="col-md-6 mb-2">Colore Background:</div>
+                        <div class="col-md-2 mb-2">
+                            @Html.TextBoxFor(m => m.NavBarBackgroundoColor, new { type = "color", onchange = "setColorFromRgb('NavBarBackgroundoColor')" })
+                        </div>
+                        <div class="col-md-4 mb-2">
+                            <input type="text" style="width:75px" id="NavBarBackgroundoColor_hex" value="@Model.NavBarBackgroundoColor" onchange="setColorFromHex('NavBarBackgroundoColor')" />
+                        </div>
+
+
+                        <div class="col-md-6 mb-2">Colore Font:</div>
+                        <div class="col-md-2 mb-2">
+                            @Html.TextBoxFor(m => m.NavBarColor, new { type = "color", onchange = "setColorFromRgb('NavBarColor')" })
+                        </div>
+                        <div class="col-md-4 mb-2">
+                            <input type="text" style="width:75px" id="NavBarColor_hex" value="@Model.NavBarColor" onchange="setColorFromHex('NavBarColor')" />
+                        </div>
+
+
+                        <div class="col-md-6 mb-2">Colore Font Hover:</div>
+                        <div class="col-md-2 mb-2">
+                            @Html.TextBoxFor(m => m.NavBarColorHover, new { type = "color", onchange = "setColorFromRgb('NavBarColorHover')" })
+                        </div>
+                        <div class="col-md-4 mb-2">
+                            <input type="text" style="width:75px" id="NavBarColorHover_hex" value="@Model.NavBarColorHover" onchange="setColorFromHex('NavBarColorHover')" />
+                        </div>
+
+                    </div>
+                </div>
+                <hr />
+                <div class="col-md-12">
+                    <h4>Side bar</h4>
+
+                    <div class="row">
+                        <div class="col-md-6 mb-2">Colore Background Logo:</div>
+                        <div class="col-md-2 mb-2">
+                            @Html.TextBoxFor(m => m.SideBarBackgroundColorLogo, new { type = "color", onchange = "setColorFromRgb('SideBarBackgroundColorLogo')" })
+                        </div>
+                        <div class="col-md-4 mb-2">
+                            <input type="text" style="width:75px" id="SideBarBackgroundColorLogo_hex" value="@Model.SideBarBackgroundColorLogo" onchange="setColorFromHex('SideBarBackgroundColorLogo')" />
+                        </div>
+
+                        <div class="col-md-6 mb-2">Colore Background:</div>
+                        <div class="col-md-2 mb-2">
+                            @Html.TextBoxFor(m => m.SideBarBackgroundColor, new { type = "color", onchange = "setColorFromRgb('SideBarBackgroundColor')" })
+                        </div>
+                        <div class="col-md-4 mb-2">
+                            <input type="text" style="width:75px" id="SideBarBackgroundColor_hex" value="@Model.SideBarBackgroundColor" onchange="setColorFromHex('SideBarBackgroundColor')" />
+                        </div>
+
+                        <div class="col-md-6 mb-2">Colore Font:</div>
+                        <div class="col-md-2 mb-2">
+                            @Html.TextBoxFor(m => m.SideBarColor, new { type = "color", onchange = "setColorFromRgb('SideBarColor')" })
+                        </div>
+                        <div class="col-md-4 mb-2">
+                            <input type="text" style="width:75px" id="SideBarColor_hex" value="@Model.SideBarColor" onchange="setColorFromHex('SideBarColor')" />
+                        </div>
+
+
+
+
+
+                        <div class="col-md-6 mb-2">Colore Background hover:</div>
+                        <div class="col-md-2 mb-2">
+                            @Html.TextBoxFor(m => m.SideBarHoverBackground, new { type = "color", onchange = "setColorFromRgb('SideBarHoverBackground')" })
+                        </div>
+                        <div class="col-md-4 mb-2">
+                            <input type="text" style="width:75px" id="SideBarHoverBackground_hex" value="@Model.SideBarHoverBackground" onchange="setColorFromHex('SideBarHoverBackground')" />
+                        </div>
+
+                        <div class="col-md-6 mb-2">Colore Font hover:</div>
+                        <div class="col-md-2 mb-2">
+                            @Html.TextBoxFor(m => m.SideBarHoverColor, new { type = "color", onchange = "setColorFromRgb('SideBarHoverColor')" })
+                        </div>
+                        <div class="col-md-4 mb-2">
+                            <input type="text" style="width:75px" id="SideBarHoverColor_hex" value="@Model.SideBarHoverColor" onchange="setColorFromHex('SideBarHoverColor')" />
+                        </div>
+                    </div>
+                </div>
+
+                <hr />
+                <div class="col-md-12">
+                    <h4>Modal Fullscrenn</h4>
+
+                    <div class="row">
+                        <div class="col-md-6 mb-2">Colore Background:</div>
+                        <div class="col-md-2 mb-2">
+                            @Html.TextBoxFor(m => m.ModalBackgroundoColor, new { type = "color", onchange = "setColorFromRgb('ModalBackgroundoColor')" })
+                        </div>
+                        <div class="col-md-4 mb-2">
+                            <input type="text" style="width:75px" id="ModalBackgroundoColor_hex" value="@Model.ModalBackgroundoColor" onchange="setColorFromHex('ModalBackgroundoColor')" />
+                        </div>
+
+
+                        <div class="col-md-6 mb-2">Colore Font:</div>
+                        <div class="col-md-2 mb-2">
+                            @Html.TextBoxFor(m => m.ModalColor, new { type = "color", onchange = "setColorFromRgb('ModalColor')" })
+                        </div>
+                        <div class="col-md-4 mb-2">
+                            <input type="text" style="width:75px" id="ModalColor_hex" value="@Model.ModalColor" onchange="setColorFromHex('ModalColor')" />
+                        </div>
+
+                    </div>
+                </div>
+                <hr />
+
+                <div class="col-md-12">
+                    <h4>Custom Css</h4>
+
+                    @Html.TextAreaFor(m => m.CustomCss, new { onblur = "setColor()", rows = 8, @class = "col-md-12 form-control" })
+
+                </div>
+
+                <hr class="mt-3 mb-3" />
+
+                <div class="col-md-12 text-center">
+                    <a href="/Admin/Configuration/Bootstrap" class="btn btn-warning">Annulla</a>
+                    <button type="submit" class="btn btn-primary">Salva</button>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-lg-7">
+
+            <nav class="navbar navbar-expand-md navbar-dark bg-primary d-none d-md-block d-lg-block">
+                <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarthema">
+                    <span class="navbar-toggler-icon"></span>
+                </button>
+
+                <div class="collapse navbar-collapse" id="navbarthema">
+                    <ul class="navbar-nav mr-auto">
+                        <li>
+                            <a class="nav-link" href="javascript:void(0)">
+                                Home
+                            </a>
+                        </li>
+                        <li>
+                            <a class="nav-link" href="javascript:void(0)">
+                                Chi siamo
+                            </a>
+                        </li>
+                        <li>
+                            <a class="nav-link" href="javascript:void(0)">
+                                Contatto
+                            </a>
+                        </li>
+                    </ul>
+                </div>
+
+                <!-- navbar-collapse.// -->
+            </nav>
+            <p class="bs-component mt-3">
+                <button type="button" class="btn btn-primary">Primary</button>
+                <button type="button" class="btn btn-secondary">Secondary</button>
+                <button type="button" class="btn btn-success">Success</button>
+                <button type="button" class="btn btn-info">Info</button>
+                <button type="button" class="btn btn-warning">Warning</button>
+                <button type="button" class="btn btn-danger">Danger</button>
+                <button type="button" class="btn btn-light">Light</button>
+                <button type="button" class="btn btn-dark">Dark</button>
+                <button type="button" class="btn btn-link">Link</button>
+            </p>
+
+            <p class="bs-component">
+                <button type="button" class="btn btn-primary disabled">Primary</button>
+                <button type="button" class="btn btn-secondary disabled">Secondary</button>
+                <button type="button" class="btn btn-success disabled">Success</button>
+                <button type="button" class="btn btn-info disabled">Info</button>
+                <button type="button" class="btn btn-warning disabled">Warning</button>
+                <button type="button" class="btn btn-danger disabled">Danger</button>
+                <button type="button" class="btn btn-light disabled">Light</button>
+                <button type="button" class="btn btn-dark disabled">Dark</button>
+                <button type="button" class="btn btn-link disabled">Link</button>
+            </p>
+
+            <p class="bs-component">
+                <button type="button" class="btn btn-outline-primary">Primary</button>
+                <button type="button" class="btn btn-outline-secondary">Secondary</button>
+                <button type="button" class="btn btn-outline-success">Success</button>
+                <button type="button" class="btn btn-outline-info">Info</button>
+                <button type="button" class="btn btn-outline-warning">Warning</button>
+                <button type="button" class="btn btn-outline-danger">Danger</button>
+                <button type="button" class="btn btn-outline-light">Light</button>
+                <button type="button" class="btn btn-outline-dark">Dark</button>
+            </p>
+
+            <div class="bs-component mb-3">
+                <div class="btn-group" role="group" aria-label="Button group with nested dropdown">
+                    <button type="button" class="btn btn-primary">Primary</button>
+                    <div class="btn-group" role="group">
+                        <button id="btnGroupDrop1" type="button" class="btn btn-primary dropdown-toggle" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false"></button>
+                        <div class="dropdown-menu" aria-labelledby="btnGroupDrop1">
+                            <a class="dropdown-item" href="#">Dropdown link</a>
+                            <a class="dropdown-item" href="#">Dropdown link</a>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="btn-group" role="group" aria-label="Button group with nested dropdown">
+                    <button type="button" class="btn btn-success">Success</button>
+                    <div class="btn-group" role="group">
+                        <button id="btnGroupDrop2" type="button" class="btn btn-success dropdown-toggle" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false"></button>
+                        <div class="dropdown-menu" aria-labelledby="btnGroupDrop2">
+                            <a class="dropdown-item" href="#">Dropdown link</a>
+                            <a class="dropdown-item" href="#">Dropdown link</a>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="btn-group" role="group" aria-label="Button group with nested dropdown">
+                    <button type="button" class="btn btn-info">Info</button>
+                    <div class="btn-group" role="group">
+                        <button id="btnGroupDrop3" type="button" class="btn btn-info dropdown-toggle" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false"></button>
+                        <div class="dropdown-menu" aria-labelledby="btnGroupDrop3">
+                            <a class="dropdown-item" href="#">Dropdown link</a>
+                            <a class="dropdown-item" href="#">Dropdown link</a>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="btn-group" role="group" aria-label="Button group with nested dropdown">
+                    <button type="button" class="btn btn-danger">Danger</button>
+                    <div class="btn-group" role="group">
+                        <button id="btnGroupDrop4" type="button" class="btn btn-danger dropdown-toggle" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false"></button>
+                        <div class="dropdown-menu" aria-labelledby="btnGroupDrop4">
+                            <a class="dropdown-item" href="#">Dropdown link</a>
+                            <a class="dropdown-item" href="#">Dropdown link</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="bs-component mb-3">
+                <button type="button" class="btn btn-primary btn-lg">Large button</button>
+                <button type="button" class="btn btn-primary">Default button</button>
+                <button type="button" class="btn btn-primary btn-sm">Small button</button>
+            </div>
+
+            <div class="btn-group" role="group" aria-label="Basic radio toggle button group">
+                <input type="radio" class="btn-check" name="btnradio" id="btnradio1" autocomplete="off" checked>
+                <label class="btn btn-outline-primary" for="btnradio1">Radio 1</label>
+
+                <input type="radio" class="btn-check" name="btnradio" id="btnradio2" autocomplete="off">
+                <label class="btn btn-outline-primary" for="btnradio2">Radio 2</label>
+
+                <input type="radio" class="btn-check" name="btnradio" id="btnradio3" autocomplete="off">
+                <label class="btn btn-outline-primary" for="btnradio3">Radio 3</label>
+
+
+                <input type="radio" class="btn-check" name="btnradio" id="btnradio31" autocomplete="off">
+                <label class="btn btn-outline-primary" for="btnradio31">Radio 31</label>
+
+            </div>
+
+            <ul class="pagination mt-3">
+                <li class="page-item disabled">
+                    <span class="page-link">Previous</span>
+                </li>
+                <li class="page-item"><a class="page-link" href="javascript:void(0)">1</a></li>
+                <li class="page-item active" aria-current="page">
+                    <span class="page-link">2</span>
+                </li>
+                <li class="page-item"><a class="page-link" href="javascript:void(0)">3</a></li>
+                <li class="page-item">
+                    <a class="page-link" href="javascript:void(0)">Next</a>
+                </li>
+            </ul>
+        </div>
+    </div>
+}
+
+<script>
+    setColor();
+
+    function onSuccessBootstrap(data) {
+        if (data.isValid) {
+            alertSuccess(data.message);
+            setTimeout(function () {
+                location.reload();
+            }, 2000);
+        }
+    }
+
+    var lock = false;
+
+    function changeCss(css) {
+        alertWaid();
+
+        while (lock) {
+
+        }
+
+        $("[type='radio']").attr("disabled", "disabled");
+
+        $("#bootstrapcss").remove();// ("disabled", "disabled");
+        $('head').append('<link rel="stylesheet" id="bootstrapcss" href="/Content/bootstrap-themes/bootstrap.' + css + '.min.css" type="text/css" />');
+        $('head').append('<link rel="stylesheet" href="/Content/modale.css" type="text/css" />');
+
+        $("#SideBarBackgroundColor").val("#ffffff");
+        $("#SideBarBackgroundColor_hex").val("#ffffff");
+
+        var _primary = getColor("--bs-primary-rgb");
+        if (_primary == undefined) {
+            changeCss(css);
+        }
+
+        $("#NavBarBackgroundoColor").val(_primary);
+        $("#NavBarBackgroundoColor_hex").val(_primary);
+
+        $("#SideBarHoverBackground").val(_primary);
+        $("#SideBarHoverBackground_hex").val(_primary);
+
+        var _link = $(':root').css("--bs-link-color");
+
+        if (_primary == _link) {
+            _link = "#ffffff";
+        }
+
+        $("#NavBarColor").val(_link);
+        $("#NavBarColor_hex").val(_link);
+
+        var _linkhover = $(':root').css("--bs-link-hover-color");
+
+        if (_primary == _linkhover) {
+            _linkhover = "#ffffff";
+        }
+
+        $("#NavBarColorHover").val(_linkhover);
+        $("#NavBarColorHover_hex").val(_linkhover);
+        $("[type='radio']").removeAttr("disabled");
+
+        setColor();
+        alertClose();
+    }
+
+    function setColor() {
+        $("#customcss").remove();
+
+        $("#sidebar").css("background-color", $("#SideBarBackgroundColor").val())
+        $(".sidebar-header").css("background-color", $("#SideBarBackgroundColorLogo").val())
+        $(".sediinnav").css("background-color", $("#NavBarBackgroundoColor").val());
+
+        $.each($("#sidebar ul li a"), function (index, item) {
+            $(this).css("color", $("#SideBarColor").val());
+
+            $(item).hover(function (e) {
+                $(this).css("background-color", e.type === "mouseenter" ? $("#SideBarHoverBackground").val() : "transparent")
+                $(this).css("color", e.type === "mouseenter" ? $("#SideBarHoverColor").val() : $("#SideBarColor").val())
+            });
+        })
+
+        $(".modal-fullscreen").css("background-color", $("#ModalBackgroundoColor").val());
+        $(".modal-fullscreen").css("color", $("#ModalColor").val());
+
+        $(".nav-link").css("color", $("#NavBarColor").val());
+
+        $.each($(".nav-link"), function (index, item) {
+            $(item).hover(function (e) {
+                $(this).css("color", e.type === "mouseenter" ? $("#NavBarColorHover").val() : $("#NavBarColor").val())
+            });
+        });
+
+        $("<style type='text/css' id='customcss'>" + $("#CustomCss").val() + "</style>").appendTo("head");
+    }
+
+    function setColorFromHex(el) {
+        $("#" + el).val($("#" + el + "_hex").val());
+        setColor();
+    }
+
+    function setColorFromRgb(el) {
+        $("#" + el + "_hex").val($("#" + el).val());
+        setColor();
+    }
+    function getColor(css) {
+        var rgb = String($(':root').css(css)).split(",");
+
+        return "#" +
+            ("0" + parseInt(rgb[0], 10).toString(16)).slice(-2) +
+            ("0" + parseInt(rgb[1], 10).toString(16)).slice(-2) +
+            ("0" + parseInt(rgb[2], 10).toString(16)).slice(-2);
+    }
+
+</script>

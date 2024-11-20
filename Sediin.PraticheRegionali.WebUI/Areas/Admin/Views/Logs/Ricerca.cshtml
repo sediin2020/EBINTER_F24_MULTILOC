@@ -1,0 +1,12 @@
+﻿@model Sediin.PraticheRegionali.WebUI.Areas.Admin.Models.LogsRicercaModel
+
+@Html.RicercaModulo(Html.Partial("RicercaModulo", Model), "Logs errori")
+
+@Html.UpdateListRicerca(Url.Action("Ricerca", "Logs"), true)
+
+@*<script>
+    $().ready(function () {
+        alertWaid();
+        updateListRicerca(true);
+    });
+</script>*@

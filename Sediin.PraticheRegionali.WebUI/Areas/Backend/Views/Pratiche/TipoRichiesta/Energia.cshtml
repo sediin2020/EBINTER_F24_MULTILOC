@@ -1,0 +1,335 @@
+﻿@model Sediin.PraticheRegionali.WebUI.Areas.Backend.Models.PraticheAzienda_Energia
+
+@{
+    Sediin.PraticheRegionali.DOM.DAL.UnitOfWork unitOfWork = new Sediin.PraticheRegionali.DOM.DAL.UnitOfWork();
+
+    var _tiporichiesta = unitOfWork.TipoRichiestaRepository.Get(x => x.TipoRichiestaId == Model.TipoRichiestaId).FirstOrDefault();
+
+    var _isdip = _tiporichiesta.IsTipoRichiestaDipendente.GetValueOrDefault();
+}
+
+<div class="row">
+
+    <h4>
+        <span class="badge bg-secondary">ATTESTA che</span>
+    </h4>
+
+</div>
+
+@if (_isdip)
+{
+    <div class="row">
+
+
+        <div class="col-md-12 mt-1 fw-bold mb-3">
+
+            <label class="badge bg-info">le utenze energetiche sono intestate:</label>
+
+        </div>
+
+    </div>
+
+    <div class="row">
+        <div class="col-md-2 fw-bold">
+
+            Elettrica
+        </div>
+        <div class="col-md-4">
+
+            @if (Model.ReadOnly.GetValueOrDefault())
+            {
+                <input type="hidden" name="ElettricaIntestatePersonaConvivente" id="ElettricaIntestatePersonaConvivente" value="@Model.ElettricaIntestatePersonaConvivente.GetValueOrDefault()" />
+                if (!Model.ElettricaIntestatePersonaConvivente.GetValueOrDefault())
+                {
+                    <span>a se stesso</span>
+                }
+                else
+                {
+                    <span>a persona convivente</span>
+                }
+            }
+            else
+            {
+                <div class="form-check form-check-inline">
+
+                    <input class="form-check-input"
+                           type="radio" name="ElettricaIntestatePersonaConvivente"
+                           @(!Model.ElettricaIntestatePersonaConvivente.GetValueOrDefault() ? "checked" : "")
+                           id="ElettricaIntestateStesso" value="false">
+                    <label class="form-check-label" for="ElettricaIntestateStesso">a se stesso</label>
+                </div>
+                <div class="form-check form-check-inline">
+                    <input class="form-check-input" type="radio"
+                           name="ElettricaIntestatePersonaConvivente"
+                           @(Model.ElettricaIntestatePersonaConvivente.GetValueOrDefault() ? "checked" : "")
+                           id="ElettricaIntestatePersonaConvivente" value="true">
+                    <label class="form-check-label" for="ElettricaIntestatePersonaConvivente">a persona convivente </label>
+                </div>
+
+            }
+        </div>
+        <div class="col-md-6">
+            @Html.TextBoxForReadOnly(model => model.ElettricaNomePersonaConvivente, new { @class = "form-control", placeholder = "persona convivente" })
+            @Html.ValidationMessageFor(model => model.ElettricaNomePersonaConvivente, "", new { @class = "text-danger" })
+
+        </div>
+    </div>
+
+    <div class="row mt-2">
+        <div class="col-md-2 fw-bold">
+
+            gas/metano
+        </div>
+        <div class="col-md-4">
+
+
+            @if (Model.ReadOnly.GetValueOrDefault())
+            {
+                <input type="hidden" name="GasMetanoIntestatePersonaConvivente" id="GasMetanoIntestatePersonaConvivente" value="@Model.GasMetanoIntestatePersonaConvivente.GetValueOrDefault()" />
+
+                if (!Model.GasMetanoIntestatePersonaConvivente.GetValueOrDefault())
+                {
+                    <span>a se stesso</span>
+                }
+                else
+                {
+                    <span>a persona convivente</span>
+                }
+            }
+            else
+            {
+
+                <div class="form-check form-check-inline">
+
+                    <input class="form-check-input"
+                           type="radio" name="GasMetanoIntestatePersonaConvivente"
+                           @(!Model.GasMetanoIntestatePersonaConvivente.GetValueOrDefault() ? "checked" : "")
+                           id="GasMetanoIntestateStesso" value="false">
+                    <label class="form-check-label" for="GasMetanoIntestateStesso">a se stesso</label>
+                </div>
+
+
+
+                <div class="form-check form-check-inline">
+                    <input class="form-check-input" type="radio"
+                           name="GasMetanoIntestatePersonaConvivente"
+                           @(Model.GasMetanoIntestatePersonaConvivente.GetValueOrDefault() ? "checked" : "")
+                           id="GasMetanoIntestatePersonaConvivente" value="true">
+                    <label class="form-check-label" for="GasMetanoIntestatePersonaConvivente">a persona convivente </label>
+                </div>
+
+            }
+
+
+        </div>
+        <div class="col-md-6">
+            @Html.TextBoxForReadOnly(model => model.GasMetanoNomePersonaConvivente, new { @class = "form-control", placeholder = "persona convivente" })
+            @Html.ValidationMessageFor(model => model.GasMetanoNomePersonaConvivente, "", new { @class = "text-danger" })
+
+        </div>
+    </div>
+
+}
+<div class="row mt-4">
+    <div class="col-md-12 fw-bold">
+        <label class="badge bg-info">i costi dell’energia, elettrica e gas/metano nei periodi indicati sono i seguenti:</label>
+    </div>
+
+
+</div>
+
+<div class="row mt-3">
+
+    <div class="col-md-4">
+
+        <label class="fw-bold col-md-12 mb-1">
+            Anno precedente
+        </label>
+
+        @Html.TextBoxForReadOnly(model => model.AnnoPrecedente,
+        new
+        {
+            @class = "form-control",
+            placeholder = "anno precedente"
+        })
+        @Html.ValidationMessageFor(model => model.AnnoPrecedente, "", new { @class = "text-danger" })
+
+    </div>
+
+    <div class="col-md-8">
+
+        <div class=" row">
+            <div class="col-md-8">
+                TOTALE energia elettrica (anno precedente)
+            </div>
+
+            <div class="col-md-4">
+                @Html.TextBoxForReadOnly(model => model.EnergiaElettricaTotaleAnnoPrecedente, new { @class = "form-control", placeholder = "importo anno precedente" }, "{0:n}")
+                @Html.ValidationMessageFor(model => model.EnergiaElettricaTotaleAnnoPrecedente, "", new { @class = "text-danger" })
+            </div>
+        </div>
+
+        <div class="row mt-2">
+
+            <div class="col-md-8">
+
+                TOTALE gas/metano (anno precedente)
+            </div>
+
+            <div class="col-md-4">
+                @Html.TextBoxForReadOnly(model => model.GasMetanoTotaleAnnoPrecedente, new { @class = "form-control", placeholder = "importo anno precedente" }, "{0:n}")
+                @Html.ValidationMessageFor(model => model.GasMetanoTotaleAnnoPrecedente, "", new { @class = "text-danger" })
+            </div>
+        </div>
+    </div>
+</div>
+
+<hr />
+
+<div class="row mt-3">
+
+    <div class="col-md-4">
+
+        <label class="fw-bold col-md-12">
+            Anno richiesta
+        </label>
+
+        <span id="AnnoRichiesta-span">@Model.AnnoRichiesta</span><br />
+        @Html.HiddenFor(model => model.AnnoRichiesta,
+        new
+        {
+            @class = "form-control",
+            placeholder = "anno richiesta",
+        })
+        @Html.ValidationMessageFor(model => model.AnnoRichiesta, "", new { @class = "text-danger" })
+
+    </div>
+
+    <div class="col-md-8">
+
+        <div class=" row">
+            <div class="col-md-8">
+                TOTALE energia elettrica (anno richiesta)
+            </div>
+
+            <div class="col-md-4">
+                @Html.TextBoxForReadOnly(model => model.EnergiaElettricaTotaleAnnoRichiesta, new { @class = "form-control", placeholder = "importo anno richiesta" }, "{0:n}")
+                @Html.ValidationMessageFor(model => model.EnergiaElettricaTotaleAnnoRichiesta, "", new { @class = "text-danger" })
+            </div>
+        </div>
+
+        <div class="row mt-2">
+
+            <div class="col-md-8">
+
+                TOTALE gas/metano (anno richiesta)
+            </div>
+
+            <div class="col-md-4">
+                @Html.TextBoxForReadOnly(model => model.GasMetanoTotaleAnnoRichiesta, new { @class = "form-control", placeholder = "importo anno richiesta" }, "{0:n}")
+                @Html.ValidationMessageFor(model => model.GasMetanoTotaleAnnoRichiesta, "", new { @class = "text-danger" })
+            </div>
+        </div>
+
+
+    </div>
+</div>
+
+@Html.HiddenFor(model => model.TotaleRimborsoRichiesto, new { @class = "form-control" })
+
+<script>
+    $(function () {
+
+        $('#AnnoPrecedente').inputmask("202[9]");
+        $('#AnnoRichiesta').inputmask("202[9]");
+
+        $('#AnnoPrecedente').on("keypress keyup blur", function () {
+
+            $("#AnnoRichiesta").val("");
+            $("#AnnoRichiesta-span").html("");
+
+            var _anno = parseInt($('#AnnoPrecedente').val());
+
+            if (isNaN(_anno) || _anno >= @DateTime.Now.Year || _anno < 2020) {
+
+                $("span[data-valmsg-for='AnnoPrecedente']").removeClass("field-validation-valid");
+                $("span[data-valmsg-for='AnnoPrecedente']").addClass("field-validation-error");
+                $("span[data-valmsg-for='AnnoPrecedente']").html("Il campo Anno precedente non e valido");
+                $("span[data-valmsg-for='AnnoPrecedente']").show();
+                $("#AnnoRichiesta").validate();
+
+                return;
+            }
+
+            $("span[data-valmsg-for='AnnoPrecedente']").html("");
+            $("span[data-valmsg-for='AnnoPrecedente']").hide();
+
+            $("span[data-valmsg-for='AnnoRichiesta']").html("");
+            $("span[data-valmsg-for='AnnoRichiesta']").hide();
+
+            $("#AnnoRichiesta").val(_anno + 1);
+            $("#AnnoRichiesta-span").html(_anno + 1);
+            $("#AnnoRichiesta").validate();
+        });
+
+        @if(!Model.ElettricaIntestatePersonaConvivente.GetValueOrDefault())
+        {
+            @:$("#ElettricaNomePersonaConvivente").attr("disabled", "disabled");
+        }
+        @if(!Model.GasMetanoIntestatePersonaConvivente.GetValueOrDefault())
+        {
+            @:$("#GasMetanoNomePersonaConvivente").attr("disabled", "disabled");
+        }
+    });
+
+
+</script>
+
+@if (_isdip)
+{
+    <script>
+        $("[name='ElettricaIntestatePersonaConvivente']").on("click", function () {
+            if (!$("#ElettricaIntestatePersonaConvivente").is(":checked")) {
+                $("#ElettricaNomePersonaConvivente").val("");
+                $("#ElettricaNomePersonaConvivente").attr("disabled", "disabled");
+                $("#ElettricaNomePersonaConvivente").addClass("disabled");
+                $("#ElettricaNomePersonaConvivente").valid();
+            }
+            else {
+                $("#ElettricaNomePersonaConvivente").removeAttr("disabled");
+                $("#ElettricaNomePersonaConvivente").removeClass("disabled");
+            }
+        });
+
+        $("[name='GasMetanoIntestatePersonaConvivente']").on("click", function () {
+            if (!$("#GasMetanoIntestatePersonaConvivente").is(":checked")) {
+                $("#GasMetanoNomePersonaConvivente").val("");
+                $("#GasMetanoNomePersonaConvivente").attr("disabled", "disabled");
+                $("#GasMetanoNomePersonaConvivente").addClass("disabled");
+                $("#GasMetanoNomePersonaConvivente").valid();
+            }
+            else {
+                $("#GasMetanoNomePersonaConvivente").removeAttr("disabled");
+                $("#GasMetanoNomePersonaConvivente").removeClass("disabled");
+            }
+        });
+
+    </script>
+}
+
+
+<hr />
+
+@{Html.RenderPartial("~/Areas/Backend/Views/Pratiche/CalcoloRimborso.cshtml", new Sediin.PraticheRegionali.WebUI.Areas.Backend.Models.PraticheAzienda_Calcolo
+    {
+        ImportoRichiesto = Model.ImportoRichiesto,
+        AliquoteIRPEF = Model.AliquoteIRPEF,
+        ContributoFisso = Model.ContributoFisso,
+        ContributoImportoMassimo = Model.ContributoImportoMassimo,
+        ContributoImportoMinimo = Model.ContributoImportoMinimo,
+        ImportoContributo = Model.ImportoContributo,
+        ImportoContributoNetto = Model.ImportoContributoNetto,
+        ImportoIRPEF = Model.ImportoIRPEF,
+        PercentualeContributo = Model.PercentualeContributo,
+        StatoPraticaId = Model.StatoPraticaId
+    }); }

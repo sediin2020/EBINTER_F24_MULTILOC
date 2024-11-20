@@ -1,0 +1,155 @@
+﻿@model Sediin.PraticheRegionali.WebUI.Areas.Backend.Models.PraticheAziendaAzioni
+@using Sediin.PraticheRegionali.DOM;
+@using Sediin.PraticheRegionali.WebUI
+
+<div class="row mt-2">
+    <div class="col-md-12 text-center">
+
+        @if (Model.Azioni == null || Model.Azioni.Count() == 0 && Model.StatoId == 0)
+        {
+            <button type="submit" class="btn btn-primary" data-azione-id="Bozza" id="Azione" name="Azione" value="Bozza">Salva bozza</button>
+        }
+        else
+        {
+            foreach (var item in Model.Azioni.OrderBy(o => o.Ordine))
+            {
+                if (Model.AzioniRuolo.FirstOrDefault(x => x.Action == item.Action) == null)
+                {
+                    continue;
+                }
+
+                if (item.IsSubmit.GetValueOrDefault())
+                {
+                    <button type="submit" class="btn btn-@item.ButtonCss" data-azione-id="@item.Action" id="Azione" name="Azione" value="@item.Action">@item.Nome</button>
+                }
+                else
+                {
+                    var _success = "showModal_NoFooter('" + item.TitleSuccessModal + "',data)";
+
+                    if (item.SuccessModalFullScreen.GetValueOrDefault())
+                    {
+                        _success = "showModalFullScreen_NoHeaderFooter(data)";
+                    }
+
+                    if (item.SuccessModalOffcanvas.GetValueOrDefault())
+                    {
+                        _success = "showModalOffcanvas('" + item.Nome + "', data)";
+                    }
+
+                    <a class="btn btn-@item.ButtonCss"
+                       data-azione-id="@item.Action"
+                       data-ajax="true"
+                       data-ajax-begin="alertWaid()"
+                       data-ajax-failure="handleError(error)"
+                       data-ajax-success="@_success; alertClose()"
+                       data-ajax-method="post"
+                       href="@Html.EncodedAction(item.Action, item.Controller ?? "Pratiche", new {  richiestaId=Model.RichiestaId , area="Backend" })">@item.Nome</a>
+                }
+            }
+        }
+
+        @if (Model.StatoId.GetValueOrDefault() == (int)Sediin.PraticheRegionali.DOM.SediinPraticheRegionaliEnums.StatoPratica.Confermata && !Model.LiquidataOinLiquidazione.GetValueOrDefault() && User.IsInRole(IdentityHelper.Roles.Admin.ToString()) ||
+             Model.StatoId.GetValueOrDefault() == (int)Sediin.PraticheRegionali.DOM.SediinPraticheRegionaliEnums.StatoPratica.Confermata && !Model.LiquidataOinLiquidazione.GetValueOrDefault() && User.IsInRole(IdentityHelper.Roles.Super.ToString()))
+        {
+
+            <button type="button" class="btn btn-primary"
+                    data-azione-id="RimettiComeInviata"
+                    id="Azione" name="Azione"
+                    onclick="rimettiInStatoInviataRichiesta()">
+                Imposta come Inviata
+            </button>
+
+
+            <script>
+
+                function rimettiInStatoInviataRichiesta() {
+
+                     const swalWithBootstrapButtons = Swal.mixin({
+                     customClass: {
+                         confirmButton: 'btn btn-success mr-1',
+                            cancelButton: 'btn btn-danger mr-1'
+                        },
+                        buttonsStyling: false
+                     });
+
+                 playNotifyConfirm();
+
+                 swalWithBootstrapButtons.fire({
+                 html: "Sicuro di voler impostare come \"Inviata\"?",
+                    icon: "question",
+                    showCancelButton: true,
+                    confirmButtonText: 'Conferma',
+                    cancelButtonText: 'Annulla',
+                    allowOutsideClick: false,
+                    allowEscapeKey: false
+                }).then((result) => {
+                    if (result.isConfirmed) {
+                        alertWaid();
+                        $('#formSalvaRichiesta').append('<input type="hidden" name="Azione" value="@SediinPraticheRegionaliEnums.AzioniPratica.RimettiComeInviata.ToString()" />');
+                        $("#formSalvaRichiesta").submit();
+                    }
+                })
+            }
+
+
+            </script>
+        }
+
+
+        @if (Model.StatoId.GetValueOrDefault() == (int)Sediin.PraticheRegionali.DOM.SediinPraticheRegionaliEnums.StatoPratica.Bozza && !Model.LiquidataOinLiquidazione.GetValueOrDefault() && User.IsInRole(IdentityHelper.Roles.Admin.ToString()) ||
+             Model.StatoId.GetValueOrDefault() == (int)Sediin.PraticheRegionali.DOM.SediinPraticheRegionaliEnums.StatoPratica.Bozza && !Model.LiquidataOinLiquidazione.GetValueOrDefault() && User.IsInRole(IdentityHelper.Roles.Super.ToString()))
+        {
+
+            <button type="button" class="btn btn-warning"
+                    data-azione-id="EliminaRichiesta"
+                    id="Azione" name="Azione"
+                    onclick="eliminaRichiesta()">
+                Elimina bozza
+            </button>
+
+            <script>
+
+                function eliminaRichiesta() {
+
+                     const swalWithBootstrapButtons = Swal.mixin({
+                     customClass: {
+                         confirmButton: 'btn btn-success mr-1',
+                            cancelButton: 'btn btn-danger mr-1'
+                        },
+                        buttonsStyling: false
+                     });
+
+                 playNotifyConfirm();
+
+                 swalWithBootstrapButtons.fire({
+                 html: "Sicuro di voler eliminare la richiesta in \"Bozza\"?",
+                    icon: "question",
+                    showCancelButton: true,
+                    confirmButtonText: 'Conferma',
+                    cancelButtonText: 'Annulla',
+                    allowOutsideClick: false,
+                    allowEscapeKey: false
+                }).then((result) => {
+                    if (result.isConfirmed) {
+                        alertWaid();
+                        $.post("@Html.EncodedAction("EliminaRichiesta", "Pratiche", new { Model.RichiestaId })", function (data) {
+                        if (data.isValid == false) {
+                            alertDanger(data.message);
+                        }
+                        else {
+                            alertSuccessNoCloseButton(data.message);
+                            updateListRicerca();
+                            setTimeout(hideModal, 2000);
+                        }});
+                    }
+                })
+            }
+
+            </script>
+        }
+
+        <button type="button" class="btn btn-danger" onclick="hideModal()">Chiudi finestra</button>
+
+    </div>
+
+</div>

@@ -1,0 +1,181 @@
+﻿@model Sediin.PraticheRegionali.WebUI.Areas.Backend.Models.PraticheAziendaNuovaRichiestaDipendente
+
+@Scripts.Render("~/bundles/jqueryval")
+
+@using Sediin.PraticheRegionali.WebUI.Helpers;
+@using Sediin.PraticheRegionali.WebUI;
+
+
+@using (Ajax.BeginForm("NuovaRichiestaDipendente", null, new AjaxOptions
+{
+    OnBegin = "alertWaid()",
+    OnSuccess = "onSuccessNuovaRichiesta",
+    OnFailure = "handleError"
+}, new { }))
+{
+
+    @Html.AntiForgeryToken()
+    @Html.HiddenFor(model => model.PraticheAziendaNuovaRichiesta_DipendenteId)
+
+    <div class="form-horizontal">
+
+        <div class="row">
+
+            <div class="col-md-6">
+                <div class="form-group">
+                    @Html.LabelFor(model => model.PraticheAziendaNuovaRichiesta_TipoRichiestaId, htmlAttributes: new { @class = "control-label" })
+                    <div class="col-md-12">
+                        @Html.DropDownListFor(model => model.PraticheAziendaNuovaRichiesta_TipoRichiestaId, Html.SelectList(Model.TipoRichiesta, "TipoRichiestaId", "Descrizione", true), new { @class = "form-control" })
+                        @Html.ValidationMessageFor(model => model.PraticheAziendaNuovaRichiesta_TipoRichiestaId, "", new { @class = "text-danger" })
+                    </div>
+                </div>
+            </div>
+
+
+            @if (!User.IsInRole(IdentityHelper.Roles.Dipendente.ToString()))
+            {
+                <div class="col-md-6">
+                    <div class="form-group">
+                        @Html.LabelFor(model => model.PraticheAziendaNuovaRichiesta_NominativoDipendente, htmlAttributes: new { @class = "control-label" })
+                        <div class="col-md-12">
+                            @Html.TextBoxFor(model => model.PraticheAziendaNuovaRichiesta_NominativoDipendente, new { @class = "form-control", type = "search" })
+                            @Html.ValidationMessageFor(model => model.PraticheAziendaNuovaRichiesta_DipendenteId, "", new { @class = "text-danger" })
+                        </div>
+                    </div>
+                </div>
+
+                @Html.AutocompleteDipendente("PraticheAziendaNuovaRichiesta_NominativoDipendente", "PraticheAziendaNuovaRichiesta_DipendenteId", "PraticheAziendaNuovaRichiesta_DipendenteId", callBackFunction: "loadAziende", sportelloId: Model.PraticheAziendaNuovaRichiesta_SportelloId)
+            }
+            @{
+                List<string> _list = new List<string>();
+
+            }
+
+            <div class="col-md-6">
+                <div class="form-group">
+                    @Html.LabelFor(model => model.PraticheAziendaNuovaRichiesta_AziendaId, htmlAttributes: new { @class = "control-label" })
+                    <div class="col-md-12">
+                        @Html.DropDownListFor(model => model.PraticheAziendaNuovaRichiesta_AziendaId, Html.SelectList(_list, "", "", true), new { @class = "form-control" })
+                        @Html.ValidationMessageFor(model => model.PraticheAziendaNuovaRichiesta_AziendaId, "", new { @class = "text-danger" })
+                    </div>
+                </div>
+            </div>
+
+
+            <div class="col-md-12 mt-4" id="noteTipoRichiesta">
+
+                @if (!User.IsInRole(IdentityHelper.Roles.Dipendente.ToString()))
+                {
+                    <div class="alert alert-info">Inserisci il <strong>Nominativo Dipendente o Codice Fiscale</strong>, seleziona la <strong>Ragione Sociale o Matricola Inps</strong>, e poi il <strong>Tipo di Richiesta</strong></div>
+                }
+            </div>
+        </div>
+    </div>
+
+
+    <div class="modal-footer mt-4">
+        <button type="submit" class="btn btn-primary">Crea richiesta</button>
+
+        <button type="button" onclick="hideModal()" class="btn btn-danger" id="buttonCloseModal">Chiudi finestra</button>
+    </div>
+
+}
+
+
+@if (User.IsInRole(IdentityHelper.Roles.Dipendente.ToString()))
+{
+    Html.RenderAction("ContatoreAnnuale", new { dipendenteId = Model.PraticheAziendaNuovaRichiesta_DipendenteId });
+}
+else
+{
+    <script>
+        function getContatore(dipendenteId) {
+            $("#containerContatoreToast").html("");
+            $("#containerContatoreToast").remove();
+            $.get("@Url.Action("ContatoreAnnuale")", { dipendenteId: dipendenteId }, function (data) {
+                $(".modal-footer").append(data)
+            });
+        }
+
+    </script>
+}
+
+<script>
+
+    @if (User.IsInRole(IdentityHelper.Roles.Dipendente.ToString()))
+            {
+                @:getAziende();
+            }
+
+    $("#PraticheAziendaNuovaRichiesta_TipoRichiestaId").on("change", function () {
+        $("#noteTipoRichiesta").html("");
+
+        $.get("@Url.Action("GetNoteTipoRichiesta")", { id: $("#PraticheAziendaNuovaRichiesta_TipoRichiestaId").val() }, function (data) {
+
+            if (data != undefined && data != "") {
+                $("#noteTipoRichiesta").html(getAlert_Info(data));
+            }
+        });
+    });
+
+    function onSuccessNuovaRichiesta(data) {
+        if (data.isValid==false) {
+            alertInfo(data.message)
+        }
+        else {
+            alertClose();
+            showModalFullScreen_NoHeaderFooter(data);
+        }
+    }
+
+    function loadAziende(data) {
+        getContatore(data);
+        if (data != "" && data != undefined) {
+            $("#@nameof(Model.PraticheAziendaNuovaRichiesta_AziendaId)").empty();
+
+            $("#@nameof(Model.PraticheAziendaNuovaRichiesta_AziendaId)").attr("disabled", "disabled");
+
+            $("<option/>", {
+                text: "[Caricamento in corso...]"
+            }).appendTo("#@nameof(Model.PraticheAziendaNuovaRichiesta_AziendaId)");
+
+            getAziende();
+        }
+        else {
+            $("#@nameof(Model.PraticheAziendaNuovaRichiesta_AziendaId)").empty();
+
+            $("<option/>", {
+                text: "[Selezionare una voce]"
+            }).appendTo("#@nameof(Model.PraticheAziendaNuovaRichiesta_AziendaId)");
+
+        }
+    }
+
+    function getAziende() {
+            $.get("@Url.Action("ListaAziende", "Azienda")", { dipendenteId: $("#@nameof(Model.PraticheAziendaNuovaRichiesta_DipendenteId)").val() }, function (data) {
+
+                $("#@nameof(Model.PraticheAziendaNuovaRichiesta_AziendaId)").empty();
+
+                $("#@nameof(Model.PraticheAziendaNuovaRichiesta_AziendaId)").removeAttr("disabled");
+
+                if (data.lenght == 0 || data == ""|| data == undefined) {
+                    $("<option/>", {
+                        text: "[Nessuna Azienda associata al Dipendente]"
+                    }).appendTo("#@nameof(Model.PraticheAziendaNuovaRichiesta_AziendaId)");
+                }
+                else {
+                    $("<option/>", {
+                        text: "[Selezionare una voce]"
+                    }).appendTo("#@nameof(Model.PraticheAziendaNuovaRichiesta_AziendaId)");
+
+                    $.each(data, function (i, item) {
+                            $("<option/>", {
+                            value: item.AziendaId,
+                                text: item.RagioneSociale
+                            }).appendTo("#@nameof(Model.PraticheAziendaNuovaRichiesta_AziendaId)");
+                    });
+                }
+            });
+
+    }
+</script>

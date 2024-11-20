@@ -1,0 +1,109 @@
+﻿@model Sediin.PraticheRegionali.WebUI.Areas.Backend.Models.PraticheAzienda_Calcolo
+
+@using Sediin.PraticheRegionali.DOM;
+
+@if (User.IsInRole(IdentityHelper.Roles.Admin.ToString())
+    && (Model.StatoPraticaId == (int)SediinPraticheRegionaliEnums.StatoPratica.Inviata ||
+    Model.StatoPraticaId == (int)SediinPraticheRegionaliEnums.StatoPratica.InviataRevisionata))
+{
+    <div class="row">
+
+        <h4>
+            <span class="badge bg-danger">
+                Importo da Rimborsare
+            </span>
+        </h4>
+
+        <div class="col-md-3">
+            <div class="form-group">
+                @Html.Label("Importo richiesto", htmlAttributes: new { @class = "control-label" })
+                <div class="">
+                    @Html.TextBoxFor(model => model.ImportoRichiesto, new { @class = "form-control" })
+                    @Html.ValidationMessageFor(model => model.ImportoRichiesto, "", new { @class = "text-danger" })
+                </div>
+            </div>
+        </div>
+
+        <div class="col-md-3">
+
+            <div class="form-group">
+                @Html.Label("Contributo Fisso", htmlAttributes: new { @class = "control-label" })
+                <div class="text-start" id="ContributoFisso-span">
+                    @Model.ContributoFisso.GetValueOrDefault()
+                </div>
+            </div>
+        </div>
+
+        <div class="col-md-3">
+            <div class="form-group">
+                @Html.Label("Aliquote IRPEF %", htmlAttributes: new { @class = "control-label" })
+                <div class="text-start" id="AliquoteIRPEF-span">
+                    @Model.AliquoteIRPEF.GetValueOrDefault()
+                </div>
+            </div>
+        </div>
+
+        <div class="col-md-3">
+            <div class="form-group">
+                @Html.Label("Rimborso %", htmlAttributes: new { @class = "control-label" })
+
+                <div class="">
+                    @Html.TextBoxFor(model => model.PercentualeContributo, new { @class = "form-control", placeholder = Model.PercentualeContributo, max=100 })
+                    @Html.ValidationMessageFor(model => model.PercentualeContributo, "", new { @class = "text-danger" })
+                </div>
+
+                @*<div class="text-start" id="PercentualeContributo-span">
+                        @Model.PercentualeContributo.GetValueOrDefault()
+                    </div>*@
+            </div>
+        </div>
+
+        <div class="col-md-3">
+            <div class="form-group">
+                @Html.Label("Minimale", htmlAttributes: new { @class = "control-label" })
+                <div class="text-start" id="ContributoImportoMinimo-span">
+                    @Model.ContributoImportoMinimo.GetValueOrDefault()
+                </div>
+            </div>
+        </div>
+
+        <div class="col-md-3">
+            <div class="form-group">
+                @Html.Label("Massimale", htmlAttributes: new { @class = "control-label" })
+                <div class="text-start" id="ContributoImportoMassimo-span">
+                    @Model.ContributoImportoMassimo.GetValueOrDefault()
+                </div>
+            </div>
+        </div>
+
+
+
+
+        <div class="col-md-3">
+
+            <div class="form-group">
+                @Html.Label("Contributo IRPEF", htmlAttributes: new { @class = "control-label" })
+                <div class="text-start" id="ImportoIRPEF-span">
+                    @Model.ImportoIRPEF.GetValueOrDefault()
+                </div>
+            </div>
+        </div>
+
+        <div class="col-md-3">
+
+            <div class="form-group">
+                @Html.Label("Contributo netto", htmlAttributes: new { @class = "control-label" })
+                <div class="text-start text-success doubleunderline fw-bold" id="ImportoContributoNetto-span">
+                    @Model.ImportoContributoNetto.GetValueOrDefault()
+                </div>
+            </div>
+        </div>
+
+    </div>
+
+    <hr />
+
+    <script src="~/Scripts/pratiche_ImportoRimborsatoContributoRichiestoDefaultValidation.js"></script>
+
+    <script src="~/Scripts/requiredFromAdmin.js"></script>
+}

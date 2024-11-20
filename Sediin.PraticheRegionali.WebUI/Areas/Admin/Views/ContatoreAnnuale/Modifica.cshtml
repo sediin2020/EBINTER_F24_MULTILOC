@@ -1,0 +1,113 @@
+﻿@model Sediin.PraticheRegionali.WebUI.Areas.Admin.Models.ContatoreAnnualeModel
+
+@Scripts.Render("~/bundles/jqueryval")
+
+@using (Ajax.BeginForm("Modifica", new AjaxOptions
+{
+    OnBegin = "alertWaid()",
+    OnSuccess = "onSuccessModifica"
+}))
+{
+    @Html.AntiForgeryToken()
+    @Html.TextBoxFor(model => model.ContatoreAnnualeId, new { @hidden = true, @readonly = true })
+
+<h3>Modifica Contatore Annuale</h3>
+    <hr />
+    <div class="form-horizontal">
+        <div class="row">
+
+            <div class="form-group col-md-12">
+                @{
+
+                    var _list = new List<SelectListItem>();
+
+                    _list.Add(new SelectListItem { Text = "Azienda", Value = "Azienda" });
+                    _list.Add(new SelectListItem { Text = "Dipendente", Value = "Dipendente" });
+
+                }
+
+                @Html.Label("Descrizione", htmlAttributes: new { @class = "control-label" })
+                <div>
+                    @Html.DropDownListFor(model => model.PraticheRegionaliImprese, Html.SelectList(_list, "Value", "Text", true), new { @class = "form-control" })
+                </div>
+            </div>
+
+            <div class="col-md-6">
+                <div class="form-group">
+                    @Html.LabelFor(model => model.DataInizio, htmlAttributes: new { @class = "control-label" })
+                    <div class="col-md-12">
+                        @Html.TextBoxForReadOnly(model => model.DataInizio, new
+                   {
+                       @class = "form-control",
+                       data_inputmask_alias = "datetime",
+                       data_inputmask_inputformat = "dd/mm/yyyy"
+                   }, "{0:dd/MM/yyyy}")
+                        @Html.ValidationMessageFor(model => model.DataInizio, "", new { @class = "text-danger" })
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-md-6">
+                <div class="form-group">
+                    @Html.LabelFor(model => model.DataFine, htmlAttributes: new { @class = "control-label" })
+                    <div class="col-md-12">
+                        @Html.TextBoxForReadOnly(model => model.DataFine, new
+                   {
+                       @class = "form-control",
+                       data_inputmask_alias = "datetime",
+                       data_inputmask_inputformat = "dd/mm/yyyy"
+                   }, "{0:dd/MM/yyyy}")
+                        @Html.ValidationMessageFor(model => model.DataFine, "", new { @class = "text-danger" })
+                    </div>
+                </div>
+            </div>
+
+            <div class="form-group col-md-6">
+                @Html.Label("Tetto Massimo Lordo", htmlAttributes: new { @class = "control-label" })
+                <div>
+                    @Html.EditorFor(model => model.TettoMassimoLordo, new { htmlAttributes = new { @class = "form-control", type = "text", pattern = "[0-9]+,[0-9]{2}" } })
+                    @Html.ValidationMessageFor(model => model.TettoMassimoLordo, "", new { @class = "text-danger" })
+                </div>
+            </div>
+
+
+            <div class="modal-footer row" style="margin-top: 30px">
+                <div class="col-md-12 text-center">
+                    <input type="submit" value="Modifica" class="btn btn-success" />
+                    <input type="button" value="Chiudi finestra" onclick="hideModal()" class="btn btn-danger" />
+                </div>
+            </div>
+        </div>
+    </div>
+}
+<script>
+    $().ready(function () {
+
+        $('#DataInizio').inputmask();
+        flatpickr('#DataInizio', {
+            locale: "it",
+            dateFormat: "d/m/Y",
+            disableMobile: "true",
+            allowInput: true,
+            onChange: function (selectedDates, dateStr, instance) {
+            },
+        });
+        $('#DataFine').inputmask();
+        flatpickr('#DataFine', {
+            locale: "it",
+            dateFormat: "d/m/Y",
+            disableMobile: "true",
+            allowInput: true,
+            onChange: function (selectedDates, dateStr, instance) {
+            },
+        });
+    })
+
+    function onSuccessModifica(data) {
+        @Html.OnSuccessHideModal()
+    }
+
+</script>
+
+
+

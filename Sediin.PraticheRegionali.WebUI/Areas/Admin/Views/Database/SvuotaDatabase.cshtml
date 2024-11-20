@@ -1,0 +1,65 @@
+﻿@using Sediin.PraticheRegionali.DOM.Entitys;
+
+@Html.RicercaModulo("Svuota Database")
+
+@{
+    List<(string, string)> _list = new List<(string, string)>();
+    _list.Add((nameof(PraticheRegionaliImprese), "Pratiche"));
+    _list.Add((nameof(Copertura), "Coperture"));
+    _list.Add((nameof(Dipendente), "Dipendenti"));
+    _list.Add((nameof(Azienda), "Aziende"));
+    _list.Add((nameof(Sportello), "Consulenti"));
+    _list.Add((nameof(Liquidazione), "Liquidazione"));
+    _list.Add((nameof(NavigatioHistory), "Navigation"));
+    _list.Add((nameof(Logs), "Logs"));
+    _list.Add((nameof(Uniemens), "Uniemens"));
+    _list.Add(("Users", "Users (escluso \"Super Admin\")"));
+}
+
+@using (Ajax.BeginForm("SvuotaDatabase", new AjaxOptions
+{
+    OnBegin = "alertWaid()",
+    OnSuccess = "onSuccessSvuotaDatabase",
+    OnFailure = "handleError"
+}))
+{
+    @Html.AntiForgeryToken()
+
+    <div class="row">
+        @{ var i = 0;}
+        @foreach (var item in _list.OrderBy(o => o.Item2))
+        {
+            //var _checked = "";
+            //if (item.Nome == Model.BootstrapCss)
+            //{
+            //    _checked = "checked";
+            //}
+
+            <div class="col-md-3 mb-2">
+                <div class="form-check">
+
+                    <input checked class="form-check-input" type="checkbox" value="@item.Item1" name="table" id="btnradio_@i">
+                    <label class="form-check-label" for="btnradio_@i">
+                        @item.Item2
+                    </label>
+                </div>
+            </div>
+            i++;
+        }
+
+
+        <hr class="mt-3 mb-3" />
+
+        <div class="col-md-12 text-center">
+            <button type="submit" class="btn btn-primary">Salva</button>
+        </div>
+    </div>
+
+
+}
+
+<script>
+    function onSuccessSvuotaDatabase(data) {
+        alertSuccess(data.message);
+    }
+</script>

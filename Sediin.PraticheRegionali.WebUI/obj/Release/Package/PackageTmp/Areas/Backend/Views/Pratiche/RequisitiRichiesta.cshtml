@@ -1,0 +1,163 @@
+﻿@model Sediin.PraticheRegionali.WebUI.Areas.Backend.Models.PraticheAziendaRequisiti
+
+@if (Model.Requisiti.Count() > 0)
+{
+    var i = 0;
+
+    <div class="row">
+
+        <h4>
+            <span class="badge bg-secondary">
+                Chiede l'erogazione del contributo per:
+                @if (Model.RequisitiMassimo.GetValueOrDefault() > 1)
+                {
+                    @Html.Raw(Model.RequisitiMassimo.GetValueOrDefault() > 0 ? " <i>(min: " + Model.RequisitiMinimo.GetValueOrDefault() + " e max: " + Model.RequisitiMassimo.GetValueOrDefault() + " opzioni)</i>" : "")
+                }
+            </span>
+        </h4>
+        @{
+            var _totaleselezionati = 0;
+        }
+
+        @foreach (var item in Model.Requisiti.ToList())
+        {
+            var ischecked = "";
+            if (Model.RequisitiSelected != null && Model.RequisitiSelected.Any(x => x == item.RequisitiId))
+            {
+                ischecked = "checked";
+
+                if (!item.Obblicatorio.GetValueOrDefault())
+                {
+                    _totaleselezionati++;
+                }
+            }
+
+            <div class="col-md-12 mt-1">
+
+                <input type="hidden" value="@item.RequisitiId"
+                       id="PraticheRequisiti[@i].RequisitiId"
+                       name="PraticheRequisiti[@i].RequisitiId">
+
+                @if (Model.ReadOnly.GetValueOrDefault())
+                {
+                    <div>
+                        <input data-praticherequisiti="true"
+                               id="PraticheRequisiti[@i].Selectedt"
+                               name="PraticheRequisiti[@i].Selectedt"
+                               type="hidden" value="@ischecked">
+
+                        @if (Model.RequisitiSelected != null && Model.RequisitiSelected.Any(x => x == item.RequisitiId))
+                        {
+                            <img src="~/Content/images/switch-on.png" />
+                        }
+                        else
+                        {
+                            <img src="~/Content/images/switch-off.png" />
+                        }
+                        <span>
+                            @item.Requisiti.Descrizione
+                            @if (item.ContributoImporto.GetValueOrDefault() > 0 && User.IsInRole(IdentityHelper.Roles.Admin.ToString()))
+                            {
+                                <br />
+                                <small class="text-info"><strong>Importo contributo: @Html.ToImporto(item.ContributoImporto) - Contributo %: @Html.ToImporto(item.ContributoPercentuale)</strong></small>
+                            }
+                        </span>
+                    </div>
+                }
+                else
+                {
+                    if (item.Obblicatorio.GetValueOrDefault())
+                    {
+                        <div class="form-check form-switch">
+                            <input class="form-check-input"
+                                   data-val="true"
+                                   @ischecked
+                                   data-val-checkboxvalidation="il campo @item.Requisiti.Descrizione è obbligatorio."
+                                   aria-describedby="PraticheRequisiti[@i].Selectedt-error"
+                                   id="PraticheRequisiti[@i].Selectedt"
+                                   name="PraticheRequisiti[@i].Selectedt"
+                                   type="checkbox"
+                                   value="true">
+                            <label class="form-check-label" style="margin-left:10px" for="PraticheRequisiti[@i].Selectedt">
+                                @item.Requisiti.Descrizione <span class="text-danger">(* obbligatorio)</span>
+                            </label>
+                        </div>
+
+                        <span class="text-danger"
+                              data-valmsg-for="PraticheRequisiti[@i].Selectedt" data-valmsg-replace="true">
+                        </span>
+                    }
+                    else
+                    {
+
+                        <div class="form-check form-switch">
+                            <input class="form-check-input"
+                                   data-val="false"
+                                   @ischecked
+                                   data-praticherequisiti="true"
+                                   id="PraticheRequisiti[@i].Selectedt"
+                                   name="PraticheRequisiti[@i].Selectedt"
+                                   type="checkbox" value="true">
+                            <label class="form-check-label" style="margin-left:10px"
+                                   for="PraticheRequisiti[@i].Selectedt">
+                                @item.Requisiti.Descrizione
+                            </label>
+                        </div>
+                    }
+
+                }
+
+            </div>
+            i++;
+        }
+
+        <div class="col-md-12">
+            @{
+                var _m = "Selezionare almeno: " + Model.RequisitiMinimo.GetValueOrDefault() + " e max: " + Model.RequisitiMassimo.GetValueOrDefault() + " opzioni (esclusi obbligatori)";
+            }
+
+            @Html.Hidden("TotaleRequisitiSelezionate", _totaleselezionati.ToString(), new
+           {
+               data_val_range_min = Model.RequisitiMinimo.GetValueOrDefault(),
+               data_val_range_max = Model.RequisitiMassimo.GetValueOrDefault() == 0 ? int.MaxValue : Model.RequisitiMassimo.GetValueOrDefault(),
+               data_val_range = _m,
+               data_val_number = _m,
+               data_val_required = _m,
+           })
+            @Html.ValidationMessageFor(model => model.TotaleRequisitiSelezionate, "", new { @class = "text-danger mt-3" })
+
+        </div>
+    </div>
+    <hr />
+}
+<script>
+
+    $("[data-praticherequisiti='true']").on("change", function () {
+        var _x = 0;
+        var _ischecked = $(this).is(':checked');
+
+        @if (Model.RequisitiMassimo.GetValueOrDefault()==1)
+        {
+            @:$("[data-praticherequisiti='true']").prop('checked', false);
+            @:if (_ischecked)
+            @:{
+            @:$(this).prop('checked', true);
+            @:_x++;
+            @:}
+        }
+        else
+        {
+            @:$.each($("[data-praticherequisiti='true']"), function(index, item) {
+            @:if ($(this).is (":checked")) {
+                @:_x++;
+            @:}
+            @:});
+        }
+
+        $("#TotaleRequisitiSelezionate").val(_x);
+        $("#TotaleRequisitiSelezionate").valid();
+    })
+
+</script>
+
+@*<script src="~/Scripts/checkboxValidation.js"></script>*@

@@ -1,0 +1,33 @@
+﻿@model Sediin.PraticheRegionali.WebUI.Areas.Backend.Models.PraticheAzienda_VeicoliCommerciali
+
+
+<div class="row">
+
+    <h4>
+        <span class="badge bg-secondary">Importo richiesto</span>
+    </h4>
+
+    <div class="col-md-4 mt-1">
+
+        @Html.TextBoxForReadOnly(model => model.ImportoContributoRichiestoVeicoli, new { @class = "form-control", placeholder = "importo richiesto" }, "{0:n}")
+        @Html.ValidationMessageFor(model => model.ImportoContributoRichiestoVeicoli, "", new { @class = "text-danger" })
+
+    </div>
+</div>
+
+<hr />
+
+@{Html.RenderPartial("~/Areas/Backend/Views/Pratiche/CalcoloRimborso.cshtml", new Sediin.PraticheRegionali.WebUI.Areas.Backend.Models.PraticheAzienda_Calcolo
+    {
+        ImportoRichiesto = Model.ImportoRichiesto,
+        AliquoteIRPEF = Model.AliquoteIRPEF,
+        ContributoFisso = Model.ContributoFisso,
+        ContributoImportoMassimo = Model.ContributoImportoMassimo,
+        ContributoImportoMinimo = Model.ContributoImportoMinimo,
+        ImportoContributo = Model.ImportoContributo,
+        ImportoContributoNetto = Model.ImportoContributoNetto,
+        ImportoIRPEF = Model.ImportoIRPEF,
+        PercentualeContributo = Model.PercentualeContributo,
+        StatoPraticaId = Model.StatoPraticaId
+    }); }
+

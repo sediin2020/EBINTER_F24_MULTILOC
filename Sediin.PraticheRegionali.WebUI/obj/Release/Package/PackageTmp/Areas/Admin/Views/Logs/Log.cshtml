@@ -1,0 +1,55 @@
+﻿@model Sediin.PraticheRegionali.DOM.Entitys.Logs
+
+@if (Model == null)
+{
+    @Html.AlertDanger("Dati non trovati");
+    return;
+}
+
+
+<div>
+    <dl class="dl-horizontal">
+        <dt>
+            @Html.DisplayNameFor(model => model.Data)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Data)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.Username)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Username)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.Message)
+        </dt>
+
+        <dd>
+            @Html.Raw(Model.Message)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.Action)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Action)
+        </dd>
+
+        <dt>
+            Error data
+        </dt>
+
+        <dd>
+            @Html.Raw(Model.ViewDataJson)
+        </dd>
+
+
+
+    </dl>
+</div>

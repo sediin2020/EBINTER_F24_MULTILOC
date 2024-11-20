@@ -1,0 +1,151 @@
+﻿@model Sediin.PraticheRegionali.WebUI.Areas.Backend.Models.PraticheAzienda_Assunzioni
+
+
+@Html.HiddenFor(c => c.ImportoContributoRichiestoAssunzioni)
+
+<div class="row">
+
+    <div class="col-md-6 mt-1">
+
+        <h4>
+            <span class="badge bg-secondary">Tipo assunzione</span>
+        </h4>
+        @{
+
+            List<string> _assunzioni = new List<string>();
+            _assunzioni.Add("disabile");
+            _assunzioni.Add("donna");
+            _assunzioni.Add("uomo over 50");
+
+            var i = 0;
+            var _totaleselezionati = 0;
+        }
+
+        @foreach (var item in _assunzioni)
+        {
+            var ischecked = "";
+
+            if (Model.TipoAssunzioni != null && Model.TipoAssunzioni == item)
+            {
+                _totaleselezionati++;
+                ischecked = "checked";
+            }
+
+            if (Model.ReadOnly.GetValueOrDefault())
+            {
+                <div>
+
+                    @if (Model.TipoAssunzioni != null && Model.TipoAssunzioni == item)
+                    {
+                        <img src="~/Content/images/switch-on.png" />
+                        <input data-praticheassusnzione="true"
+                               id="PraticheAssunzione[@i].TipoAssunzioni"
+                               name="TipoAssunzioni"
+                               type="hidden" value="@item">
+                    }
+                    else
+                    {
+                        <img src="~/Content/images/switch-off.png" />
+                    }
+                    <span>
+                        @item
+                    </span>
+                </div>
+            }
+            else
+            {
+                <div class="form-check form-switch">
+                    <input class="form-check-input"
+                           data-val="false"
+                           @ischecked
+                           data-praticheassusnzione="true"
+                           id="PraticheAssunzione[@i].TipoAssunzioni"
+                           name="TipoAssunzioni"
+                           type="checkbox" value="@item">
+                    <label class="form-check-label" style="margin-left:10px"
+                           for="PraticheAssunzione[@i].TipoAssunzioni">
+                        @item
+                    </label>
+                </div>
+
+            }
+            i++;
+        }
+
+
+    </div>
+
+    <div class="col-md-6 mt-1">
+        <h4>
+            <span class="badge bg-secondary">Data assunzione</span>
+        </h4>
+
+        @if (Model.ReadOnly.GetValueOrDefault())
+        {
+            @Html.HiddenFor(model => model.DataAssunzione)
+            if (Model.DataAssunzione.HasValue)
+            {
+                if (Model.DataAssunzione.Value != DateTime.MinValue)
+                {
+                    @Model.DataAssunzione.Value.ToShortDateString()
+                }
+            }
+        }
+        else
+        {
+            @Html.TextBoxFor(model => model.DataAssunzione, "{0:dd/MM/yyyy}", new
+            {
+                @class = "form-control readonly text-center",
+                autocomplete = "off",
+                data_inputmask_alias = "datetime",
+                data_inputmask_inputformat = "dd/mm/yyyy"
+            })
+            @Html.ValidationMessageFor(model => model.DataAssunzione, "", new { @class = "text-danger" })
+        }
+    </div>
+</div>
+
+<hr />
+
+@{Html.RenderPartial("~/Areas/Backend/Views/Pratiche/CalcoloRimborso.cshtml", new Sediin.PraticheRegionali.WebUI.Areas.Backend.Models.PraticheAzienda_Calcolo
+    {
+        ImportoRichiesto = Model.ImportoRichiesto,
+        AliquoteIRPEF = Model.AliquoteIRPEF,
+        ContributoFisso = Model.ContributoFisso,
+        ContributoImportoMassimo = Model.ContributoImportoMassimo,
+        ContributoImportoMinimo = Model.ContributoImportoMinimo,
+        ImportoContributo = Model.ImportoContributo,
+        ImportoContributoNetto = Model.ImportoContributoNetto,
+        ImportoIRPEF = Model.ImportoIRPEF,
+        PercentualeContributo = Model.PercentualeContributo,
+        StatoPraticaId = Model.StatoPraticaId
+    }); }
+
+<script>
+
+    $("[data-praticheassusnzione='true']").on("change", function () {
+        var _ischecked = $(this).is(':checked');
+
+        $("#ImportoContributoRichiestoAssunzioni").val("");
+        $("[data-praticheassusnzione='true']").prop('checked', false);
+
+        if (_ischecked) {
+            $("#ImportoContributoRichiestoAssunzioni").val("750");
+            $(this).prop('checked', true);
+        }
+    })
+
+    $('#DataAssunzione').inputmask();
+
+    if (!@Model.ReadOnly) {
+        flatpickr('#DataAssunzione', {
+            static: true,
+            locale: "it",
+            dateFormat: "d/m/Y",
+            disableMobile: "true"@*,
+        /*allowInput: true,*/
+        maxDate: "@DateTime.Now"*@
+        })
+    }
+
+</script>

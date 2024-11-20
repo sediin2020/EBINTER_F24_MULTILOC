@@ -1,0 +1,152 @@
+﻿@model Sediin.PraticheRegionali.WebUI.Areas.Backend.Models.PraticheAziendaDpr
+
+@if (Model.Dpr.Count() > 0)
+{
+    var i = 0;
+
+    <div class="row">
+
+        <h4>
+            @{
+                var _t = "";
+                if (Model.DprMinimo.GetValueOrDefault() != Model.Dpr.ToList().Count())
+                {
+                    _t = Model.DprMassimo.GetValueOrDefault() > 0 ? " <i>(almeno: " + Model.DprMinimo.GetValueOrDefault() + " e massimo: " + Model.DprMassimo.GetValueOrDefault() + " opzioni)</i>" : "";
+                }
+            }
+
+
+            <span class="badge bg-secondary">Dichiara ai sensi del DPR 445/200 @Html.Raw(_t)</span>
+        </h4>
+        @{
+            var _totaleselezionati = 0;
+        }
+
+        @foreach (var item in Model.Dpr.ToList())
+        {
+            var ischecked = "";
+            if (Model.DprSelected != null && Model.DprSelected.Any(x => x == item.DichiarazioniDPRId))
+            {
+                ischecked = "checked";
+
+                if (!item.Obblicatorio.GetValueOrDefault())
+                {
+                    _totaleselezionati++;
+                }
+            }
+
+            <div class="col-md-12 mt-1">
+
+                <input type="hidden" value="@item.DichiarazioniDPRId"
+                       id="PraticheDpr[@i].DprId"
+                       name="PraticheDpr[@i].DprId">
+
+                @if (Model.ReadOnly.GetValueOrDefault())
+                {
+                    <input data-pratichedpr="true"
+                           id="PraticheDpr[@i].Selectedt"
+                           name="PraticheDpr[@i].Selectedt"
+                           type="hidden" value="@ischecked">
+
+                    if (Model.DprSelected != null && Model.DprSelected.Any(x => x == item.DichiarazioniDPRId))
+                    {
+                        <img src="~/Content/images/switch-on.png" />
+                    }
+                    else
+                    {
+                        <img src="~/Content/images/switch-off.png" />
+                    }
+                    <label class="form-check-label">
+                        @item.DichiarazioniDPR.Descrizione
+                    </label>
+                }
+                else
+                {
+                    if (item.Obblicatorio.GetValueOrDefault())
+                    {
+                        <div class="form-check form-switch">
+                            <input class="form-check-input"
+                                   data-val="true"
+                                   @ischecked
+                                   data-val-checkboxvalidation="il campo @item.DichiarazioniDPR.Descrizione è obbligatorio."
+                                   id="PraticheDpr[@i].Selectedt"
+                                   name="PraticheDpr[@i].Selectedt"
+                                   type="checkbox"
+                                   value="true"
+                                   aria-describedby="PraticheDpr[@i].Selectedt-error">
+                            <label class="form-check-label" style="margin-left:10px" for="PraticheDpr[@i].Selectedt">
+                                @item.DichiarazioniDPR.Descrizione <span class="text-danger">(* obblicatorio)</span>
+                            </label>
+                        </div>
+
+                        <span class="text-danger"
+                              data-valmsg-for="PraticheDpr[@i].Selectedt" data-valmsg-replace="true">
+                        </span>
+                    }
+                    else
+                    {
+                        <div class="form-check form-switch">
+                            <input class="form-check-input"
+                                   data-val="false"
+                                   @ischecked
+                                   data-pratichedpr="true"
+                                   id="PraticheDpr[@i].Selectedt"
+                                   name="PraticheDpr[@i].Selectedt"
+                                   type="checkbox" value="true">
+                            <label class="form-check-label" style="margin-left:10px"
+                                   for="PraticheDpr[@i].Selectedt">
+                                @item.DichiarazioniDPR.Descrizione
+                            </label>
+                        </div>
+                    }
+
+                }
+
+            </div>
+            i++;
+        }
+
+        <div class="col-md-12">
+            @{
+                var _m = "DPR 445/200, selezionare almeno: " + Model.DprMinimo.GetValueOrDefault() + " e massimo: " + Model.DprMassimo.GetValueOrDefault() + " opzioni";
+
+                if (Model.DprMinimo.GetValueOrDefault() == Model.Dpr.ToList().Count())
+                {
+                    _m = "DPR 445/200, seleziona tutti le opzioni";
+                }
+            }
+
+            @Html.Hidden("TotaleDprSelezionate", _totaleselezionati.ToString(), new
+           {
+               data_val_range_min = Model.DprMinimo.GetValueOrDefault(),
+               data_val_range_max = Model.DprMassimo.GetValueOrDefault() == 0 ? int.MaxValue : Model.DprMassimo.GetValueOrDefault(),
+               data_val_range = _m,
+               data_val_number = _m,
+               data_val_required = _m,
+           })
+            @Html.ValidationMessageFor(model => model.TotaleDprSelezionate, "", new { @class = "text-danger mt-3" })
+
+        </div>
+    </div>
+    <hr />
+}
+<script>
+
+    $("[data-pratichedpr='true']").on("change", function () {
+
+        var _x = 0;
+
+        $.each($("[data-pratichedpr='true']"), function (index, item) {
+
+            if ($(this).is(":checked")) {
+                _x++;
+            }
+        });
+
+        $("#TotaleDprSelezionate").val(_x);
+
+        $("#TotaleDprSelezionate").valid();
+    })
+
+</script>
+

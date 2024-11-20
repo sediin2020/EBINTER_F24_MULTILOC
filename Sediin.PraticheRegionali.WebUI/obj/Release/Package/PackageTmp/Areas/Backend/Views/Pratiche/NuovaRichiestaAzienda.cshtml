@@ -1,0 +1,108 @@
+﻿@model Sediin.PraticheRegionali.WebUI.Areas.Backend.Models.PraticheAziendaNuovaRichiestaAzienda
+
+@Scripts.Render("~/bundles/jqueryval")
+
+@using Sediin.PraticheRegionali.WebUI.Helpers;
+@using Sediin.PraticheRegionali.WebUI;
+
+
+@using (Ajax.BeginForm("NuovaRichiestaAzienda", null, new AjaxOptions
+{
+    //UpdateTargetId = "resultRicerca",
+    OnBegin = "alertWaid()",
+    OnSuccess = "onSuccessNuovaRichiesta",
+    OnFailure = "handleError"
+}, new { }))
+{
+
+    @Html.AntiForgeryToken()
+    @Html.HiddenFor(model => model.PraticheAziendaNuovaRichiesta_AziendaId)
+
+    <div class="form-horizontal">
+
+        <div class="row">
+
+            @if (!User.IsInRole(IdentityHelper.Roles.Azienda.ToString()))
+            {
+                <div class="col-md-6">
+                    <div class="form-group">
+                        @Html.LabelFor(model => model.PraticheAziendaNuovaRichiesta_RagioneSociale, htmlAttributes: new { @class = "control-label" })
+                        <div class="col-md-12">
+                            @Html.TextBoxFor(model => model.PraticheAziendaNuovaRichiesta_RagioneSociale, new { @class = "form-control", type = "search" })
+                            @Html.ValidationMessageFor(model => model.PraticheAziendaNuovaRichiesta_AziendaId, "", new { @class = "text-danger" })
+                        </div>
+                    </div>
+                </div>
+
+                @Html.AutocompleteAzienda("PraticheAziendaNuovaRichiesta_RagioneSociale", "PraticheAziendaNuovaRichiesta_AziendaId", "PraticheAziendaNuovaRichiesta_AziendaId", sportelloId: Model.PraticheAziendaNuovaRichiesta_SportelloId, callBackFunction: "getContatore")
+            }
+
+            <div class="col-md-6">
+                <div class="form-group">
+                    @Html.LabelFor(model => model.PraticheAziendaNuovaRichiesta_TipoRichiestaId, htmlAttributes: new { @class = "control-label" })
+                    <div class="col-md-12">
+                        @Html.DropDownListFor(model => model.PraticheAziendaNuovaRichiesta_TipoRichiestaId, Html.SelectList(Model.TipoRichiesta, "TipoRichiestaId", "Descrizione", true), new { @class = "form-control" })
+                        @Html.ValidationMessageFor(model => model.PraticheAziendaNuovaRichiesta_TipoRichiestaId, "", new { @class = "text-danger" })
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-md-12 mt-4" id="noteTipoRichiesta">
+
+                @if (!User.IsInRole(IdentityHelper.Roles.Azienda.ToString()))
+                {
+                    <div class="alert alert-info">Inserisci <strong>Ragione Sociale o Matricola Inps</strong>, e poi seleziona il <strong>Tipo di Richiesta</strong></div>
+                }
+            </div>
+        </div>
+    </div>
+
+
+    <div class="modal-footer mt-4">
+        <button type="submit" class="btn btn-primary">Crea richiesta</button>
+
+        <button type="button" onclick="hideModal()" class="btn btn-danger" id="buttonCloseModal">Chiudi finestra</button>
+    </div>
+
+}
+
+@if (User.IsInRole(IdentityHelper.Roles.Azienda.ToString()))
+{
+    Html.RenderAction("ContatoreAnnuale", new { aziendaId = Model.PraticheAziendaNuovaRichiesta_AziendaId });
+}
+else
+{
+    <script>
+        function getContatore(aziendaId) {
+            $("#containerContatoreToast").html("");
+            $("#containerContatoreToast").remove();
+            $.get("@Url.Action("ContatoreAnnuale")", { aziendaId: aziendaId }, function (data) {
+                $(".modal-footer").append(data)
+            });
+        }
+
+    </script>
+}
+<script>
+
+    $("#PraticheAziendaNuovaRichiesta_TipoRichiestaId").on("change", function () {
+        $("#noteTipoRichiesta").html("");
+
+        $.get("@Url.Action("GetNoteTipoRichiesta")", { id: $("#PraticheAziendaNuovaRichiesta_TipoRichiestaId").val() }, function (data) {
+
+            if (data != undefined && data != "") {
+                $("#noteTipoRichiesta").html(getAlert_Info(data));
+            }
+        });
+    });
+
+    function onSuccessNuovaRichiesta(data) {
+        if (data.isValid==false) {
+            alertInfo(data.message)
+        }
+        else {
+            alertClose();
+            showModalFullScreen_NoHeaderFooter(data);
+        }
+    }
+</script>

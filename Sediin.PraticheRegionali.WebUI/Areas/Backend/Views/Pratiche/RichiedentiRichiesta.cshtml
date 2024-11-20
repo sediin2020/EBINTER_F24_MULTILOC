@@ -1,0 +1,354 @@
+﻿@model Sediin.PraticheRegionali.WebUI.Areas.Backend.Models.PraticheAziendaRichidenti
+
+
+<div class="row">
+
+    <h4>
+        @{
+            var _t = "";
+            if (Model.RichiedenteMinimo.GetValueOrDefault() != Model.RichiedenteMassimo.GetValueOrDefault())
+            {
+                _t = Model.RichiedenteMassimo.GetValueOrDefault() > 0 ? " <i>(almeno: " + Model.RichiedenteMinimo.GetValueOrDefault() + " e massimo: " + Model.RichiedenteMassimo.GetValueOrDefault() + " nominativi)</i>" : "";
+            }
+        }
+        <span class="badge bg-secondary">@Model.Titolo @Html.Raw(_t)</span>
+    </h4>
+    @{
+        var _totaleselezionati = 0;
+    }
+
+    <div class="col-md-12 mt-1">
+        <div class="table-responsive">
+            <table class="table table-striped table-bordered table-hover">
+                <thead>
+                    <tr class="text-center bg-dark text-white">
+                        <th>Nominativo</th>
+                        <th>Codice Fiscale</th>
+                        @if (Model.RichiedenteMassimo.GetValueOrDefault() > 1 && !Model.ReadOnly.GetValueOrDefault())
+                        {
+                            <th style="width:125px"></th>
+                        }
+                    </tr>
+                </thead>
+
+
+                @if (Model.RichiedenteMassimo.GetValueOrDefault() > 1)
+                {
+                    if (!Model.ReadOnly.GetValueOrDefault())
+                    {
+                        <tr>
+                            <td>
+
+                                @Html.TextBox("PraticheRichiedentiNominativo", "", new
+                                {
+                                    @class = "form-control",
+                                    data_val_maxlength_max = 50,
+                                    maxlength = 50,
+                                })
+
+                                @Html.ValidationMessage("PraticheRichiedentiNominativo", "", new { @class = "text-danger" })
+                            </td>
+                            <td>
+
+                                @Html.TextBox("PraticheRichiedentiCodiceFiscale", "", new
+                                   {
+                                       @class = "form-control",
+                                       data_val_maxlength_max = 16,
+                                       maxlength = 16,
+                                       data_val_checksumcfpiva = "Il campo Codice Fiscale non è valido",
+                                       data_val_checksumcfpiva_required = "False",
+                                       data_val_checksumcfpiva_requiredpivaorcf = "False",
+
+                                   })
+
+                                @Html.ValidationMessage("PraticheRichiedentiCodiceFiscale", "", new { @class = "text-danger" })
+
+                            </td>
+                            <td class="text-center">
+                                <button data-button-add-richiedenti="true" type="button" class="btn btn-sm btn-success" onclick="addRichiedente()">Aggiungi</button>
+                            </td>
+                        </tr>
+                    }
+
+
+                    <tbody data-tbody-richiedenti="true">
+
+                        @foreach (var item in Model.PraticheRichiedenti.ToList())
+                        {
+
+                            <tr>
+                                <td>
+                                    <input type="hidden" value="@item.Nominativo"
+                                           id="PraticheRichiedenti[@_totaleselezionati].Nominativo"
+                                           name="PraticheRichiedenti[@_totaleselezionati].Nominativo" />
+
+                                    @item.Nominativo
+                                </td>
+                                <td>
+                                    <input type="hidden" value="@item.CodiceFiscale"
+                                           id="PraticheRichiedenti[@_totaleselezionati].CodiceFiscale"
+                                           name="PraticheRichiedenti[@_totaleselezionati].CodiceFiscale" />
+
+                                    @item.CodiceFiscale.ToUpper()
+                                </td>
+
+                                @if (Model.RichiedenteMassimo.GetValueOrDefault() > 1 && !Model.ReadOnly.GetValueOrDefault())
+                                {
+                                    <td class="text-center">
+
+                                        <button type="button" class="btn btn-sm btn-danger" onclick="removeRichiedente(@_totaleselezionati)">Riumuovi</button>
+
+                                    </td>
+                                }
+
+                            </tr>
+
+                            _totaleselezionati++;
+                        }
+
+                    </tbody>
+
+                }
+
+                else
+                {
+                    <tbody>
+                        <tr>
+                            <td>
+
+                                @if (!Model.ReadOnly.GetValueOrDefault())
+                                {
+                                    @Html.TextBox("PraticheRichiedenti[0].Nominativo", Model.PraticheRichiedenti?.FirstOrDefault()?.Nominativo, new
+                                    {
+                                        @class = "form-control",
+                                        data_val = true,
+                                        data_val_maxlength_max = 50,
+                                        maxlength = 50,
+                                        data_val_required = "Il campo Nominativo è obbligatorio.",
+                                    })
+
+                                    @Html.ValidationMessage("PraticheRichiedenti[0].Nominativo", "", new { @class = "text-danger" })
+
+                                }
+                                else
+                                {
+                                    @Html.Raw(@Model.PraticheRichiedenti?.FirstOrDefault()?.Nominativo)
+                                }
+                            </td>
+                            <td>
+
+                                @if (!Model.ReadOnly.GetValueOrDefault())
+                                {
+                                    @Html.TextBox("PraticheRichiedenti[0].CodiceFiscale", Model.PraticheRichiedenti?.FirstOrDefault()?.CodiceFiscale?.ToUpper(), new
+                                    {
+                                        @class = "form-control",
+                                        data_val = true,
+                                        data_val_maxlength_max = 16,
+                                        maxlength = 16,
+                                        data_val_required = "Il campo Codice Fiscale è obbligatorio.",
+
+                                        data_val_checksumcfpiva = "Il campo Codice Fiscale non è valido",
+                                        data_val_checksumcfpiva_required = "True",
+                                        data_val_checksumcfpiva_requiredpivaorcf = "False",
+
+                                    })
+
+                                    @Html.ValidationMessage("PraticheRichiedenti[0].CodiceFiscale", "", new { @class = "text-danger" })
+                                }
+                                else
+                                {
+                                    @Html.Raw(@Model.PraticheRichiedenti?.FirstOrDefault()?.CodiceFiscale)
+                                }
+                            </td>
+                        </tr>
+                    </tbody>
+
+
+                }
+
+            </table>
+
+        </div>
+    </div>
+
+    @if (Model.RichiedenteMassimo.GetValueOrDefault() > 1)
+    {
+        <div class="col-md-12">
+            @{
+                var _m = "Inserisci almeno: " + Model.RichiedenteMinimo.GetValueOrDefault() + " e massimo: " + Model.RichiedenteMassimo.GetValueOrDefault() + " nominativi";
+                if (Model.RichiedenteMinimo.GetValueOrDefault() != Model.RichiedenteMassimo.GetValueOrDefault())
+                {
+                    _m = "Inserisci il nominativo";
+                }
+            }
+
+            @Html.Hidden("TotaleRichiedenteSelezionate", _totaleselezionati.ToString(), new
+            {
+               data_val_range_min = Model.RichiedenteMinimo.GetValueOrDefault(),
+               data_val_range_max = Model.RichiedenteMassimo.GetValueOrDefault() == 0 ? int.MaxValue : Model.RichiedenteMassimo.GetValueOrDefault(),
+               data_val_range = _m,
+               data_val_number = _m,
+               data_val_required = _m,
+            })
+            @Html.ValidationMessageFor(model => model.TotaleRichiedenteSelezionate, "", new { @class = "text-danger" })
+        </div>
+    }
+
+</div>
+<hr />
+<script>
+
+    $("#PraticheRichiedentiNominativo").on("keyup", function () {
+        validatorErrorPraticheRichiedentiNominativo();
+    });
+
+    $("#PraticheRichiedentiCodiceFiscale").on("keyup", function () {
+        validatorErrorPraticheRichiedentiCodiceFiscale();
+    });
+
+    var _arrayRichiedenti = [];
+
+    $().ready(function () {
+        @foreach (var item in Model.PraticheRichiedenti.ToList())
+        {
+           @:_arrayRichiedenti.push({ nominativo: "@item.Nominativo", codicefiscale: "@(item.CodiceFiscale != null ? item.CodiceFiscale.ToUpper() : "")" });
+        }
+
+        if (_arrayRichiedenti.length == "@Model.RichiedenteMassimo.GetValueOrDefault()") {
+            $("[data-button-add-richiedenti='true']").attr("disabled", "disabled");
+        }
+        else {
+            $("[data-button-add-richiedenti='true']").removeAttr("disabled");
+        }
+    });
+
+    function addRichiedente() {
+
+        var _error = 0;
+
+        resetValidator("PraticheRichiedentiNominativo");
+        resetValidator("PraticheRichiedentiCodiceFiscale");
+
+        if (!validatorErrorPraticheRichiedentiNominativo()) {
+            _error++;
+        }
+
+        if (!validatorErrorPraticheRichiedentiCodiceFiscale()) {
+            _error++;
+        }
+
+        if (_error == 0) {
+            var _inlist = false;
+            $.each(_arrayRichiedenti, function (index, item) {
+                if (item.codicefiscale == String($("#PraticheRichiedentiCodiceFiscale").val()).toUpperCase()) {
+                    setValidatorError("PraticheRichiedentiCodiceFiscale", "Codice Fiscale già in lista.");
+                    _inlist = true;
+                    return;
+                }
+            });
+
+            if (!_inlist) {
+                _arrayRichiedenti.push({ nominativo: $("#PraticheRichiedentiNominativo").val(), codicefiscale: String($("#PraticheRichiedentiCodiceFiscale").val()).toUpperCase() });
+
+                $("#PraticheRichiedentiNominativo").val("");
+                $("#PraticheRichiedentiCodiceFiscale").val("");
+
+                createTablePraticheRichiedenti();
+            }
+        }
+    }
+
+    function validatorErrorPraticheRichiedentiNominativo() {
+        resetValidator("PraticheRichiedentiNominativo");
+        if ($("#PraticheRichiedentiNominativo").val() == "") {
+            setValidatorError("PraticheRichiedentiNominativo", "Il campo Nominativo è obbligatorio.");
+            return false;
+        }
+
+        return true;
+    }
+
+    function validatorErrorPraticheRichiedentiCodiceFiscale() {
+        resetValidator("PraticheRichiedentiCodiceFiscale");
+        if (!validateCodiceFiscale($("#PraticheRichiedentiCodiceFiscale").val())) {
+            setValidatorError("PraticheRichiedentiCodiceFiscale", "Il campo Codice Fiscale è obbligatorio.");
+            return false;
+        }
+
+        return true;
+    }
+
+    function removeRichiedente(index) {
+
+        const swalWithBootstrapButtons = Swal.mixin({
+        customClass: {
+            confirmButton: 'btn btn-success mr-1',
+            cancelButton: 'btn btn-danger mr-1'
+        },
+        buttonsStyling: false
+        });
+
+        playNotifyConfirm();
+
+        swalWithBootstrapButtons.fire({
+        html: "Sicuro di voler \"Rimuovere\" il nominativo?",
+        icon: "question",
+        showCancelButton: true,
+        confirmButtonText: 'Conferma',
+        cancelButtonText: 'Annulla',
+        allowOutsideClick: false,
+        allowEscapeKey: false
+    }).then((result) => {
+        if (result.isConfirmed) {
+            _arrayRichiedenti.splice(index, 1);
+            createTablePraticheRichiedenti();
+        }
+    })
+    }
+
+    function createTablePraticheRichiedenti() {
+
+        var _table = "";
+
+        $.each(_arrayRichiedenti, function (index, item) {
+            _table += "<tr>";
+
+            _table += "<td>";
+            _table += "<input type='hidden' ";
+            _table += "value='" + item.nominativo + "' ";
+            _table += "id='PraticheRichiedenti[" + index + "].Nominativo' ";
+            _table += "name='PraticheRichiedenti[" + index + "].Nominativo'/> ";
+            _table += item.nominativo;
+            _table += "</td>";
+
+            _table += "<td>";
+            _table += "<input type='hidden' ";
+            _table += "value='" + String(item.codicefiscale).toUpperCase() + "' ";
+            _table += "id='PraticheRichiedenti[" + index + "].CodiceFiscale' ";
+            _table += "name='PraticheRichiedenti[" + index + "].CodiceFiscale'/> ";
+            _table += String(item.codicefiscale).toUpperCase();
+            _table += "</td>";
+
+            _table += "<td class='text-center'>";
+            _table += "<button type='button' class='btn btn-sm btn-danger' onclick='removeRichiedente(" + index + ")'>Riumuovi</button>";
+            _table += "</td>";
+
+            _table += "</tr>";
+        });
+
+        $("#TotaleRichiedenteSelezionate").val(_arrayRichiedenti.length);
+        $("#TotaleRichiedenteSelezionate").valid();
+
+        $("[data-tbody-richiedenti='true']").html(_table);
+
+        if (_arrayRichiedenti.length == "@Model.RichiedenteMassimo.GetValueOrDefault()") {
+            $("[data-button-add-richiedenti='true']").attr("disabled", "disabled");
+        }
+        else {
+            $("[data-button-add-richiedenti='true']").removeAttr("disabled");
+        }
+    }
+
+</script>
+
+@*<script src="~/Scripts/codi.js"></script>*@

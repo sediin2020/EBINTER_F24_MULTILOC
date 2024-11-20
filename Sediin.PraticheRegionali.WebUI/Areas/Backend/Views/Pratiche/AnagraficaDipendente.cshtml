@@ -1,0 +1,128 @@
+﻿@model Sediin.PraticheRegionali.WebUI.Areas.Backend.Models.DipendentePrestazioniRegionaliViewModel
+
+@{ Layout = null;}
+
+@if (Model==null)
+{
+    return;
+}
+
+<div class="row">
+    <h4>
+        <span class="badge bg-secondary">Dati Dipendente</span>
+    </h4>
+
+    <div class="col-md-3">
+
+        <div class="form-group">
+            @Html.Label("Nominativo", htmlAttributes: new { @class = "control-label" })
+            <div class="col-md-12">
+                @Model.Nome @Model.Cognome
+            </div>
+        </div>
+    </div>
+
+
+    <div class="col-md-3">
+
+        <div class="form-group">
+            @Html.Label("Codice Fiscale", htmlAttributes: new { @class = "control-label" })
+            <div class="col-md-12 text-uppercase">
+                @Model.CodiceFiscale
+            </div>
+        </div>
+
+
+    </div>
+
+    <div class="col-md-3">
+
+        <div class="form-group">
+            @Html.Label("Data nascita", htmlAttributes: new { @class = "control-label" })
+            <div class="col-md-12">
+                @Model.Datanascita.GetValueOrDefault().ToShortDateString()
+            </div>
+        </div>
+    </div>
+
+    <div class="col-md-3">
+        <div class="form-group">
+            @Html.Label("Comune Nascita", htmlAttributes: new { @class = "control-label" })
+            <div class="col-md-12">
+                @Model.Comunenascita
+            </div>
+        </div>
+    </div>
+
+    <div class="col-md-4">
+        <div class="form-group">
+            @Html.Label("Indirizzo Residenza", htmlAttributes: new { @class = "control-label" })
+            <div class="col-md-12">
+                @Model.Indirizzoresidenza
+            </div>
+        </div>
+    </div>
+
+    <div class="col-md-3">
+        <div class="form-group">
+            @Html.Label("Comune", htmlAttributes: new { @class = "control-label" })
+            <div class="col-md-12">
+                @Model.Comuneresidenza
+            </div>
+        </div>
+    </div>
+
+    <div class="col-md-3">
+        <div class="form-group">
+            @Html.Label("Provincia", htmlAttributes: new { @class = "control-label" })
+            <div class="col-md-12">
+                @Model.Provinciaresidenza
+            </div>
+        </div>
+    </div>
+
+    <div class="col-md-2">
+        <div class="form-group">
+            @Html.Label("CAP", htmlAttributes: new { @class = "control-label" })
+            <div class="col-md-12">
+                @Model.Capresidenza
+            </div>
+        </div>
+    </div>
+
+    <div class="col-md-6">
+        <div class="form-group">
+            @Html.Label("Email", htmlAttributes: new { @class = "control-label" })
+            <div class="col-md-12">
+                @Model.EMail
+            </div>
+        </div>
+    </div>
+
+    <div class="col-md-3">
+        <div class="form-group">
+            @Html.Label("Telefono", htmlAttributes: new { @class = "control-label" })
+            <div class="col-md-12">
+                @Model.Telefono
+            </div>
+        </div>
+    </div>
+
+    @if (Model.IbanRequired)
+    {
+        <div class="col-md-3">
+            <div class="form-group">
+                @Html.Label("Iban Dipendente", htmlAttributes: new { @class = "control-label" })<span class="text-danger"> *</span>
+                <div class="col-md-12">
+                    @Html.TextBoxForReadOnly(model => model.Iban, new { @class = "form-control" })
+                    @Html.ValidationMessageFor(model => model.Iban, "", new { @class = "text-danger" })
+                </div>
+            </div>
+        </div>
+
+    }
+
+
+</div>
+
+    <hr />
