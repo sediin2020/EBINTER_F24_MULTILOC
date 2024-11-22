@@ -64,6 +64,36 @@ namespace Sediin.PraticheRegionali.WebUI.Areas.Backend.Controllers
             return Json(unitOfWork.LocalitaRepository.Get(x => x.CODCOM.ToUpper() == codcom.ToUpper()).OrderBy(o => o.CAP).ThenBy(o => o.DENLOC), JsonRequestBehavior.AllowGet);
         }
 
+        public ActionResult GetRegioniAutocomplete(string phrase)
+        {
+            if (phrase == null)
+            {
+                return null;
+            }
+            var _result = unitOfWork.RegioniRepository.Get(x => x.DENREG.StartsWith(phrase)).OrderBy(o => o.DENREG);
+
+            if (_result.Count() == 0)
+            {
+                return null;
+            }
+            return Json(_result.Select(x => new { x.RegioneId, x.DENREG }), JsonRequestBehavior.AllowGet);
+        }
+
+        public ActionResult GetProvinceAutocomplete(string phrase)
+        {
+            if (phrase == null)
+            {
+                return null;
+            }
+            var _result = unitOfWork.ProvinceRepository.Get(x => x.DENPRO.StartsWith(phrase)).OrderBy(o => o.DENPRO);
+
+            if (_result.Count() == 0)
+            {
+                return null;
+            }
+            return Json(_result.Select(x => new { x.ProvinciaId, x.DENPRO }), JsonRequestBehavior.AllowGet);
+        }
+
         public ActionResult GetComuniAutocomplete(string phrase)
         {
             if (phrase == null)

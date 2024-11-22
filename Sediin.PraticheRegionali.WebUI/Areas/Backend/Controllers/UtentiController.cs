@@ -81,7 +81,7 @@ namespace Sediin.PraticheRegionali.WebUI.Areas.Backend.Controllers
 
                 //_ruolo.Rolename == Roles.Sp_Sindacale.ToString()
                 //|| _ruolo.Rolename == Roles.Sp_Datoriale.ToString()
-                //|| _ruolo.Rolename == Roles.Sp_Ebac.ToString();
+                //|| _ruolo.Rolename == Roles.Sp_Ebinter.ToString();
 
                 if (_user.AssociaProvincia.GetValueOrDefault())
                 {
@@ -121,7 +121,7 @@ namespace Sediin.PraticheRegionali.WebUI.Areas.Backend.Controllers
 
                 _user.AssociaProvincia = _user.Ruolo == Roles.Sp_Sindacale.ToString()
                 || _user.Ruolo == Roles.Sp_Datoriale.ToString()
-                || _user.Ruolo == Roles.Sp_Ebac.ToString();
+                || _user.Ruolo == Roles.Sp_Ebinter.ToString();
 
                 if (_user.AssociaProvincia.GetValueOrDefault())
                 {

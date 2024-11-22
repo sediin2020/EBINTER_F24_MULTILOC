@@ -110,7 +110,7 @@ namespace Sediin.PraticheRegionali.WebUI.Areas.Backend.Controllers
 
         #endregion
 
-        [@Authorize(Roles = new Roles[] { Roles.Sp_CAF, Roles.Sp_Consulente, Roles.Sp_Datoriale, Roles.Sp_Sindacale, Roles.Sp_Ebac })]
+        [@Authorize(Roles = new Roles[] { Roles.Sp_CAF, Roles.Sp_Consulente, Roles.Sp_Datoriale, Roles.Sp_Sindacale, Roles.Sp_Ebinter })]
         public async Task<ActionResult> Anagrafica(int? id = null, string ruolo = null)
         {
             try
@@ -127,7 +127,7 @@ namespace Sediin.PraticheRegionali.WebUI.Areas.Backend.Controllers
                 Expression<Func<Sportello, bool>> _filter = x => x.SportelloId == id;
 
                 //utente visualizza solo le informazioni sua
-                if (IsInRole(new Roles[] { Roles.Sp_CAF, Roles.Sp_Consulente, Roles.Sp_Datoriale, Roles.Sp_Sindacale, Roles.Sp_Ebac }))
+                if (IsInRole(new Roles[] { Roles.Sp_CAF, Roles.Sp_Consulente, Roles.Sp_Datoriale, Roles.Sp_Sindacale, Roles.Sp_Ebinter }))
                 {
                     _filter = x => x.CodiceFiscalePIva == User.Identity.Name;
                 }
@@ -148,7 +148,7 @@ namespace Sediin.PraticheRegionali.WebUI.Areas.Backend.Controllers
                 }
                 else
                 {
-                    if (IsInRole(new Roles[] { Roles.Sp_CAF, Roles.Sp_Consulente, Roles.Sp_Datoriale, Roles.Sp_Sindacale, Roles.Sp_Ebac }))
+                    if (IsInRole(new Roles[] { Roles.Sp_CAF, Roles.Sp_Consulente, Roles.Sp_Datoriale, Roles.Sp_Sindacale, Roles.Sp_Ebinter }))
                     {
                         _outModel = new SportelloViewModel
                         {
@@ -176,13 +176,13 @@ namespace Sediin.PraticheRegionali.WebUI.Areas.Backend.Controllers
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        [@Authorize(Roles = new Roles[] { Roles.Sp_CAF, Roles.Sp_Consulente, Roles.Sp_Datoriale, Roles.Sp_Sindacale, Roles.Sp_Ebac })]
+        [@Authorize(Roles = new Roles[] { Roles.Sp_CAF, Roles.Sp_Consulente, Roles.Sp_Datoriale, Roles.Sp_Sindacale, Roles.Sp_Ebinter })]
         public async Task<ActionResult> Anagrafica(SportelloViewModel model)
         {
             try
             {
                 //utente aggiorna solo le informazioni sua
-                if (IsInRole(new Roles[] { Roles.Sp_CAF, Roles.Sp_Consulente, Roles.Sp_Datoriale, Roles.Sp_Sindacale, Roles.Sp_Ebac }))
+                if (IsInRole(new Roles[] { Roles.Sp_CAF, Roles.Sp_Consulente, Roles.Sp_Datoriale, Roles.Sp_Sindacale, Roles.Sp_Ebinter }))
                 {
                     model.CodiceFiscalePIva = User.Identity.Name;
 
@@ -218,7 +218,7 @@ namespace Sediin.PraticheRegionali.WebUI.Areas.Backend.Controllers
                 unitOfWork.Save();
 
                 //update flag InformazioniPersonaliCompilati
-                if (IsInRole(new Roles[] { Roles.Sp_CAF, Roles.Sp_Consulente, Roles.Sp_Datoriale, Roles.Sp_Sindacale, Roles.Sp_Ebac }))
+                if (IsInRole(new Roles[] { Roles.Sp_CAF, Roles.Sp_Consulente, Roles.Sp_Datoriale, Roles.Sp_Sindacale, Roles.Sp_Ebinter }))
                 {
                     var _user = await UserManager.FindByNameAsync(User.Identity.Name);
 

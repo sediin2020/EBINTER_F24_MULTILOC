@@ -117,6 +117,12 @@
 .form-control {
     border-radius: 5px;
 }
+.form-group .help-info {
+    float: right;
+    font-size: 12px;
+    margin-top: 5px;
+    color: #999;
+}
 
     .table-fixed {
     position: sticky;

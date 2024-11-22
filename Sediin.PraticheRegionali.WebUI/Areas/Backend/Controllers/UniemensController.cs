@@ -16,7 +16,7 @@ using static Sediin.PraticheRegionali.WebUI.IdentityHelper;
 
 namespace Sediin.PraticheRegionali.WebUI.Areas.Backend.Controllers
 {
-    [@Authorize(Roles = new Roles[] { Roles.Admin, Roles.Super, Roles.Sp_CAF, Roles.Sp_Sindacale, Roles.Sp_Consulente, Roles.Sp_Datoriale, Roles.Sp_Ebac, Roles.Azienda })]
+    [@Authorize(Roles = new Roles[] { Roles.Admin, Roles.Super, Roles.Sp_CAF, Roles.Sp_Sindacale, Roles.Sp_Consulente, Roles.Sp_Datoriale, Roles.Sp_Ebinter, Roles.Azienda })]
     public class UniemensController : BaseController
     {
         #region ricerca
@@ -100,7 +100,7 @@ namespace Sediin.PraticheRegionali.WebUI.Areas.Backend.Controllers
 
         private Expression<Func<Uniemens, bool>> RicercaFilter(UniemensRicercaModel model)
         {
-            var _issportello = IsInRole(new Roles[] { Roles.Sp_Consulente, Roles.Sp_CAF, Roles.Sp_Sindacale, Roles.Sp_Datoriale, Roles.Sp_Ebac });
+            var _issportello = IsInRole(new Roles[] { Roles.Sp_Consulente, Roles.Sp_CAF, Roles.Sp_Sindacale, Roles.Sp_Datoriale, Roles.Sp_Ebinter });
 
             var _idaz = new List<int>();
 

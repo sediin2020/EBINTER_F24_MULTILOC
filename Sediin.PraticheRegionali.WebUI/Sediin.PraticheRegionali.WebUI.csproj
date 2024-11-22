@@ -546,11 +546,13 @@
     <Compile Include="Areas\Backend\BackendAreaRegistration.cs" />
     <Compile Include="Areas\Backend\Controllers\AziendaController.cs" />
     <Compile Include="Areas\Backend\Controllers\DipendenteController.cs" />
+    <Compile Include="Areas\Backend\Controllers\EbtController.cs" />
     <Compile Include="Areas\Backend\Controllers\LiquidazioneController.cs" />
     <Compile Include="Areas\Backend\Controllers\SportelloController.cs" />
     <Compile Include="Areas\Backend\Controllers\StatisticheController.cs" />
     <Compile Include="Areas\Backend\Controllers\UniemensController.cs" />
     <Compile Include="Areas\Backend\Models\Chart.cs" />
+    <Compile Include="Areas\Backend\Models\Ebt.cs" />
     <Compile Include="Areas\Backend\Models\Sportello.cs" />
     <Compile Include="Areas\Backend\Models\Dipendente.cs" />
     <Compile Include="Areas\Backend\Models\Liquidazione.cs" />
@@ -588,6 +590,10 @@
     <Compile Include="Migrations\202303271001396_provid.cs" />
     <Compile Include="Migrations\202303271001396_provid.designer.cs">
       <DependentUpon>202303271001396_provid.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\202411201449259_createTables.cs" />
+    <Compile Include="Migrations\202411201449259_createTables.designer.cs">
+      <DependentUpon>202411201449259_createTables.cs</DependentUpon>
     </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Models\Account.cs" />
@@ -3441,6 +3447,10 @@
     <Content Include="Areas\Backend\Views\Pratiche\TipoRichiesta\VeicoliCommerciali.cshtml" />
     <Content Include="Areas\Backend\Views\Pratiche\TipoRichiesta\BorsaStudioFormazione.cshtml" />
     <Content Include="Areas\Backend\Views\Pratiche\TipoRichiesta\SostegnoFsba.cshtml" />
+    <Content Include="Areas\Backend\Views\Ebt\Ebt.cshtml" />
+    <Content Include="Areas\Backend\Views\Ebt\Ricerca.cshtml" />
+    <Content Include="Areas\Backend\Views\Ebt\RicercaList.cshtml" />
+    <Content Include="Areas\Backend\Views\Ebt\RicercaModulo.cshtml" />
     <None Include="Scripts\jquery-3.6.0.intellisense.js" />
     <Content Include="Scripts\inputs.js" />
     <Content Include="Scripts\jquery-3.6.0.js" />
@@ -3697,6 +3707,9 @@
     <EmbeddedResource Include="Migrations\202303271001396_provid.resx">
       <DependentUpon>202303271001396_provid.cs</DependentUpon>
       <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\202411201449259_createTables.resx">
+      <DependentUpon>202411201449259_createTables.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <PropertyGroup>

@@ -106,7 +106,7 @@ namespace Sediin.PraticheRegionali.WebUI.Filters
                                                 case IdentityHelper.Roles.Sp_CAF:
                                                 case IdentityHelper.Roles.Sp_Consulente:
                                                 case IdentityHelper.Roles.Sp_Datoriale:
-                                                case IdentityHelper.Roles.Sp_Ebac:
+                                                case IdentityHelper.Roles.Sp_Ebinter:
                                                 case IdentityHelper.Roles.Sp_Sindacale:
                                                     _role = "Sportello";
                                                     break;

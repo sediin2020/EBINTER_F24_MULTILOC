@@ -11,13 +11,13 @@
 
 @{
     var t = typeof(Sediin.PraticheRegionali.WebUI.Areas.Backend.Models.IndirizzoViewModel).GetProperties();
-    var _col = 4;
+    var _col = Model.Col.HasValue ? Model.Col.Value : 4;
+    _col = 12 / _col;
+
 }
 
 @if (Model.ShowIndirizzo.GetValueOrDefault())
-{
-    _col = Model.Col.HasValue ? Model.Col.Value : 4;
-
+{ 
     <div class="form-group col-md-@_col">
 
         <label class="control-label" for="@Model.IndirizzoElement">@Model.IndirizzoElementNome<span class="text-danger"> *</span></label>
@@ -48,15 +48,15 @@
         }
     </div>
 
-    if (Model.ShowLocalita.GetValueOrDefault())
-    {
-        _col = 2;
-    }
+    //if (Model.ShowLocalita.GetValueOrDefault())
+    //{
+    //    _col = 2;
+    //}
 }
 
-@{
+@*@{
     _col = Model.Col.HasValue ? Model.Col.Value : _col;
-}
+}*@
 
 <div class="form-group col-md-@_col" id="RegioneElement@_id">
 
@@ -120,72 +120,74 @@
     }
 </div>
 
-<div class="form-group col-md-@_col">
-
-    <label class="control-label" for="@Model.ComuneElement">@Model.ComuneElementNome<span class="text-danger"> *</span></label>
-
-    @if (!Model.ReadOnly.GetValueOrDefault())
-    {
-        <select class="form-control"
-                data-val="true"
-                data-val-required="Il campo @Model.ComuneElementNome è obbligatorio."
-                data-val-number="Il campo @Model.ComuneElementNome è obbligatorio."
-                id="@Model.ComuneElement"
-                name="@Model.ComuneElement"
-                aria-describedby="@Model.ComuneElement-error"
-                aria-invalid="false">
-        </select>
-
-
-
-        <span class="text-danger" data-valmsg-for="@Model.ComuneElement" data-valmsg-replace="true">
-        </span>
-    }
-    else
-    {
-        if (Model.Comune != null)
-        {
-            <div>@Model.Comune.DENCOM</div>
-        }
-        <input type="hidden" id="@Model.ComuneElement"
-               name="@Model.ComuneElement" value="@Model.ComuneId" />
-    }
-</div>
-
-@if (Model.ShowLocalita.GetValueOrDefault())
+@if (Model.ShowComune.GetValueOrDefault())
 {
     <div class="form-group col-md-@_col">
 
-        <label class="control-label" for="@Model.LocalitaElement">@Model.LocalitaElementNome<span class="text-danger"> *</span></label>
+        <label class="control-label" for="@Model.ComuneElement">@Model.ComuneElementNome<span class="text-danger"> *</span></label>
+
         @if (!Model.ReadOnly.GetValueOrDefault())
         {
             <select class="form-control"
                     data-val="true"
-                    data-val-required="Il campo @Model.LocalitaElementNome è obbligatorio."
-                    data-val-number="Il campo @Model.LocalitaElementNome è obbligatorio."
-                    id="@Model.LocalitaElement"
-                    name="@Model.LocalitaElement"
-                    aria-describedby="@Model.LocalitaElement-error"
+                    data-val-required="Il campo @Model.ComuneElementNome è obbligatorio."
+                    data-val-number="Il campo @Model.ComuneElementNome è obbligatorio."
+                    id="@Model.ComuneElement"
+                    name="@Model.ComuneElement"
+                    aria-describedby="@Model.ComuneElement-error"
                     aria-invalid="false">
             </select>
 
-            <span class="text-danger" data-valmsg-for="@Model.LocalitaElement" data-valmsg-replace="true">
+
+
+            <span class="text-danger" data-valmsg-for="@Model.ComuneElement" data-valmsg-replace="true">
             </span>
         }
         else
         {
-            if (Model.Localita != null)
+            if (Model.Comune != null)
             {
-                <div>@Model.Localita.CAP @Model.Localita.DENLOC</div>
+                <div>@Model.Comune.DENCOM</div>
             }
-            <input type="hidden" id="@Model.LocalitaElement"
-                   name="@Model.LocalitaElement" value="@Model.LocalitaId" />
+            <input type="hidden" id="@Model.ComuneElement"
+                   name="@Model.ComuneElement" value="@Model.ComuneId" />
         }
     </div>
-
 }
+    @if (Model.ShowLocalita.GetValueOrDefault())
+    {
+        <div class="form-group col-md-@_col">
 
-<script>
+            <label class="control-label" for="@Model.LocalitaElement">@Model.LocalitaElementNome<span class="text-danger"> *</span></label>
+            @if (!Model.ReadOnly.GetValueOrDefault())
+            {
+                <select class="form-control"
+                        data-val="true"
+                        data-val-required="Il campo @Model.LocalitaElementNome è obbligatorio."
+                        data-val-number="Il campo @Model.LocalitaElementNome è obbligatorio."
+                        id="@Model.LocalitaElement"
+                        name="@Model.LocalitaElement"
+                        aria-describedby="@Model.LocalitaElement-error"
+                        aria-invalid="false">
+                </select>
+
+                <span class="text-danger" data-valmsg-for="@Model.LocalitaElement" data-valmsg-replace="true">
+                </span>
+            }
+            else
+            {
+                if (Model.Localita != null)
+                {
+                    <div>@Model.Localita.CAP @Model.Localita.DENLOC</div>
+                }
+                <input type="hidden" id="@Model.LocalitaElement"
+                       name="@Model.LocalitaElement" value="@Model.LocalitaId" />
+            }
+        </div>
+
+    }
+
+    <script>
 
     $().ready(function () {
         @Html.Raw($"getRegioni_{_id}('{Model.ProvinciaId}','{Model.ComuneId}','{Model.LocalitaId}','{Model.RegioneId}');")
@@ -473,13 +475,13 @@
         }).appendTo(selectElem);
     }
 
-</script>
+    </script>
 
 
-<script>
-    //setTimeout(function () {
-    //    $("#ProvinciaId").val("9").change();
-    //    //$('#ProvinciaId option[value=9]').attr('selected', 'selected');
-    //}, 2000);
+    <script>
+        //setTimeout(function () {
+        //    $("#ProvinciaId").val("9").change();
+        //    //$('#ProvinciaId option[value=9]').attr('selected', 'selected');
+        //}, 2000);
 
-</script>
+    </script>

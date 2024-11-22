@@ -65,7 +65,7 @@ namespace Sediin.PraticheRegionali.WebUI.Controllers
         {
             get
             {
-                if (IsInRole(new Roles[] { Roles.Sp_CAF, Roles.Sp_Consulente, Roles.Sp_Datoriale, Roles.Sp_Sindacale, Roles.Sp_Ebac }))
+                if (IsInRole(new Roles[] { Roles.Sp_CAF, Roles.Sp_Consulente, Roles.Sp_Datoriale, Roles.Sp_Sindacale, Roles.Sp_Ebinter }))
                 {
                     UnitOfWork _unitOfWork = new UnitOfWork();
                     return _unitOfWork.SportelloRepository.Get(c => c.CodiceFiscalePIva.ToLower() == User.Identity.Name.ToLower())?.FirstOrDefault()?.SportelloId;

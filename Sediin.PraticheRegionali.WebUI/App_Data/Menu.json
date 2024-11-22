@@ -45,7 +45,7 @@
     "Area": "Backend",
     "Ordine": 2,
     "Visible": true,
-    "Ruoli": [ "Sp_CAF", "Sp_Consulente", "Sp_Datoriale", "Sp_Sindacale", "Sp_Ebac" ]
+    "Ruoli": [ "Sp_CAF", "Sp_Consulente", "Sp_Datoriale", "Sp_Sindacale", "Sp_Ebinter" ]
   },
   {
     "Codmenu": 6,
@@ -69,7 +69,19 @@
     "Area": "Backend",
     "Ordine": 4,
     "Visible": true,
-    "Ruoli": [ "Admin", "Sp_Consulente", "Sp_Datoriale", "Sp_Sindacale", "Sp_Ebac" ]
+    "Ruoli": [ "Admin", "Sp_Consulente", "Sp_Datoriale", "Sp_Sindacale", "Sp_Ebinter" ]
+  },
+  {
+    "Codmenu": 200,
+    "CodmenuPadre": 0,
+    "Descrizione": "Gestione EBT",
+    "IconFa": "fa-solid fa-user-tie",
+    "Action": "Ricerca",
+    "Controller": "Ebt",
+    "Area": "Backend",
+    "Ordine": 4,
+    "Visible": true,
+    "Ruoli": [ "Admin", "Sp_Ebinter" ]
   },
 
   {
@@ -82,7 +94,7 @@
     "Area": "Backend",
     "Ordine": 5,
     "Visible": true,
-    "Ruoli": [ "Admin", "Sp_Consulente", "Sp_CAF", "Sp_Datoriale", "Sp_Sindacale", "Sp_Ebac" ]
+    "Ruoli": [ "Admin", "Sp_Consulente", "Sp_CAF", "Sp_Datoriale", "Sp_Sindacale", "Sp_Ebinter" ]
   },
 
   {
@@ -134,7 +146,7 @@
   ////  "Area": "Backend",
   ////  "Ordine": 4,
   ////  "Visible": true,
-  ////  "Ruoli": [ "Dipendente", "Sp_CAF", "Sp_Datoriale", "Sp_Sindacale", "Sp_Ebac" ]
+  ////  "Ruoli": [ "Dipendente", "Sp_CAF", "Sp_Datoriale", "Sp_Sindacale", "Sp_Ebinter" ]
   ////},
 
   //{
@@ -171,7 +183,7 @@
     "Controller": "Pratiche",
     "Ordine": 6,
     "Visible": true,
-    "Ruoli": [ "Admin", "Azienda", "Dipendente", "Sp_CAF", "Sp_Consulente", "Sp_Datoriale", "Sp_Sindacale", "Sp_Ebac" ]
+    "Ruoli": [ "Admin", "Azienda", "Dipendente", "Sp_CAF", "Sp_Consulente", "Sp_Datoriale", "Sp_Sindacale", "Sp_Ebinter" ]
   },
   {
     "Codmenu": 3,
@@ -183,7 +195,7 @@
     "Area": "Backend",
     "Ordine": 7,
     "Visible": true,
-    "Ruoli": [ "Super", "Admin", "Azienda", "Dipendente", "Sp_CAF", "Sp_Consulente", "Sp_Datoriale", "Sp_Sindacale", "Sp_Ebac" ]
+    "Ruoli": [ "Super", "Admin", "Azienda", "Dipendente", "Sp_CAF", "Sp_Consulente", "Sp_Datoriale", "Sp_Sindacale", "Sp_Ebinter" ]
   },
   {
     "Codmenu": 80,
@@ -232,7 +244,7 @@
     "Area": "Backend",
     "Ordine": 8,
     "Visible": true,
-    "Ruoli": [ "Super", "Admin", "Sp_Datoriale", "Sp_Sindacale", "Sp_Ebac", "Sp_Consulente", "Sp_CAF", "Azienda" ]
+    "Ruoli": [ "Super", "Admin", "Sp_Datoriale", "Sp_Sindacale", "Sp_Ebinter", "Sp_Consulente", "Sp_CAF", "Azienda" ]
   },
 
   {

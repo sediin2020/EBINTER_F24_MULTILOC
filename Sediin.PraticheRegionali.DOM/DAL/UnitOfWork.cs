@@ -9,6 +9,58 @@ namespace Sediin.PraticheRegionali.DOM.DAL
     {
         private SediinPraticheRegionaliDbContext context = new SediinPraticheRegionaliDbContext();
 
+        private GenericRepository<Ebt> ebtRepository;
+        private GenericRepository<IbanStorico> ibanStoricoRepository;
+        private GenericRepository<F24Percentuale> f24PercentualeRepository;
+        private GenericRepository<MultiLocPercentuale> multiLocPercentualeRepository;
+
+        public GenericRepository<Ebt> EbtRepository
+        {
+            get
+            {
+                if (this.ebtRepository == null)
+                {
+                    this.ebtRepository = new GenericRepository<Ebt>(context);
+                }
+                return ebtRepository;
+            }
+        }
+        public GenericRepository<IbanStorico> IbanStoricoRepository
+        {
+            get
+            {
+                if (this.ibanStoricoRepository == null)
+                {
+                    this.ibanStoricoRepository = new GenericRepository<IbanStorico>(context);
+                }
+                return ibanStoricoRepository;
+            }
+        }
+        public GenericRepository<F24Percentuale> F24PercentualeRepository
+        {
+            get
+            {
+                if (this.f24PercentualeRepository == null)
+                {
+                    this.f24PercentualeRepository = new GenericRepository<F24Percentuale>(context);
+                }
+                return f24PercentualeRepository;
+            }
+        }
+        public GenericRepository<MultiLocPercentuale> MultiLocPercentualeRepository
+        {
+            get
+            {
+                if (this.multiLocPercentualeRepository == null)
+                {
+                    this.multiLocPercentualeRepository = new GenericRepository<MultiLocPercentuale>(context);
+                }
+                return multiLocPercentualeRepository;
+            }
+        }
+        /// <summary>
+        /// /////////////////////////////////////////////////////////////////
+        /// </summary>
         private GenericRepository<Allegati> allegatiRepository;
         private GenericRepository<Requisiti> requisitiRepository;
         private GenericRepository<DichiarazioniDPR> dichiarazionidprRepository;
@@ -55,6 +107,13 @@ namespace Sediin.PraticheRegionali.DOM.DAL
         private GenericRepository<PraticheRegionaliImpreseDpr> praticheRegionaliImpreseDprRepository;
         private GenericRepository<LiquidazionePraticheRegionaliMailInviatiEsito> liquidazionePraticheRegionaliMailInviatiEsitoRepository;
         private GenericRepository<ContatoreAnnuale> contatoreAnnualeRepository;
+
+
+
+        /// <summary>
+        /// /////////////////////////////////////////////////////////////////////////
+        /// </summary>
+
 
         public GenericRepository<ContatoreAnnuale> ContatoreAnnualeRepository
         {

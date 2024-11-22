@@ -28,7 +28,7 @@ namespace Sediin.PraticheRegionali.WebUI.Areas.Backend.Controllers
 
         #region ricerca
 
-        [@Authorize(Roles = new Roles[] { Roles.Sp_Consulente, Roles.Sp_Datoriale, Roles.Sp_Sindacale, Roles.Sp_Ebac })]
+        [@Authorize(Roles = new Roles[] { Roles.Sp_Consulente, Roles.Sp_Datoriale, Roles.Sp_Sindacale, Roles.Sp_Ebinter })]
         public async Task<ActionResult> Ricerca()
         {
             AziendaRicercaModel model = new AziendaRicercaModel
@@ -40,7 +40,7 @@ namespace Sediin.PraticheRegionali.WebUI.Areas.Backend.Controllers
         }
 
         [HttpPost]
-        [@Authorize(Roles = new Roles[] { Roles.Sp_Consulente, Roles.Sp_Datoriale, Roles.Sp_Sindacale, Roles.Sp_Ebac })]
+        [@Authorize(Roles = new Roles[] { Roles.Sp_Consulente, Roles.Sp_Datoriale, Roles.Sp_Sindacale, Roles.Sp_Ebinter })]
         public ActionResult Ricerca(AziendaRicercaModel model, int? page)
         {
             //TODO
@@ -72,7 +72,7 @@ namespace Sediin.PraticheRegionali.WebUI.Areas.Backend.Controllers
             return AjaxView("RicercaList", _result);
         }
 
-        [@Authorize(Roles = new Roles[] { Roles.Sp_Consulente, Roles.Sp_Datoriale, Roles.Sp_Sindacale, Roles.Sp_Ebac })]
+        [@Authorize(Roles = new Roles[] { Roles.Sp_Consulente, Roles.Sp_Datoriale, Roles.Sp_Sindacale, Roles.Sp_Ebinter })]
         public ActionResult RicercaExcel(AziendaRicercaModel model)
         {
             var _query = from a in unitOfWork.AziendaRepository.Get(RicercaFilter(model)).OrderBy(r => r.RagioneSociale)
@@ -102,7 +102,7 @@ namespace Sediin.PraticheRegionali.WebUI.Areas.Backend.Controllers
         {
             int? _sportelloId = null;
 
-            if (IsInRole(new Roles[] { Roles.Sp_Consulente, Roles.Sp_Datoriale, Roles.Sp_Sindacale, Roles.Sp_Ebac }))
+            if (IsInRole(new Roles[] { Roles.Sp_Consulente, Roles.Sp_Datoriale, Roles.Sp_Sindacale, Roles.Sp_Ebinter }))
             {
                 _sportelloId = GetSportelloId.Value;
             }
@@ -170,7 +170,7 @@ namespace Sediin.PraticheRegionali.WebUI.Areas.Backend.Controllers
         {
             int? _sportelloId = null;
 
-            if (IsInRole(new Roles[] { Roles.Sp_Consulente, Roles.Sp_Datoriale, Roles.Sp_Sindacale, Roles.Sp_Ebac }))
+            if (IsInRole(new Roles[] { Roles.Sp_Consulente, Roles.Sp_Datoriale, Roles.Sp_Sindacale, Roles.Sp_Ebinter }))
             {
                 _sportelloId = GetSportelloId.Value;
             }
@@ -192,7 +192,7 @@ namespace Sediin.PraticheRegionali.WebUI.Areas.Backend.Controllers
 
         #endregion
 
-        [@Authorize(Roles = new Roles[] { Roles.Azienda, Roles.Sp_Consulente, Roles.Sp_Datoriale, Roles.Sp_Sindacale, Roles.Sp_Ebac })]
+        [@Authorize(Roles = new Roles[] { Roles.Azienda, Roles.Sp_Consulente, Roles.Sp_Datoriale, Roles.Sp_Sindacale, Roles.Sp_Ebinter })]
         public async Task<ActionResult> Anagrafica(int? id = null)
         {
             try
@@ -249,7 +249,7 @@ namespace Sediin.PraticheRegionali.WebUI.Areas.Backend.Controllers
                     }
 
                     //sportello po modificare solo azienda associata a se
-                    if (IsInRole(new Roles[] { Roles.Sp_Consulente, Roles.Sp_Datoriale, Roles.Sp_Sindacale, Roles.Sp_Ebac }))
+                    if (IsInRole(new Roles[] { Roles.Sp_Consulente, Roles.Sp_Datoriale, Roles.Sp_Sindacale, Roles.Sp_Ebinter }))
                     {
                         _userSportello = await UserManager.FindByNameAsync(User.Identity.Name);
                         model.ProvinciaIdFilter = _userSportello?.ProvinciaId;
@@ -295,7 +295,7 @@ namespace Sediin.PraticheRegionali.WebUI.Areas.Backend.Controllers
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        [@Authorize(Roles = new Roles[] { Roles.Azienda, Roles.Sp_Consulente, Roles.Sp_Datoriale, Roles.Sp_Sindacale, Roles.Sp_Ebac })]
+        [@Authorize(Roles = new Roles[] { Roles.Azienda, Roles.Sp_Consulente, Roles.Sp_Datoriale, Roles.Sp_Sindacale, Roles.Sp_Ebinter })]
         public async Task<ActionResult> Anagrafica(AziendaViewModel model)
         {
             try
@@ -342,7 +342,7 @@ namespace Sediin.PraticheRegionali.WebUI.Areas.Backend.Controllers
                     _azienda = unitOfWork.AziendaRepository.Get(x => x.AziendaId == model.AziendaId).FirstOrDefault();
 
                     //sportello po modificare solo azienda associata a se
-                    if (IsInRole(new Roles[] { Roles.Sp_Consulente, Roles.Sp_Datoriale, Roles.Sp_Sindacale, Roles.Sp_Ebac }))
+                    if (IsInRole(new Roles[] { Roles.Sp_Consulente, Roles.Sp_Datoriale, Roles.Sp_Sindacale, Roles.Sp_Ebinter }))
                     {
                         _userSportello = await UserManager.FindByNameAsync(User.Identity.Name);
                         model.ProvinciaId = _userSportello?.ProvinciaId ?? model.ProvinciaId;
@@ -388,7 +388,7 @@ namespace Sediin.PraticheRegionali.WebUI.Areas.Backend.Controllers
                 unitOfWork.Save(false);
 
                 //aggiorna tb DelegheConsulenteCSAzienda
-                if (model.AziendaId == 0 && IsInRole(new Roles[] { Roles.Sp_Consulente, Roles.Sp_Datoriale, Roles.Sp_Sindacale, Roles.Sp_Ebac }))
+                if (model.AziendaId == 0 && IsInRole(new Roles[] { Roles.Sp_Consulente, Roles.Sp_Datoriale, Roles.Sp_Sindacale, Roles.Sp_Ebinter }))
                 {
                     AssociaSportelloAzienda(_resultModel.AziendaId, model.DelegaAzienda, model.DocumentoIdentita);
                 }
@@ -522,7 +522,7 @@ namespace Sediin.PraticheRegionali.WebUI.Areas.Backend.Controllers
 
         #region associa azienda a sportello
 
-        [@Authorize(Roles = new Roles[] { Roles.Sp_Consulente, Roles.Sp_Datoriale, Roles.Sp_Sindacale, Roles.Sp_Ebac })]
+        [@Authorize(Roles = new Roles[] { Roles.Sp_Consulente, Roles.Sp_Datoriale, Roles.Sp_Sindacale, Roles.Sp_Ebinter })]
         public ActionResult AssociaAziendaRicerca()
         {
             if (IsInRole(Roles.Admin))
@@ -538,7 +538,7 @@ namespace Sediin.PraticheRegionali.WebUI.Areas.Backend.Controllers
         }
 
         [HttpPost]
-        [@Authorize(Roles = new Roles[] { Roles.Sp_Consulente, Roles.Sp_Datoriale, Roles.Sp_Sindacale, Roles.Sp_Ebac })]
+        [@Authorize(Roles = new Roles[] { Roles.Sp_Consulente, Roles.Sp_Datoriale, Roles.Sp_Sindacale, Roles.Sp_Ebinter })]
         public async Task<ActionResult> AssociaAziendaRicerca(AziendaAssociaRicercaModel model)
         {
             try
@@ -579,7 +579,7 @@ namespace Sediin.PraticheRegionali.WebUI.Areas.Backend.Controllers
         }
 
         [HttpPost]
-        [@Authorize(Roles = new Roles[] { Roles.Sp_Consulente, Roles.Sp_Datoriale, Roles.Sp_Sindacale, Roles.Sp_Ebac })]
+        [@Authorize(Roles = new Roles[] { Roles.Sp_Consulente, Roles.Sp_Datoriale, Roles.Sp_Sindacale, Roles.Sp_Ebinter })]
         public ActionResult AssociaAzienda(AziendaAssociaRicercaViewModel model)
         {
             try
@@ -658,7 +658,7 @@ namespace Sediin.PraticheRegionali.WebUI.Areas.Backend.Controllers
         }
 
         [HttpPost]
-        [@Authorize(Roles = new Roles[] { Roles.Azienda, Roles.Sp_Consulente, Roles.Sp_Datoriale, Roles.Sp_Sindacale, Roles.Sp_Ebac })]
+        [@Authorize(Roles = new Roles[] { Roles.Azienda, Roles.Sp_Consulente, Roles.Sp_Datoriale, Roles.Sp_Sindacale, Roles.Sp_Ebinter })]
         public async Task<ActionResult> DeAssociaSportelloAzienda(int aziendaId, int deleghaId)
         {
             try
@@ -706,7 +706,7 @@ namespace Sediin.PraticheRegionali.WebUI.Areas.Backend.Controllers
             }
         }
 
-        [@Authorize(Roles = new Roles[] { Roles.Azienda, Roles.Sp_Consulente, Roles.Sp_Datoriale, Roles.Sp_Sindacale, Roles.Sp_Ebac })]
+        [@Authorize(Roles = new Roles[] { Roles.Azienda, Roles.Sp_Consulente, Roles.Sp_Datoriale, Roles.Sp_Sindacale, Roles.Sp_Ebinter })]
         public ActionResult UploadAllegato(int delegaId, string allegato)
         {
             var _delega = unitOfWork.DelegheSportelloAziendaRepository.Get(x => x.DelegheSportelloAziendaId == delegaId).FirstOrDefault();
@@ -728,7 +728,7 @@ namespace Sediin.PraticheRegionali.WebUI.Areas.Backend.Controllers
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        [@Authorize(Roles = new Roles[] { Roles.Azienda, Roles.Sp_Consulente, Roles.Sp_Datoriale, Roles.Sp_Sindacale, Roles.Sp_Ebac })]
+        [@Authorize(Roles = new Roles[] { Roles.Azienda, Roles.Sp_Consulente, Roles.Sp_Datoriale, Roles.Sp_Sindacale, Roles.Sp_Ebinter })]
         public ActionResult UploadAllegato(AziendaUploadAllegatoModel model)
         {
             try
@@ -743,7 +743,7 @@ namespace Sediin.PraticheRegionali.WebUI.Areas.Backend.Controllers
 
                 CheckSportelloAuthorize(_delega.AziendaId);
 
-                if (IsInRole(new Roles[] { Roles.Sp_Consulente, Roles.Sp_Datoriale, Roles.Sp_Sindacale, Roles.Sp_Ebac }))
+                if (IsInRole(new Roles[] { Roles.Sp_Consulente, Roles.Sp_Datoriale, Roles.Sp_Sindacale, Roles.Sp_Ebinter }))
                 {
                     if (_delega.SportelloId != GetSportelloId.Value)
                     {
@@ -847,7 +847,7 @@ namespace Sediin.PraticheRegionali.WebUI.Areas.Backend.Controllers
         {
             if (id.GetValueOrDefault() != 0)
             {
-                if (IsInRole(new Roles[] { Roles.Sp_CAF, Roles.Sp_Datoriale, Roles.Sp_Sindacale, Roles.Sp_Ebac }))
+                if (IsInRole(new Roles[] { Roles.Sp_CAF, Roles.Sp_Datoriale, Roles.Sp_Sindacale, Roles.Sp_Ebinter }))
                 {
                     if (GetSportelloId.Value != unitOfWork.AziendaRepository.Get(x => x.AziendaId == id).FirstOrDefault().SportelloId)
                     {

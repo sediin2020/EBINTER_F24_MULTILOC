@@ -34,8 +34,9 @@ namespace Sediin.PraticheRegionali.WebUI
             Sp_CAF,//inserisce pratiche per dipendenti
             Sp_Consulente, //inserisce pratiche per azienda
             Sp_Sindacale,//inserisce pratiche per azienda e dipendenti
-            Sp_Ebac,//inserisce pratiche per azienda e dipendenti
+            Sp_Ebinter,//inserisce pratiche per azienda e dipendenti
             Sp_Datoriale//inserisce pratiche per azienda e dipendenti
+            ,Ebt
         }
     }
 

@@ -422,6 +422,14 @@ namespace Sediin.PraticheRegionali.WebUI.Helpers
         {
             return Autocomplete(helper, textField, valueField, dataValmsgFor, autoCompleteKey, "DENCOM", "ComuneId", "/Backend/Metropolitane/GetComuniAutocomplete", "phrase", callBackFunction, width, maxNumberOfElements);
         }
+        public static MvcHtmlString AutocompleteRegioni(this HtmlHelper helper, string textField, string valueField, string dataValmsgFor, string callBackFunction = null, string autoCompleteKey = "autocompleteGetRegioniAutocomplete", int? width = null, int? maxNumberOfElements = 6)
+        {
+            return Autocomplete(helper, textField, valueField, dataValmsgFor, autoCompleteKey, "DENREG", "RegioneId", "/Backend/Metropolitane/GetRegioniAutocomplete", "phrase", callBackFunction, width, maxNumberOfElements);
+        }
+        public static MvcHtmlString AutocompleteProvince(this HtmlHelper helper, string textField, string valueField, string dataValmsgFor, string callBackFunction = null, string autoCompleteKey = "autocompleteGetRegioniAutocomplete", int? width = null, int? maxNumberOfElements = 6)
+        {
+            return Autocomplete(helper, textField, valueField, dataValmsgFor, autoCompleteKey, "DENPRO", "ProvinciaId", "/Backend/Metropolitane/GetProvinceAutocomplete", "phrase", callBackFunction, width, maxNumberOfElements);
+        }
 
         public static MvcHtmlString AutocompleteComuniAzienda(this HtmlHelper helper, string textField, string valueField, string dataValmsgFor, string callBackFunction = null, string autoCompleteKey = "autocompleteGetComuniAziendeAutocomplete", int? width = null, int? maxNumberOfElements = 6)
         {

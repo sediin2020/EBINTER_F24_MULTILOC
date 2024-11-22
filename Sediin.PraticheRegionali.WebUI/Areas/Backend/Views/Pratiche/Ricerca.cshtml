@@ -11,7 +11,7 @@
         @if (User.IsInRole(IdentityHelper.Roles.Azienda.ToString())
             || User.IsInRole(IdentityHelper.Roles.Sp_Consulente.ToString())
             || User.IsInRole(IdentityHelper.Roles.Sp_Datoriale.ToString())
-            || User.IsInRole(IdentityHelper.Roles.Sp_Ebac.ToString())
+            || User.IsInRole(IdentityHelper.Roles.Sp_Ebinter.ToString())
             || User.IsInRole(IdentityHelper.Roles.Sp_Sindacale.ToString()))
         {
             @Ajax.EncodedAjaxActionLink("Nuova Richiesta Azienda", "NuovaRichiesta", "Pratiche", new { isTipoRichiestaDipendente = false }, new AjaxOptions
@@ -26,7 +26,7 @@
             || User.IsInRole(IdentityHelper.Roles.Sp_Consulente.ToString())
             || User.IsInRole(IdentityHelper.Roles.Sp_CAF.ToString())
             || User.IsInRole(IdentityHelper.Roles.Sp_Datoriale.ToString())
-            || User.IsInRole(IdentityHelper.Roles.Sp_Ebac.ToString())
+            || User.IsInRole(IdentityHelper.Roles.Sp_Ebinter.ToString())
             || User.IsInRole(IdentityHelper.Roles.Sp_Sindacale.ToString()))
         {
             @Ajax.EncodedAjaxActionLink("Nuova Richiesta Dipendente", "NuovaRichiesta", "Pratiche", new { isTipoRichiestaDipendente = true }, new AjaxOptions

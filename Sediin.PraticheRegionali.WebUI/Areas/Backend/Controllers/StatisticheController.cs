@@ -243,7 +243,7 @@ namespace Sediin.PraticheRegionali.WebUI.Areas.Backend.Controllers
                 Roles.Sp_Consulente, 
                 Roles.Sp_Datoriale, 
                 Roles.Sp_Sindacale, 
-                Roles.Sp_Ebac }))
+                Roles.Sp_Ebinter }))
             {
                 _f = x => x.SportelloId == GetSportelloId.Value;
             }

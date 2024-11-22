@@ -29,7 +29,7 @@ namespace Sediin.PraticheRegionali.DOM.Importer
             Sp_Consulente,
             Sp_Datoriale,
             Sp_Sindacale,
-            Sp_Ebac,
+            Sp_Ebinter,
             Azienda,
             Dipendente,
             Uniemens,
@@ -238,7 +238,7 @@ namespace Sediin.PraticheRegionali.DOM.Importer
                                 case ImportKey.Sp_Consulente:
                                 case ImportKey.Sp_Datoriale:
                                 case ImportKey.Sp_Sindacale:
-                                case ImportKey.Sp_Ebac:
+                                case ImportKey.Sp_Ebinter:
                                     _mess = InsertSportello(item, _tipo.ToString());
                                     break;
                                 case ImportKey.Azienda:
@@ -312,7 +312,7 @@ namespace Sediin.PraticheRegionali.DOM.Importer
                         case ImportKey.Sp_Consulente:
                         case ImportKey.Sp_Datoriale:
                         case ImportKey.Sp_Sindacale:
-                        case ImportKey.Sp_Ebac:
+                        case ImportKey.Sp_Ebinter:
                             Task.Run(() => BonificaAnagraficaSportello());
                             break;
                         case ImportKey.Azienda:

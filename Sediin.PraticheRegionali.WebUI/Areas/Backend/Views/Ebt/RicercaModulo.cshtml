@@ -1,0 +1,62 @@
+﻿@model Sediin.PraticheRegionali.WebUI.Areas.Backend.Models.EbtRicercaModel
+
+@Scripts.Render("~/bundles/jqueryval")
+
+@using (Ajax.BeginForm("Ricerca", new AjaxOptions
+{
+    UpdateTargetId = "resultRicerca",
+    OnBegin = "onBeginRicerca",
+    OnSuccess = "alertClose",
+    OnFailure = "handleError"
+}))
+{
+    @Html.AntiForgeryToken()
+    @Html.HiddenFor(model => model.EbtRicercaModel_RegioneId)
+    @Html.HiddenFor(model => model.EbtRicercaModel_ProvinciaId)
+    <div class="form-horizontal">
+
+        <div class="row">
+            <div class="col-md-4">
+                <div class="form-group">
+                    @Html.Label("Regione", htmlAttributes: new { @class = "control-label" })
+                    <div class="col-md-12">
+                        @Html.TextBoxFor(model => model.EbtRicercaModel_Regione, new { @class = "form-control" })
+                        @Html.ValidationMessageFor(model => model.EbtRicercaModel_RegioneId, "", new { @class = "text-danger" })
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-4">
+                <div class="form-group">
+                    @Html.Label("Provincia", htmlAttributes: new { @class = "control-label" })
+                    <div class="col-md-12">
+                        @Html.TextBoxFor(model => model.EbtRicercaModel_Provincia, new { @class = "form-control" })
+                        @Html.ValidationMessageFor(model => model.EbtRicercaModel_ProvinciaId, "", new { @class = "text-danger" })
+                    </div>
+                </div>
+            </div>
+
+
+
+
+        </div>
+
+        @{
+            var _listOrderBy = new Dictionary<string, string>();
+            _listOrderBy.Add("Regione", "Regione");
+            _listOrderBy.Add("Provincia", "Provincia");
+
+        }
+
+        <hr />
+        <div class="form-group text-center">
+            <button type="submit" class="btn btn-primary">Avvia ricerca</button>
+        </div>
+    </div>
+}
+
+
+@Html.AutocompleteRegioni("EbtRicercaModel_Regione", "EbtRicercaModel_RegioneId", "EbtRicercaModel_RegioneId")
+@Html.AutocompleteProvince("EbtRicercaModel_Provincia", "EbtRicercaModel_ProvinciaId", "EbtRicercaModel_ProvinciaId")
+
+<script src="~/Scripts/unobtrusiveParseForm.js"></script>
+<script src="~/Scripts/checksumCFPiva.js"></script>

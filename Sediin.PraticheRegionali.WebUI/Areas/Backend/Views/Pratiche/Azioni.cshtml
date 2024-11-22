@@ -51,8 +51,8 @@
         @if (Model.StatoId.GetValueOrDefault() == (int)Sediin.PraticheRegionali.DOM.SediinPraticheRegionaliEnums.StatoPratica.Confermata && !Model.LiquidataOinLiquidazione.GetValueOrDefault() && User.IsInRole(IdentityHelper.Roles.Admin.ToString()) ||
              Model.StatoId.GetValueOrDefault() == (int)Sediin.PraticheRegionali.DOM.SediinPraticheRegionaliEnums.StatoPratica.Annullata && !Model.LiquidataOinLiquidazione.GetValueOrDefault() && User.IsInRole(IdentityHelper.Roles.Admin.ToString()) ||
              Model.StatoId.GetValueOrDefault() == (int)Sediin.PraticheRegionali.DOM.SediinPraticheRegionaliEnums.StatoPratica.Annullata && !Model.LiquidataOinLiquidazione.GetValueOrDefault() && User.IsInRole(IdentityHelper.Roles.Super.ToString()) ||
-             Model.StatoId.GetValueOrDefault() == (int)Sediin.PraticheRegionali.DOM.SediinPraticheRegionaliEnums.StatoPratica.Annullata && !Model.LiquidataOinLiquidazione.GetValueOrDefault() && User.IsInRole(IdentityHelper.Roles.Sp_Ebac.ToString()) ||
-             Model.StatoId.GetValueOrDefault() == (int)Sediin.PraticheRegionali.DOM.SediinPraticheRegionaliEnums.StatoPratica.Confermata && !Model.LiquidataOinLiquidazione.GetValueOrDefault() && User.IsInRole(IdentityHelper.Roles.Sp_Ebac.ToString()) ||
+             Model.StatoId.GetValueOrDefault() == (int)Sediin.PraticheRegionali.DOM.SediinPraticheRegionaliEnums.StatoPratica.Annullata && !Model.LiquidataOinLiquidazione.GetValueOrDefault() && User.IsInRole(IdentityHelper.Roles.Sp_Ebinter.ToString()) ||
+             Model.StatoId.GetValueOrDefault() == (int)Sediin.PraticheRegionali.DOM.SediinPraticheRegionaliEnums.StatoPratica.Confermata && !Model.LiquidataOinLiquidazione.GetValueOrDefault() && User.IsInRole(IdentityHelper.Roles.Sp_Ebinter.ToString()) ||
              Model.StatoId.GetValueOrDefault() == (int)Sediin.PraticheRegionali.DOM.SediinPraticheRegionaliEnums.StatoPratica.Confermata && !Model.LiquidataOinLiquidazione.GetValueOrDefault() && User.IsInRole(IdentityHelper.Roles.Super.ToString()))
         {
 

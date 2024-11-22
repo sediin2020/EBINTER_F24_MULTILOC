@@ -43,7 +43,7 @@ namespace Sediin.PraticheRegionali.WebUI.Areas.Backend.Controllers
                 StatoLiquidazione = GetStatoLiquidazione(),
             };
 
-            if (IsInRole(new Roles[] { Roles.Sp_CAF, Roles.Sp_Consulente, Roles.Sp_Datoriale, Roles.Sp_Sindacale, Roles.Sp_Ebac }))
+            if (IsInRole(new Roles[] { Roles.Sp_CAF, Roles.Sp_Consulente, Roles.Sp_Datoriale, Roles.Sp_Sindacale, Roles.Sp_Ebinter }))
             {
                 model.PraticheAziendaRicercaModel_SportelloId = GetSportelloId.Value;
             }
@@ -198,7 +198,7 @@ namespace Sediin.PraticheRegionali.WebUI.Areas.Backend.Controllers
 
             var _isazienda = IsInRole(new Roles[] { Roles.Azienda });
             var _isdipendente = IsInRole(new Roles[] { Roles.Dipendente });
-            var _issportello = IsInRole(new Roles[] { Roles.Sp_CAF, Roles.Sp_Consulente, Roles.Sp_Datoriale, Roles.Sp_Sindacale, Roles.Sp_Ebac });
+            var _issportello = IsInRole(new Roles[] { Roles.Sp_CAF, Roles.Sp_Consulente, Roles.Sp_Datoriale, Roles.Sp_Sindacale, Roles.Sp_Ebinter });
 
             return x => //((IsUserConsulenteCs ? (x.SportelloId == (int)GetConsulenteCsId.Value && x.DipendenteId == null) : true)
             ((_isazienda ? (x.AziendaId == (int)GetAziendaId.Value && x.DipendenteId == null) : true)
@@ -228,7 +228,7 @@ namespace Sediin.PraticheRegionali.WebUI.Areas.Backend.Controllers
 
         public ActionResult NuovaRichiesta(bool isTipoRichiestaDipendente)
         {
-            if (!isTipoRichiestaDipendente && IsInRole(new Roles[] { Roles.Admin, Roles.Azienda, Roles.Sp_Consulente, Roles.Sp_Datoriale, Roles.Sp_Sindacale, Roles.Sp_Ebac }))
+            if (!isTipoRichiestaDipendente && IsInRole(new Roles[] { Roles.Admin, Roles.Azienda, Roles.Sp_Consulente, Roles.Sp_Datoriale, Roles.Sp_Sindacale, Roles.Sp_Ebinter }))
             {
                 PraticheAziendaNuovaRichiestaAzienda model = new PraticheAziendaNuovaRichiestaAzienda();
                 model.TipoRichiesta = GetTipoRichieste().Where(a => a.IsTipoRichiestaDipendente != true && a.AbilitatoNuovaRichiesta == true);
@@ -238,7 +238,7 @@ namespace Sediin.PraticheRegionali.WebUI.Areas.Backend.Controllers
                     model.PraticheAziendaNuovaRichiesta_AziendaId = GetAziendaId.Value;
                 }
 
-                if (IsInRole(new Roles[] { Roles.Sp_Consulente, Roles.Sp_Datoriale, Roles.Sp_Sindacale, Roles.Sp_Ebac }))
+                if (IsInRole(new Roles[] { Roles.Sp_Consulente, Roles.Sp_Datoriale, Roles.Sp_Sindacale, Roles.Sp_Ebinter }))
                 {
                     model.PraticheAziendaNuovaRichiesta_SportelloId = GetSportelloId.Value;
                 }
@@ -246,7 +246,7 @@ namespace Sediin.PraticheRegionali.WebUI.Areas.Backend.Controllers
                 return AjaxView("NuovaRichiestaAzienda", model);
             }
 
-            if (isTipoRichiestaDipendente && IsInRole(new Roles[] { Roles.Admin, Roles.Dipendente, Roles.Sp_CAF, Roles.Sp_Consulente, Roles.Sp_Datoriale, Roles.Sp_Sindacale, Roles.Sp_Ebac }))
+            if (isTipoRichiestaDipendente && IsInRole(new Roles[] { Roles.Admin, Roles.Dipendente, Roles.Sp_CAF, Roles.Sp_Consulente, Roles.Sp_Datoriale, Roles.Sp_Sindacale, Roles.Sp_Ebinter }))
             {
                 PraticheAziendaNuovaRichiestaDipendente model = new PraticheAziendaNuovaRichiestaDipendente();
                 model.TipoRichiesta = GetTipoRichieste().Where(a => a.IsTipoRichiestaDipendente == true && a.AbilitatoNuovaRichiesta == true);
@@ -256,7 +256,7 @@ namespace Sediin.PraticheRegionali.WebUI.Areas.Backend.Controllers
                     model.PraticheAziendaNuovaRichiesta_DipendenteId = GetDipendenteId.Value;
                 }
 
-                if (IsInRole(new Roles[] { Roles.Sp_CAF, Roles.Sp_Consulente, Roles.Sp_Datoriale, Roles.Sp_Sindacale, Roles.Sp_Ebac }))
+                if (IsInRole(new Roles[] { Roles.Sp_CAF, Roles.Sp_Consulente, Roles.Sp_Datoriale, Roles.Sp_Sindacale, Roles.Sp_Ebinter }))
                 {
                     model.PraticheAziendaNuovaRichiesta_SportelloId = GetSportelloId.Value;
                 }
@@ -326,7 +326,7 @@ namespace Sediin.PraticheRegionali.WebUI.Areas.Backend.Controllers
                     model.PraticheAziendaNuovaRichiesta_DipendenteId = GetDipendenteId;
                 }
 
-                if (IsInRole(new Roles[] { Roles.Sp_CAF, Roles.Sp_Consulente, Roles.Sp_Datoriale, Roles.Sp_Sindacale, Roles.Sp_Ebac }))
+                if (IsInRole(new Roles[] { Roles.Sp_CAF, Roles.Sp_Consulente, Roles.Sp_Datoriale, Roles.Sp_Sindacale, Roles.Sp_Ebinter }))
                 {
                     //check se azienda/dipendente e associato
                     var _sportelloId = GetSportelloId;
@@ -735,7 +735,7 @@ namespace Sediin.PraticheRegionali.WebUI.Areas.Backend.Controllers
                 }
 
                 int? _sportelloId = null;
-                if (IsInRole(new Roles[] { Roles.Sp_CAF, Roles.Sp_Consulente, Roles.Sp_Datoriale, Roles.Sp_Sindacale, Roles.Sp_Ebac }))
+                if (IsInRole(new Roles[] { Roles.Sp_CAF, Roles.Sp_Consulente, Roles.Sp_Datoriale, Roles.Sp_Sindacale, Roles.Sp_Ebinter }))
                 {
                     //    _dipendenteId = container.DipendenteId;
                     _sportelloId = GetSportelloId.Value;
@@ -756,7 +756,7 @@ namespace Sediin.PraticheRegionali.WebUI.Areas.Backend.Controllers
                         throw new Exception("Richiesta non modificabile");
                     }
 
-                    if (IsInRole(new Roles[] { Roles.Admin, Roles.Super, Roles.Sp_Ebac }) && container.Azione == SediinPraticheRegionaliEnums.AzioniPratica.RimettiComeInviata.ToString())
+                    if (IsInRole(new Roles[] { Roles.Admin, Roles.Super, Roles.Sp_Ebinter }) && container.Azione == SediinPraticheRegionaliEnums.AzioniPratica.RimettiComeInviata.ToString())
                     {
                         _richiesta.StatoPraticaId = (int)SediinPraticheRegionaliEnums.StatoPratica.Inviata;
                         unitOfWork.Save(false);
@@ -2117,7 +2117,7 @@ namespace Sediin.PraticheRegionali.WebUI.Areas.Backend.Controllers
                     }
                 }
 
-                if (IsInRole(new Roles[] { Roles.Sp_CAF, Roles.Sp_Consulente, Roles.Sp_Datoriale, Roles.Sp_Sindacale, Roles.Sp_Ebac }))
+                if (IsInRole(new Roles[] { Roles.Sp_CAF, Roles.Sp_Consulente, Roles.Sp_Datoriale, Roles.Sp_Sindacale, Roles.Sp_Ebinter }))
                 {
                     if (richiesta.SportelloId != GetSportelloId)
                     {

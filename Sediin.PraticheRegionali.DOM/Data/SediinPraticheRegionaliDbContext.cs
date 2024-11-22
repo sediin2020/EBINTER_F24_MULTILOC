@@ -3,6 +3,7 @@ using Sediin.PraticheRegionali.DOM.Entitys;
 using System;
 using System.Collections.Generic;
 using System.Data.Entity;
+using System.Data.Entity.ModelConfiguration.Conventions;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -18,6 +19,16 @@ namespace Sediin.PraticheRegionali.DOM.Data
             //base.Configuration.ProxyCreationEnabled = false;
         }
 
+        protected override void OnModelCreating(DbModelBuilder modelBuilder)
+        {
+            modelBuilder.Conventions.Remove<OneToManyCascadeDeleteConvention>();
+        }
+
+        public DbSet<Ebt> Ebt { get; set; }
+
+        /// <summary>
+        /// /////////////////////////////////////////////
+        /// </summary>
         public DbSet<Azienda> Azienda { get; set; }
 
         //  Gestione Tabelle >> Metropoliotane <<

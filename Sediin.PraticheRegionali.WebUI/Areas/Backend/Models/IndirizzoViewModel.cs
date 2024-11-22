@@ -58,6 +58,7 @@ namespace Sediin.PraticheRegionali.WebUI.Areas.Backend.Models
         public bool? ShowLocalita { get; set; } = true;
 
         public bool? ShowIndirizzo{ get; set; } = true;
+        public bool? ShowComune { get; set; } = true;
 
         public int? Col { get; set; }
     }

@@ -1,0 +1,407 @@
+﻿@model Sediin.PraticheRegionali.WebUI.Areas.Backend.Models.EbtViewModel
+@using Sediin.PraticheRegionali.WebUI
+
+@Scripts.Render("~/bundles/jqueryval")
+
+@{
+
+}
+
+@using (Ajax.BeginForm("Anagrafica", new AjaxOptions
+{
+    OnBegin = "alertWaid()",
+    OnSuccess = "onSuccessAnagrafica",
+    OnFailure = "handleError"
+}))
+{
+    var _matricolaReadOnly = false;
+
+    @Html.AntiForgeryToken()
+    @Html.HiddenFor(model => model.EbtId)
+
+    <h3>EBT</h3>
+    <hr />
+
+    <div class="form-horizontal mt-4">
+
+
+        <div class="row">
+            <h5>
+                <span class="badge bg-secondary">Ente Territoriale</span>
+            </h5>
+            @{Html.RenderPartial("~/Areas/Backend/Views/Moduli/IndirizzoConRegioni.cshtml", new Sediin.PraticheRegionali.WebUI.Areas.Backend.Models.IndirizzoViewModel
+                {
+                    ReadOnly = Model.ReadOnly,
+                    IncludiRegioni = true,
+                    Col = 2,
+                    IndirizzoElement = "Indirizzo",
+                    ProvinciaElement = "ProvinciaId",
+                    ComuneElement = "ComuneId",
+                    LocalitaElement = "LocalitaId",
+                    RegioneElement = "RegioneId",
+
+                    Sigpro = Model.Provincia?.SIGPRO,
+                    //Codcom = Model.Comune?.CODCOM,
+                    Codreg = Model.Regione?.CODREG,
+
+                    Indirizzo = "", //Model.Indirizzo,
+                    //ComuneId = Model.ComuneId,
+                    RegioneId = Model.RegioneId,
+                    //LocalitaId = Model.LocalitaId,
+                    ProvinciaId = Model.ProvinciaId,
+
+                    Regione = Model.Regione,
+                    Provincia = Model.Provincia,
+                    //Localita = Model.Localita,
+                    //Comune = Model.Comune,
+                    ShowIndirizzo = false,
+                    ShowLocalita = false,
+                    ShowComune = false,
+
+                });}
+
+        </div>
+
+        <div class="row mt-3">
+
+            <div class="col-md-6">
+                <div class="form-group">
+                    @Html.LabelFor(model => model.Email, htmlAttributes: new { @class = "control-label" })
+                    <div class="col-md-12">
+                        @Html.TextBoxForReadOnly(model => model.Email, new { @class = "form-control" })
+                        @Html.ValidationMessageFor(model => model.Email, "", new { @class = "text-danger" })
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-6">
+                <div class="form-group">
+                    @Html.LabelFor(model => model.Pec, htmlAttributes: new { @class = "control-label" })
+                    <div class="col-md-12">
+                        @Html.TextBoxForReadOnly(model => model.Pec, new { @class = "form-control" })
+                        @Html.ValidationMessageFor(model => model.Pec, "", new { @class = "text-danger" })
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="row mt-3">
+
+            <div class="col-md-2">
+                <div class="form-group">
+                    @Html.LabelFor(model => model.Sap, htmlAttributes: new { @class = "control-label" })
+                    <div class="col-md-12">
+                        @Html.TextBoxForReadOnly(model => model.Sap, new { @class = "form-control" })
+                        @Html.ValidationMessageFor(model => model.Sap, "", new { @class = "text-danger" })
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-4">
+                <div class="form-group">
+                    @Html.LabelFor(model => model.Iban_Operativo, htmlAttributes: new { @class = "control-label" })
+                    <div class="col-md-12">
+                        @Html.Hidden("Iban_Operativo_Old", Model.Iban_Operativo)
+                        @Html.TextBoxForReadOnly(model => model.Iban_Operativo, new { @class = "form-control" })
+                        @Html.ValidationMessageFor(model => model.Iban_Operativo, "", new { @class = "text-danger" })
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-4">
+                <div class="form-group">
+                    @Html.Hidden("Iban_Transitorio_Old", Model.Iban_Transitorio)
+                    @Html.LabelFor(model => model.Iban_Transitorio, htmlAttributes: new { @class = "control-label" })
+                    <div class="col-md-12">
+                        @Html.TextBoxForReadOnly(model => model.Iban_Transitorio, new { @class = "form-control" })
+                        @Html.ValidationMessageFor(model => model.Iban_Transitorio, "", new { @class = "text-danger" })
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="row mt-3">
+
+
+            <div class="col-md-4">
+                <div class="form-group">
+                    @Html.Hidden("F24_Percentuale_Old", Model.F24_Percentuale)
+                    @Html.LabelFor(model => model.F24_Percentuale, htmlAttributes: new { @class = "control-label" })
+                    <div class="col-md-12">
+                        @Html.TextBoxForReadOnly(model => model.F24_Percentuale, new
+                        {
+                            @class = "form-control",
+                            data_inputmask_alias = "mask",
+                       data_inputmask_inputformat = "###,##"
+                   })
+                        @Html.ValidationMessageFor(model => model.F24_Percentuale, "", new { @class = "text-danger" })
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-4">
+                <div class="form-group">
+                    @Html.Hidden("MultiLoc_Percentuale_Old", Model.MultiLoc_Percentuale)
+                    @Html.LabelFor(model => model.MultiLoc_Percentuale, htmlAttributes: new { @class = "control-label" })
+                    <div class="col-md-12">
+                        @Html.TextBoxForReadOnly(model => model.MultiLoc_Percentuale, new { @class = "form-control" })
+                        @Html.ValidationMessageFor(model => model.MultiLoc_Percentuale, "", new { @class = "text-danger" })
+                    </div>
+                </div>
+            </div>
+        </div>
+
+
+        <div class="row mt-3">
+
+            <div class="col-md-10">
+                <div class="form-group">
+                    @Html.LabelFor(model => model.Note, htmlAttributes: new { @class = "control-label" })
+                    <div class="col-md-12">
+                        @Html.TextAreaForReadOnly(model => model.Note, 2, 4, new { @class = "form-control" })
+                        @Html.ValidationMessageFor(model => model.Note, "", new { @class = "text-danger" })
+                    </div>
+                </div>
+            </div>
+
+        </div>
+        <hr class="mb-4" />
+
+        <div class="row">
+
+            <h5>
+                <span class="badge bg-secondary">Referente amministrativo da contattare</span>
+            </h5>
+
+            <div class="col-md-6">
+                <div class="form-group">
+                    @Html.LabelFor(model => model.ReferenteNome, htmlAttributes: new { @class = "control-label" })
+                    <div class="col-md-12">
+                        @Html.TextBoxForReadOnly(model => model.ReferenteNome, new { @class = "form-control" })
+                        @Html.ValidationMessageFor(model => model.ReferenteNome, "", new { @class = "text-danger" })
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-6">
+                <div class="form-group">
+                    @Html.LabelFor(model => model.ReferenteCognome, htmlAttributes: new { @class = "control-label" })
+                    <div class="col-md-12">
+                        @Html.TextBoxForReadOnly(model => model.ReferenteCognome, new { @class = "form-control" })
+                        @Html.ValidationMessageFor(model => model.ReferenteCognome, "", new { @class = "text-danger" })
+                    </div>
+                </div>
+            </div>
+
+        </div>
+
+        <div class="row mt-3">
+
+            <div class="col-md-4">
+                <div class="form-group">
+                    @Html.LabelFor(model => model.ReferenteEmail, htmlAttributes: new { @class = "control-label" })
+                    <div class="col-md-12">
+                        @Html.TextBoxForReadOnly(model => model.ReferenteEmail, new { @class = "form-control" })
+                        @Html.ValidationMessageFor(model => model.ReferenteEmail, "", new { @class = "text-danger" })
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-md-4">
+                <div class="form-group">
+                    @Html.LabelFor(model => model.ReferentePec, htmlAttributes: new { @class = "control-label" })
+                    <div class="col-md-12">
+                        @Html.TextBoxForReadOnly(model => model.ReferentePec, new { @class = "form-control" })
+                        @Html.ValidationMessageFor(model => model.ReferentePec, "", new { @class = "text-danger" })
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-md-4">
+                <div class="form-group">
+                    @Html.LabelFor(model => model.ReferenteCellulare, htmlAttributes: new { @class = "control-label" })
+                    <div class="col-md-12">
+                        @Html.TextBoxForReadOnly(model => model.ReferenteCellulare, new { @class = "form-control" })
+                        @Html.ValidationMessageFor(model => model.ReferenteCellulare, "", new { @class = "text-danger" })
+                    </div>
+                    <div class="help-info rightMost">Numero con +39, senza spazi</div>
+                </div>
+            </div>
+        </div>
+
+
+        <div class="row mt-3">
+            <div class="col-md-12 text-danger">
+                <strong>* Campi obbligatori</strong>
+            </div>
+        </div>
+
+        <div class="form-group text-center mt-3">
+            <hr />
+            <button type="submit" class="btn btn-primary">
+                @if (Model.EbtId == 0)
+                {
+                    <span>Inserisci EBT</span>
+                }
+                else
+                {
+                    <span>Aggiorna dati EBT</span>
+                }
+            </button>
+            <button id="buttonCloseModal" type="button" onclick="hideModal()" class="btn btn-danger">
+                Chiudi finestra
+            </button>
+
+
+        </div>
+
+
+        <hr/>
+        <div class="row">
+            <div class="col-xs-12 col-sm-12 col-md-6 col-lg-6">
+                <div class="card" id="storico_iban_block" style="display: block;">
+                    <div class="text-center">
+                        <i class="fas fa-history fa-lg text-warning"></i>
+                        <h6><strong>Storico</strong> IBAN Operativo</h6>
+                        <div class="body table-responsive">
+                            <table id="storico_iban_tbl" class="table contact_list">
+                                <thead>
+                                    <tr>
+                                        <th style="text-align: center; font-size: 14px;">IBAN</th>
+                                        <th style="text-align: center; font-size: 14px;">DATA</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    @foreach (var item in Model.IbanStorico)
+                                    {
+                                        <tr class="text-center">
+                                            <td>@item.Iban_Operativo</td>
+                                            <td>@item.DataInserimento.ToString("dd/MM/yyyy")</td>
+                                        </tr>
+                                    }
+                                </tbody>
+                            </table>
+
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-xs-6 col-sm-6 col-md-3 col-lg-3">
+                <div class="card" id="storico_iban_block" style="display: block;">
+                    <div class="text-center">
+                        <i class="fas fa-history fa-lg text-warning"></i>
+                        <h6><strong>Storico</strong> % F24</h6>
+                        <div class="body table-responsive">
+                            <table id="storico_f24_tbl" class="table contact_list">
+                                <thead>
+                                    <tr>
+                                        <th style="text-align: center; font-size: 14px;">%</th>
+                                        <th style="text-align: center; font-size: 14px;">DATA</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    @if (Model.F24Percentuale != null)
+                                    {
+                                        foreach (var item in Model.F24Percentuale)
+                                        {
+                                            <tr class="text-center">
+                                                <td>@item.F24</td>
+                                                <td>@item.DataInserimento.ToString("dd/MM/yyyy")</td>
+                                            </tr>
+                                        }
+                                    }
+                                    else
+                                    {
+                                        <tr><td colspan="2"><span class="help-info text-center">Nessun dato</span></td></tr>
+                                    }
+
+
+                                </tbody>
+                            </table>
+
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-xs-6 col-sm-6 col-md-3 col-lg-3">
+                <div class="card" id="storico_iban_block" style="display: block;">
+                    <div class="text-center">
+                        <i class="fas fa-history fa-lg text-warning"></i>
+                        <h6><strong>Storico</strong> % Multilocalizzate</h6>
+                        <div class="body table-responsive">
+                            <table id="storico_f24_tbl" class="table contact_list">
+                                <thead>
+                                    <tr>
+                                        <th style="text-align: center; font-size: 14px;">%</th>
+                                        <th style="text-align: center; font-size: 14px;">DATA</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    @if (Model.MultiLocPercentuale != null)
+                                    {
+                                        foreach (var item in Model.MultiLocPercentuale)
+                                        {
+                                            <tr class="text-center">
+                                                <td>@item.MultiLoc</td>
+                                                <td>@item.DataInserimento.ToString("dd/MM/yyyy")</td>
+                                            </tr>
+                                        }
+                                    }
+                                    else
+                                    {
+                                        <tr><td colspan="2"><span class="help-info text-center">Nessun dato</span></td></tr>
+                                    }
+                                </tbody>
+                            </table>
+
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+        </div>
+}
+
+
+
+<script>
+    $().ready(function () {
+
+            });
+
+    @Html.ButtonCloseModal(false)
+
+</script>
+
+@if (!Model.ReadOnly.GetValueOrDefault())
+{
+    <script>
+
+
+
+    function onSuccessAnagrafica(data) {
+        if (data.isValid) {
+
+            var _ismodal = $(".modal").hasClass('show');
+            if (_ismodal) {
+                updateListRicerca();
+            }
+
+            var _message = data.message;
+
+            $.get("@Url.Action("Anagrafica", "Ebt")", { id: data.ebtId }, function (data) {
+                if (_ismodal) {
+                    showModal_NoHeaderFooter(data);
+                    alertSuccess(_message);
+                }
+                else {
+                    $("#contentrenderbody").html(data);
+                    alertSuccess(_message);
+                }
+            });
+        }
+        else {
+            alertDanger(data.message);
+        }
+    }
+    </script>
+
+    <script src="~/Scripts/unobtrusiveParseForm.js"></script>
+    <script src="~/Scripts/checksumCFPiva.js"></script>
+    <script src="~/Scripts/ifIban.js"></script>
+}

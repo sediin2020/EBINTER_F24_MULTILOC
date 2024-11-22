@@ -1,0 +1,39 @@
+﻿@model Sediin.PraticheRegionali.WebUI.Areas.Backend.Models.EbtRicercaModel
+@using Sediin.PraticheRegionali.WebUI
+
+<div class="row mb-4">
+    <div class="col-md-12">
+
+
+        @Ajax.EncodedAjaxActionLink("Nuovo Ebt", "Anagrafica", "Ebt", null, new AjaxOptions
+        {
+        OnBegin = "alertWaid()",
+        OnSuccess = "showModal_NoHeaderFooter(data); alertClose()",
+        OnFailure = "handleError"
+        }, new { @class = "btn btn-info" })
+
+
+
+    </div>
+</div>
+@Html.RicercaModulo(Html.Partial("RicercaModulo", Model), "Gestione EBT")
+
+@Html.UpdateListRicerca(Url.Action("Ricerca", "Ebt"), true)
+
+
+<!--$('form#ajaxForm').find("button[type='submit']").click-->
+<script type="text/javascript">
+    //$(function () {
+
+    //    //$('form#ajaxForm').submit(function (event) {
+    //    //    eval($(this).attr('onsubmit')); return false;
+    //    //});
+
+    //    //// $('form#ajaxForm').find('a.submit-link').click();
+
+    //    //$('form#ajaxForm').find("button[type='submit']").click();
+    //    alert();
+    //    $('#form0').submit();
+
+    //});
+</script>
