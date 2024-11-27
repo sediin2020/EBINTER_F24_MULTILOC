@@ -28,7 +28,7 @@ namespace Sediin.PraticheRegionali.DOM.Entitys
         public string Pec { get; set; }
 
         [MaxLength(175)]
-        [Required]
+        //[Required]
         [Display(Name = "Codice SAP/INPS")]
         public string Sap { get; set; }
 
@@ -45,36 +45,44 @@ namespace Sediin.PraticheRegionali.DOM.Entitys
         [Required]
         [Display(Name = "% F24")]
         public decimal F24_Percentuale { get; set; }
-        [Required]
+        //[Required]
         [Display(Name = "% Multilocalizzate")]
         public decimal MultiLoc_Percentuale { get; set; }
 
+        public DateTime? Accordo { get; set; }
+
+        public bool Sospeso { get; set; }
+        public DateTime? Data_Sospensione { get; set; }
+
+
         [MaxLength(175)]
-        [Required]
+        //[Required]
         [Display(Name = "Nome Referente")]
         public string ReferenteNome { get; set; }
 
         [MaxLength(175)]
-        [Required]
+        //[Required]
         [Display(Name = "Cognome Referente")]
         public string ReferenteCognome { get; set; }
 
         [MaxLength(175)]
-        [Required]
+        //[Required]
         [EmailAddress]
         [Display(Name = "Email Referente")]
         public string ReferenteEmail { get; set; }
 
         [MaxLength(175)]
-        [Required]
+        //[Required]
         [EmailAddress]
         [Display(Name = "Pec Referente")]
         public string ReferentePec { get; set; }
 
-        [Required]
+        //[Required]
         [MaxLength(50)]
         [Display(Name = "Cellulare Referente")]
         public string ReferenteCellulare { get; set; }
+
+       
 
 
         private int? _RegioneId;
@@ -85,7 +93,13 @@ namespace Sediin.PraticheRegionali.DOM.Entitys
 
         [Required(ErrorMessage = "Provincia e un campo obbligatorio")]
         [DisplayName(displayName: "Provincia")]
-        public int? ProvinciaId { get; set; }
+        public int? ProvinciaId { get; set; }  
+
+        [ForeignKey("RegioneId")]
+        public virtual Regioni Regione { get; set; }
+
+        [ForeignKey("ProvinciaId")]
+        public virtual Province Provincia { get; set; }
 
         //[Required]
         //[DisplayName("Comune")]
@@ -94,12 +108,6 @@ namespace Sediin.PraticheRegionali.DOM.Entitys
         //[Required]
         //[DisplayName("Localita")]
         //public int? LocalitaId { get; set; }
-
-        [ForeignKey("RegioneId")]
-        public virtual Regioni Regione { get; set; }
-
-        [ForeignKey("ProvinciaId")]
-        public virtual Province Provincia { get; set; }
 
         //[ForeignKey("ComuneId")]
         //public virtual Comuni Comune { get; set; }

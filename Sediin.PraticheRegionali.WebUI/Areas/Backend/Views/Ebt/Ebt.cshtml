@@ -24,6 +24,36 @@
 
     <div class="form-horizontal mt-4">
 
+        @if (Model.EbtId != 0)
+        {
+            <div class="row">
+                <div class="col-md-8">
+                    &nbsp;
+                </div>
+                <div class="col-md-4">
+                    <div class="form-group">
+                        <div class="col-md-12">
+                            <label class="form-check-label" style="margin-left:0px" for="Sospeso">
+                                Sospeso:
+                            </label>
+                            <div class="form-check form-switch">
+
+                                @Html.CheckBox("Sospeso", new { @class = "form-check-input" })
+
+                                @Html.TextBoxForReadOnly(model => model.Data_Sospensione, new
+                           {
+                               @class = "form-control",
+                               data_inputmask_alias = "datetime",
+                               data_inputmask_inputformat = "dd/mm/yyyy"
+                           }, "{0:dd/MM/yyyy}")
+                                @Html.ValidationMessageFor(model => model.Data_Sospensione, "", new { @class = "text-danger" })
+
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        }
 
         <div class="row">
             <h5>
@@ -45,7 +75,7 @@
                     Codreg = Model.Regione?.CODREG,
 
                     Indirizzo = "", //Model.Indirizzo,
-                    //ComuneId = Model.ComuneId,
+                                    //ComuneId = Model.ComuneId,
                     RegioneId = Model.RegioneId,
                     //LocalitaId = Model.LocalitaId,
                     ProvinciaId = Model.ProvinciaId,
@@ -83,10 +113,9 @@
                 </div>
             </div>
         </div>
-
         <div class="row mt-3">
 
-            <div class="col-md-2">
+            <div class="col-md-4">
                 <div class="form-group">
                     @Html.LabelFor(model => model.Sap, htmlAttributes: new { @class = "control-label" })
                     <div class="col-md-12">
@@ -95,6 +124,23 @@
                     </div>
                 </div>
             </div>
+            <div class="col-md-4">
+                <div class="form-group">
+                    @Html.LabelFor(model => model.Accordo, htmlAttributes: new { @class = "control-label" })
+                    <div class="col-md-12">
+                        @Html.TextBoxForReadOnly(model => model.Accordo, new
+                   {
+                       @class = "form-control",
+                       data_inputmask_alias = "datetime",
+                       data_inputmask_inputformat = "dd/mm/yyyy"
+                   }, "{0:dd/MM/yyyy}")
+                        @Html.ValidationMessageFor(model => model.Accordo, "", new { @class = "text-danger" })
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="row mt-3">
             <div class="col-md-4">
                 <div class="form-group">
                     @Html.LabelFor(model => model.Iban_Operativo, htmlAttributes: new { @class = "control-label" })
@@ -116,19 +162,22 @@
                 </div>
             </div>
         </div>
+
         <div class="row mt-3">
-
-
             <div class="col-md-4">
                 <div class="form-group">
                     @Html.Hidden("F24_Percentuale_Old", Model.F24_Percentuale)
                     @Html.LabelFor(model => model.F24_Percentuale, htmlAttributes: new { @class = "control-label" })
                     <div class="col-md-12">
                         @Html.TextBoxForReadOnly(model => model.F24_Percentuale, new
-                        {
-                            @class = "form-control",
-                            data_inputmask_alias = "mask",
-                       data_inputmask_inputformat = "###,##"
+                   {
+                       @class = "form-control",
+                       data_inputmask_alias = "decimal",
+                       data_inputmask_max = "100",
+                       data_inputmask_digits = "2",
+                       data_inputmask_decimalSeparator=",",
+                       data_inputmask_allowMinus = "false",
+                       data_inputmask_digitsOptional = "false",
                    })
                         @Html.ValidationMessageFor(model => model.F24_Percentuale, "", new { @class = "text-danger" })
                     </div>
@@ -139,7 +188,15 @@
                     @Html.Hidden("MultiLoc_Percentuale_Old", Model.MultiLoc_Percentuale)
                     @Html.LabelFor(model => model.MultiLoc_Percentuale, htmlAttributes: new { @class = "control-label" })
                     <div class="col-md-12">
-                        @Html.TextBoxForReadOnly(model => model.MultiLoc_Percentuale, new { @class = "form-control" })
+                        @Html.TextBoxForReadOnly(model => model.MultiLoc_Percentuale, new
+                   {
+                       @class = "form-control",
+                       data_inputmask_alias = "decimal", 
+                       data_inputmask_max = "100",
+                       data_inputmask_digits ="2",
+                       data_inputmask_allowMinus="false", 
+                       data_inputmask_digitsOptional="false",
+                   })
                         @Html.ValidationMessageFor(model => model.MultiLoc_Percentuale, "", new { @class = "text-danger" })
                     </div>
                 </div>
@@ -250,7 +307,7 @@
         </div>
 
 
-        <hr/>
+        <hr />
         <div class="row">
             <div class="col-xs-12 col-sm-12 col-md-6 col-lg-6">
                 <div class="card" id="storico_iban_block" style="display: block;">
@@ -266,12 +323,19 @@
                                     </tr>
                                 </thead>
                                 <tbody>
-                                    @foreach (var item in Model.IbanStorico)
+                                    @if (Model.IbanStorico?.Count >0 )
                                     {
-                                        <tr class="text-center">
-                                            <td>@item.Iban_Operativo</td>
-                                            <td>@item.DataInserimento.ToString("dd/MM/yyyy")</td>
-                                        </tr>
+                                        foreach (var item in Model.IbanStorico.Where(i => !string.IsNullOrEmpty(i.Iban_Operativo)))
+                                        {
+                                            <tr class="text-center">
+                                                <td>@item.Iban_Operativo</td>
+                                                <td>@item.DataInserimento.ToString("dd/MM/yyyy")</td>
+                                            </tr>
+                                        }
+                                    }
+                                    else
+                                    {
+                                        <tr><td colspan="2"><span class="help-info text-center">Nessun dato</span></td></tr>
                                     }
                                 </tbody>
                             </table>
@@ -294,7 +358,7 @@
                                     </tr>
                                 </thead>
                                 <tbody>
-                                    @if (Model.F24Percentuale != null)
+                                    @if (Model.F24Percentuale?.Count>0)
                                     {
                                         foreach (var item in Model.F24Percentuale)
                                         {
@@ -331,7 +395,7 @@
                                     </tr>
                                 </thead>
                                 <tbody>
-                                    @if (Model.MultiLocPercentuale != null)
+                                    @if (Model.MultiLocPercentuale?.Count>0)
                                     {
                                         foreach (var item in Model.MultiLocPercentuale)
                                         {
@@ -354,18 +418,19 @@
             </div>
 
         </div>
-        </div>
+    </div>
 }
 
 
 
 <script>
     $().ready(function () {
-
-            });
-
-    @Html.ButtonCloseModal(false)
-
+        $('#Accordo').inputmask();
+        $('#Sospeso').inputmask();
+        $('#F24_Percentuale_xx').inputmask();
+        $('#MultiLoc_Percentuale').inputmask();
+    });
+       @Html.ButtonCloseModal(false)
 </script>
 
 @if (!Model.ReadOnly.GetValueOrDefault())

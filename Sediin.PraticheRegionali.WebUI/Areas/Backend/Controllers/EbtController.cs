@@ -105,7 +105,6 @@ namespace Sediin.PraticheRegionali.WebUI.Areas.Backend.Controllers
         {
             try
             {
-
                 var model = new EbtViewModel();
 
                 Ebt _ebt = null;
@@ -120,10 +119,10 @@ namespace Sediin.PraticheRegionali.WebUI.Areas.Backend.Controllers
 
                 if (_ebt != null)
                 {
-                    if (_ebt.IbanStorico.Count > 0)
-                    {
-                        model.IbanStorico = _ebt.IbanStorico;
-                    }
+                    model.IbanStorico = _ebt.IbanStorico;
+                    model.F24Percentuale = _ebt.F24Percentuale;
+                    model.MultiLocPercentuale = _ebt.MultiLocPercentuale;
+                    model.F24_Percentuale = _ebt.F24_Percentuale/100; 
                 }
 
                 //se ebt e già inserita
@@ -177,6 +176,12 @@ namespace Sediin.PraticheRegionali.WebUI.Areas.Backend.Controllers
                     throw new Exception("EBT Inps già registrato");
                 }
 
+                if (model.Sospeso && !model.Data_Sospensione.HasValue)
+                    ModelState.AddModelError("Data_Sospensione", "Data sospensione obbilgatorio");
+
+                if (!model.Sospeso && model.Data_Sospensione.HasValue)
+                    model.Data_Sospensione = null;
+
                 if (!ModelState.IsValid)
                 {
                     throw new Exception(ModelStateErrorToString(ModelState));
@@ -184,8 +189,8 @@ namespace Sediin.PraticheRegionali.WebUI.Areas.Backend.Controllers
 
                 //cast to ebt model
                 var _resultModel = Reflection.CreateModel<Ebt>(model);
-                //_resultModel.CodiceFiscale = _resultModel.CodiceFiscale.ToUpper();
-
+                _resultModel.F24_Percentuale = model.MultiLoc_Percentuale / 100;
+                _resultModel.MultiLoc_Percentuale=model.MultiLoc_Percentuale / 100;
                 unitOfWork.EbtRepository.InsertOrUpdate(_resultModel);
 
                 /////////////////////////////////////

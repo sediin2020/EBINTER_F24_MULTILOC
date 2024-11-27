@@ -36,67 +36,13 @@
       "FriendlyName": "Admin"
     },
     {
-      "RoleId": "9bbd74b3-e84c-45db-ab29-8ca31a6632f8",
-      "Rolename": "Azienda",
-      "Descrizione": "",
-      "Ordine": 3,
-      "Attivo": true,
-      "InsertAdmin": false,
-      "FriendlyName": "Azienda"
-    },
-    {
-      "RoleId": "2cbe3ce8-5bb6-4da0-b195-4b6245cb553e",
-      "Rolename": "Dipendente",
-      "Descrizione": "",
-      "Ordine": 4,
-      "Attivo": true,
-      "InsertAdmin": false,
-      "FriendlyName": "Dipendente"
-    },
-    {
-      "RoleId": "13b16efb-140c-44e9-ac72-1e4b9ae2dab8",
-      "Rolename": "Sp_CAF",
-      "Descrizione": "Inserisce richieste per Dipendenti, gestisce Dipendenti",
-      "Ordine": 5,
-      "Attivo": false,
-      "InsertAdmin": true,
-      "FriendlyName": "Sportello CAF"
-    },
-    {
-      "RoleId": "89ca9ffa-3c17-4529-a73f-e03b4bf81492",
-      "Rolename": "Sp_Consulente",
-      "Descrizione": "Inserisce richieste per Aziende, gestisce Aziende",
-      "Ordine": 8,
-      "Attivo": true,
-      "InsertAdmin": false,
-      "FriendlyName": "Consulente"
-    },
-    {
-      "RoleId": "8399dd0f-dcd3-4491-9ad9-96f321825729",
-      "Rolename": "Sp_Datoriale",
-      "Descrizione": "Inserisce richieste per Aziende e Dipendenti, gestisce  Aziende e Dipendenti",
-      "Ordine": 6,
-      "Attivo": true,
-      "InsertAdmin": true,
-      "FriendlyName": "Sportello Datoriale"
-    },
-    {
-      "RoleId": "d5d6fdbc-d8d7-4c5f-aa49-6c25e0c002d5",
-      "Rolename": "Sp_Sindacale",
-      "Descrizione": "Inserisce richieste per Aziende e Dipendenti, gestisce Aziende e Dipendenti",
-      "Ordine": 7,
-      "Attivo": true,
-      "InsertAdmin": true,
-      "FriendlyName": "Sportello Sindacale"
-    },
-    {
       "RoleId": "3148984a-89c4-4e87-88a9-06735dfce34e",
       "Rolename": "Sp_Ebinter",
-      "Descrizione": "Inserisce richieste per Aziende e Dipendenti, gestisce Aziende e Dipendenti",
+      "Descrizione": "Amministratore del Portale",
       "Ordine": 7,
       "Attivo": true,
       "InsertAdmin": true,
-      "FriendlyName": "Sportello EBINTER"
+      "FriendlyName": "Operatore EBINTER"
     }
   ],
   "Ftp": {

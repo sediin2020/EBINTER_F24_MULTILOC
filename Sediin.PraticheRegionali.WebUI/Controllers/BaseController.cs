@@ -11,6 +11,7 @@ using System.Web.Mvc;
 using Microsoft.Ajax.Utilities;
 using Microsoft.AspNet.Identity;
 using Microsoft.AspNet.Identity.Owin;
+using Microsoft.AspNetCore.Http;
 using Microsoft.Owin.Security;
 using MimeKit;
 using Sediin.MVC.HtmlHelpers;
@@ -170,9 +171,39 @@ namespace Sediin.PraticheRegionali.WebUI.Controllers
             return filename;
         }
 
+        public  string GetBaseFileAndValid(IFormFile file)
+        {
+            if (file == null || file.Length == 0)
+                throw new Exception("File non valido.");
+
+            if (!file.FileName.ToLower().EndsWith(".pdf")
+                && !file.FileName.ToLower().EndsWith(".txt")
+                && !file.FileName.ToLower().EndsWith(".xml")
+                && !file.FileName.ToLower().EndsWith(".jpeg")
+                && !file.FileName.ToLower().EndsWith(".png")
+                && !file.FileName.ToLower().EndsWith(".zip")
+                && !file.FileName.ToLower().EndsWith(".rar")
+                && !file.FileName.ToLower().EndsWith(".csv"))
+                throw new Exception("File non supportato.");
+
+            if (file.Length > 0)
+            {
+
+                using (var ms = new MemoryStream())
+                {
+                    file.CopyTo(ms);
+                    var fileBytes = ms.ToArray();
+                    return Convert.ToBase64String(fileBytes);
+                }
+
+            }
+
+            throw new Exception("Impossibile leggere file.");
+        }
+
         public UnitOfWork unitOfWork = new UnitOfWork();
 
-        public string RenderTemplate(string template, object model, HttpContext context = null)
+        public string RenderTemplate(string template, object model, System.Web.HttpContext context = null)
         {
             return PartialView($"~/Views/Template/{template}.cshtml").RenderViewToString(model, context);
         }

@@ -8,7 +8,7 @@
     {
         var _currentMenu = Model.FirstOrDefault(x => x.Codmenu == codmenu);
 
-        if (_currentMenu.CodmenuPadre.GetValueOrDefault() != 0)
+        if (_currentMenu?.CodmenuPadre.GetValueOrDefault() != 0)
         {
             index++;
             CalcolaPosition(_currentMenu.CodmenuPadre.GetValueOrDefault(), ref index);

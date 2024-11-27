@@ -58,6 +58,8 @@
     <Compile Include="DAL\UnitOfWork.cs" />
     <Compile Include="Data\SediinPraticheRegionaliDbContext.cs" />
     <Compile Include="DbScript\DbProvider.cs" />
+    <Compile Include="Entitys\Ebt.cs" />
+    <Compile Include="Entitys\ModuloF24.cs" />
     <Compile Include="Entitys\Utente.cs" />
     <Compile Include="Enum.cs" />
     <Compile Include="Entitys\AvvisoUtente.cs" />
@@ -73,13 +75,25 @@
     <Compile Include="Entitys\Uniemens.cs" />
     <Compile Include="Extension.cs" />
     <Compile Include="Importer\ImportProvider.cs" />
-    <Compile Include="Migrations\202305111225301_offcan.cs" />
-    <Compile Include="Migrations\202305111225301_offcan.designer.cs">
-      <DependentUpon>202305111225301_offcan.cs</DependentUpon>
+    <Compile Include="Migrations\202411201507232_createTables.cs" />
+    <Compile Include="Migrations\202411201507232_createTables.designer.cs">
+      <DependentUpon>202411201507232_createTables.cs</DependentUpon>
     </Compile>
-    <Compile Include="Migrations\202305150902058_tot.cs" />
-    <Compile Include="Migrations\202305150902058_tot.designer.cs">
-      <DependentUpon>202305150902058_tot.cs</DependentUpon>
+    <Compile Include="Migrations\202411220915322_EBT_tableCreate.cs" />
+    <Compile Include="Migrations\202411220915322_EBT_tableCreate.designer.cs">
+      <DependentUpon>202411220915322_EBT_tableCreate.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\202411221112282_EBT_tableCreate1.cs" />
+    <Compile Include="Migrations\202411221112282_EBT_tableCreate1.designer.cs">
+      <DependentUpon>202411221112282_EBT_tableCreate1.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\202411250956424_EBT_tableCreate2.cs" />
+    <Compile Include="Migrations\202411250956424_EBT_tableCreate2.designer.cs">
+      <DependentUpon>202411250956424_EBT_tableCreate2.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\202411260922025_prospettoTable.cs" />
+    <Compile Include="Migrations\202411260922025_prospettoTable.designer.cs">
+      <DependentUpon>202411260922025_prospettoTable.cs</DependentUpon>
     </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Models\UniemensModel - Copia %282%29.cs" />
@@ -134,11 +148,20 @@
     </PackageReference>
   </ItemGroup>
   <ItemGroup>
-    <EmbeddedResource Include="Migrations\202305111225301_offcan.resx">
-      <DependentUpon>202305111225301_offcan.cs</DependentUpon>
+    <EmbeddedResource Include="Migrations\202411201507232_createTables.resx">
+      <DependentUpon>202411201507232_createTables.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="Migrations\202305150902058_tot.resx">
-      <DependentUpon>202305150902058_tot.cs</DependentUpon>
+    <EmbeddedResource Include="Migrations\202411220915322_EBT_tableCreate.resx">
+      <DependentUpon>202411220915322_EBT_tableCreate.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\202411221112282_EBT_tableCreate1.resx">
+      <DependentUpon>202411221112282_EBT_tableCreate1.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\202411250956424_EBT_tableCreate2.resx">
+      <DependentUpon>202411250956424_EBT_tableCreate2.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\202411260922025_prospettoTable.resx">
+      <DependentUpon>202411260922025_prospettoTable.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

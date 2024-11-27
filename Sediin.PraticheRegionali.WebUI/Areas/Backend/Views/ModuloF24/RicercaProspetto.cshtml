@@ -1,0 +1,39 @@
+﻿@model Sediin.PraticheRegionali.WebUI.Areas.Backend.Models.ProspettoRicercaModel
+@using Sediin.PraticheRegionali.WebUI
+
+<div class="row mb-4">
+    <div class="col-md-12">
+
+
+        @Ajax.EncodedAjaxActionLink("Nuovo Prospetto", "NuovoProspetto", "ModuloF24", null, new AjaxOptions
+        {
+        OnBegin = "alertWaid()",
+        OnSuccess = "showModal_NoHeaderFooter(data); alertClose()",
+        OnFailure = "handleError"
+        }, new { @class = "btn btn-info" })
+
+
+
+    </div>
+</div>
+@Html.RicercaModulo(Html.Partial("RicercaModuloProspetto", Model), "Gestione Quote")
+
+@Html.UpdateListRicerca(Url.Action("RicercaProspetto", "ModuloF24"), true)
+
+
+<!--$('form#ajaxForm').find("button[type='submit']").click-->
+<script type="text/javascript">
+    //$(function () {
+
+    //    //$('form#ajaxForm').submit(function (event) {
+    //    //    eval($(this).attr('onsubmit')); return false;
+    //    //});
+
+    //    //// $('form#ajaxForm').find('a.submit-link').click();
+
+    //    //$('form#ajaxForm').find("button[type='submit']").click();
+    //    alert();
+    //    $('#form0').submit();
+
+    //});
+</script>

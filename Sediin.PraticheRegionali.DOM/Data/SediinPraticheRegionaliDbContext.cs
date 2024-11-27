@@ -24,7 +24,14 @@ namespace Sediin.PraticheRegionali.DOM.Data
             modelBuilder.Conventions.Remove<OneToManyCascadeDeleteConvention>();
         }
 
+        public DbSet<Quote> Quote { get; set; }
+        public DbSet<Prospetto> Prospetto { get; set; }
         public DbSet<Ebt> Ebt { get; set; }
+        public DbSet<Utente> Utenti { get; set; }
+        public DbSet<Regioni> Regioni { get; set; }
+        public DbSet<Province> Province { get; set; }
+        public DbSet<Comuni> Comuni { get; set; }
+        public DbSet<Localita> Localita { get; set; }
 
         /// <summary>
         /// /////////////////////////////////////////////
@@ -32,14 +39,6 @@ namespace Sediin.PraticheRegionali.DOM.Data
         public DbSet<Azienda> Azienda { get; set; }
 
         //  Gestione Tabelle >> Metropoliotane <<
-        public DbSet<Regioni> Regioni { get; set; }
-
-        public DbSet<Province> Province { get; set; }
-
-        public DbSet<Comuni> Comuni { get; set; }
-
-        public DbSet<Localita> Localita { get; set; }
-
         public DbSet<Motivazioni> Motivazioni { get; set; }
 
         public DbSet<Tipologia> Tipologia { get; set; }
@@ -56,7 +55,7 @@ namespace Sediin.PraticheRegionali.DOM.Data
 
         public DbSet<StatoPratica> StatoPratica { get; set; }
 
-        public DbSet<Utente> Utenti { get; set; }
+       
 
         public DbSet<TipoRichiesta> TipoRichiesta { get; set; }
 

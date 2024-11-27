@@ -548,10 +548,12 @@
     <Compile Include="Areas\Backend\Controllers\DipendenteController.cs" />
     <Compile Include="Areas\Backend\Controllers\EbtController.cs" />
     <Compile Include="Areas\Backend\Controllers\LiquidazioneController.cs" />
+    <Compile Include="Areas\Backend\Controllers\ModuloF24Controller.cs" />
     <Compile Include="Areas\Backend\Controllers\SportelloController.cs" />
     <Compile Include="Areas\Backend\Controllers\StatisticheController.cs" />
     <Compile Include="Areas\Backend\Controllers\UniemensController.cs" />
     <Compile Include="Areas\Backend\Models\Chart.cs" />
+    <Compile Include="Areas\Backend\Models\Prospetto.cs" />
     <Compile Include="Areas\Backend\Models\Ebt.cs" />
     <Compile Include="Areas\Backend\Models\Sportello.cs" />
     <Compile Include="Areas\Backend\Models\Dipendente.cs" />
@@ -3451,6 +3453,10 @@
     <Content Include="Areas\Backend\Views\Ebt\Ricerca.cshtml" />
     <Content Include="Areas\Backend\Views\Ebt\RicercaList.cshtml" />
     <Content Include="Areas\Backend\Views\Ebt\RicercaModulo.cshtml" />
+    <Content Include="Areas\Backend\Views\ModuloF24\Prospetto.cshtml" />
+    <Content Include="Areas\Backend\Views\ModuloF24\RicercaProspetto.cshtml" />
+    <Content Include="Areas\Backend\Views\ModuloF24\RicercaListProspetto.cshtml" />
+    <Content Include="Areas\Backend\Views\ModuloF24\RicercaModuloProspetto.cshtml" />
     <None Include="Scripts\jquery-3.6.0.intellisense.js" />
     <Content Include="Scripts\inputs.js" />
     <Content Include="Scripts\jquery-3.6.0.js" />
@@ -3671,6 +3677,7 @@
     <Content Include="Uploads\MANUALE_PIATTAFORMA_REGIONALE_EBAC.pdf" />
     <Content Include="Views\Template\Azienda\ContributoMail.cshtml" />
     <Content Include="Views\Template\Liquidazione\AvvenutoPagamentoMail.cshtml" />
+    <Content Include="Views\Home\Index - Copy.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Areas\Admin\Data\" />

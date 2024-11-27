@@ -74,7 +74,7 @@ namespace Sediin.PraticheRegionali.WebUI.Areas.Backend.Models
 
         [MaxLength(25)]
         [MinLength(4, ErrorMessage = "Il campo Username deve essere almeno di 4 caratteri.")]
-        [ChecksumCFPiva(ErrorMessage = "CF / P.Iva non è valido", Required = false, RequiredPivaOrCF = true)]
+        [ChecksumCFPiva(ErrorMessage = "CF / P.Iva non è valido", Required = false, RequiredPivaOrCF = false)]
         [Required]
         public string UserName { get; set; }
 

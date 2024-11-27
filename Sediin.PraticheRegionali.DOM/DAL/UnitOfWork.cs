@@ -13,6 +13,8 @@ namespace Sediin.PraticheRegionali.DOM.DAL
         private GenericRepository<IbanStorico> ibanStoricoRepository;
         private GenericRepository<F24Percentuale> f24PercentualeRepository;
         private GenericRepository<MultiLocPercentuale> multiLocPercentualeRepository;
+        private GenericRepository<Prospetto> prospettoRepository;
+        private GenericRepository<Quote> quoteRepository;
 
         public GenericRepository<Ebt> EbtRepository
         {
@@ -58,6 +60,32 @@ namespace Sediin.PraticheRegionali.DOM.DAL
                 return multiLocPercentualeRepository;
             }
         }
+
+        public GenericRepository<Prospetto> ProspettoRepository
+        {
+            get
+            {
+                if (this.prospettoRepository == null)
+                {
+                    this.prospettoRepository = new GenericRepository<Prospetto>(context);
+                }
+                return prospettoRepository;
+            }
+        }
+        public GenericRepository<Quote> QuoteRepository
+        {
+            get
+            {
+                if (this.quoteRepository == null)
+                {
+                    this.quoteRepository = new GenericRepository<Quote>(context);
+                }
+                return quoteRepository;
+            }
+        }
+
+
+
         /// <summary>
         /// /////////////////////////////////////////////////////////////////
         /// </summary>

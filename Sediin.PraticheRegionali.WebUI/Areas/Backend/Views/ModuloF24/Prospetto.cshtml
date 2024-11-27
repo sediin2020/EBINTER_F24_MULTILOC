@@ -1,0 +1,198 @@
+﻿@model Sediin.PraticheRegionali.WebUI.Areas.Backend.Models.ProspettoViewModel
+@using Sediin.PraticheRegionali.WebUI
+
+@Scripts.Render("~/bundles/jqueryval")
+
+@{
+
+}
+
+@using (Ajax.BeginForm("NuovoProspetto", new { id = "form_prospetto" }, new AjaxOptions
+{
+    OnBegin = "alertWaid()",
+    OnSuccess = "onSuccessAnagrafica",
+    OnFailure = "handleError"
+}))
+{
+
+
+    @Html.AntiForgeryToken()
+    @Html.HiddenFor(model => model.ProspettoId)
+
+    <h3>Prospetto</h3>
+    <hr />
+
+    <div class="form-horizontal mt-4">
+
+
+        <div class="row mt-3">
+
+            <div class="col-md-2">
+                <div class="form-group">
+                    @Html.LabelFor(model => model.Anno, htmlAttributes: new { @class = "control-label" })
+                    <div class="col-md-12">
+                        @Html.TextBoxForReadOnly(model => model.Anno,
+                       new
+                       {
+                           @class = "form-control",
+                           data_inputmask_alias = "integer",
+                           data_inputmask_min = "2023",
+                           data_inputmask_max = "2099",
+                           data_inputmask_allowMinus = "false",
+                       })
+                        <label class="badge bg-info">es: 2024</label>
+                        @Html.ValidationMessageFor(model => model.Anno, "", new { @class = "text-danger" })
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-2">
+                <div class="form-group">
+                    @Html.LabelFor(model => model.Mese, htmlAttributes: new { @class = "control-label" })
+                    <div class="col-md-12">
+                        @Html.TextBoxForReadOnly(model => model.Mese, new
+                   {
+                       @class = "form-control",
+                       data_inputmask_alias = "integer",
+                       data_inputmask_min = "1",
+                       data_inputmask_max = "12",
+                       data_inputmask_allowMinus = "false",
+                       data_inputmask_inputformat = "99"
+                   })
+                        <label class="badge bg-info">es: 1,2..12</label>
+                        @Html.ValidationMessageFor(model => model.Mese, "", new { @class = "text-danger" })
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="row mt-3">
+
+            <div class="col-md-6">
+                <div class="form-group">
+                    @Html.LabelFor(model => model.Descrizione, htmlAttributes: new { @class = "control-label" })
+                    <div class="col-md-12">
+                        @Html.TextBoxForReadOnly(model => model.Descrizione, new { @class = "form-control" })
+                        @Html.ValidationMessageFor(model => model.Descrizione, "", new { @class = "text-danger" })
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="row mt-3">
+            <div class="col-md-6">
+                @Html.LabelFor(m => m.File_Prospetto, htmlAttributes: new { @class = "control-label" })
+                @Html.HiddenFor(m => m.File_Prospetto)
+                <div class="custom-file">
+                    <input type="file" class="form-control" id="fileUpload1" accept=".pdf"
+                           data-fileupload-tipoallegato="File_Prospetto">
+                    <label class="badge bg-info"> in formato .csv (max: 16MB)</label>
+                </div>
+                @Html.ValidationMessageFor(model => model.File_Prospetto, "", new { @class = "text-danger" })
+
+            </div>
+            <script>
+                $('input[type=file]').on('change', function () {
+                    
+                    var _tipoAllegato = $(this).data("fileupload-tipoallegato");
+
+                    var _span = $("span[data-valmsg-for='" + _tipoAllegato + "']");
+
+                    const file = document.querySelector("[data-fileupload-tipoallegato='" + _tipoAllegato + "']").files[0];
+                    const reader = new FileReader();
+
+                    reader.addEventListener("load", function () {
+                        var myRe = new RegExp("([a-zA-Z0-9\s_\\.\-:])+(['.csv'])$", "gi");
+
+                        if (!myRe.exec(getFileExtension(file.name))) {
+                            _span.addClass("field-validation-error");
+                            _span.html("Estensione non valida");
+                            _span.show();
+                            return;
+                        }
+
+                        if (getFileSize(file.size) > 16) {
+                            _span.addClass("field-validation-error");
+                            _span.html("Dimensione massima 16MB");
+                            _span.show();
+                            return;
+                        }
+
+                        $("#" + _tipoAllegato).val(reader.result);
+
+                        _span.hide();
+                        _span.html("");
+                    }, false);
+
+                    if (file) {
+                        reader.readAsDataURL(file);
+                    }
+                });
+
+            </script>
+
+        </div>
+
+
+
+
+        <div class="row mt-3">
+            <div class="col-md-12 text-danger">
+                <strong>* Campi obbligatori</strong>
+            </div>
+        </div>
+
+        <div class="form-group text-center mt-3">
+            <hr />
+            <button type="submit" class="btn btn-primary">
+                @if (Model.ProspettoId == 0)
+                {
+                    <span>Inserisci Prospetto</span>
+                }
+                else
+                {
+                    <span>Aggiorna dati Prospetto</span>
+                }
+            </button>
+            <button id="buttonCloseModal" type="button" onclick="hideModal()" class="btn btn-danger">
+                Chiudi finestra
+            </button>
+        </div>
+    </div>
+}
+
+
+
+<script>
+    $().ready(function () {
+
+        $('#Anno').inputmask();
+        $('#Mese').inputmask();
+
+            });
+
+    @Html.ButtonCloseModal(false)
+
+</script>
+
+@if (!Model.ReadOnly.GetValueOrDefault())
+{
+    <script>
+
+
+
+    function onSuccessAnagrafica(data) {
+        if (data.isValid) {
+            updateListRicerca();
+            var _message = data.message;
+            alertSuccess(_message);
+            /*hideModal();*/
+        }
+        else {
+            alertDanger(data.message);
+        }
+    }
+    </script>
+
+    <script src="~/Scripts/unobtrusiveParseForm.js"></script>
+    <script src="~/Scripts/checksumCFPiva.js"></script>
+    <script src="~/Scripts/ifIban.js"></script>
+}

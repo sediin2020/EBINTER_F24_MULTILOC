@@ -1,4 +1,7 @@
-﻿
+﻿@using Sediin.PraticheRegionali.WebUI.Models
+@model LoginViewModel
+
+@Scripts.Render("~/bundles/jqueryval")
 
 <style>
     .pdescrizione {
@@ -22,135 +25,92 @@
     </div>
 
 
-    <div class="col-md-4 mb-3 bg-image hover-zoom">
-        <div class="card h-100">
-            <div class="card-body">
+    @using (Ajax.BeginForm("Login", "Account", new AjaxOptions
+    {
+        OnBegin = "alertWaid()",
+        OnSuccess = "onSuccessLogin"
+    }))
+    {
+        if (TempData["message"] != null)
+        {
+            <div class="alert alert-danger mt-5">@Html.Raw(TempData["message"])</div>
+        }
 
-                <h4 class="card-title text-center" style="min-height:40px">Aziende</h4>
+        <div class="row">
+            @*<div>Utilizzare un account locale per eseguire l'accesso.</div>*@
 
-                <img class="img-fluid img-thumbnail rounded mb-3"
-                     src="~/Content/images/aziende.png">
+            <div class="col-md-6 offset-md-4 offset-lg-4">
+                @Html.AntiForgeryToken()
 
-                <a href="@Url.Action("Login","Account")"
-                   data-ajax="true"
-                   data-ajax-success="onSuccessGet('Login Azienda', data)"
-                   data-ajax-begin="alertWaid()"
-                   class="btn btn-sm btn-warning col-md-12 col-sm-12 mt-1">Accedi</a>
-                <a href="@Url.Action("Azienda","Registrazione")"
-                   data-ajax="true"
-                   data-ajax-success="onSuccessGet('Registrazione Azienda', data)"
-                   data-ajax-begin="alertWaid()"
-                   class="btn btn-sm btn-primary col-md-12 col-sm-12 mt-1">Registrazione</a>
+                @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+                <div class="form-group">
+                    @Html.LabelFor(m => m.Username, new { @class = "col-md-12 control-label" })
+                    <div class="col-md-6">
+                        @Html.TextBoxFor(m => m.Username, new { @class = "form-control" })
+                        @Html.ValidationMessageFor(m => m.Username, "", new { @class = "text-danger" })
+                    </div>
+                </div>
+                <div class="form-group">
+                    @Html.LabelFor(m => m.Password, new { @class = "col-md-12 control-label" })
+                    <div class="col-md-6">
+                        @Html.PasswordFor(m => m.Password, new { @class = "form-control" })
+                        @Html.ValidationMessageFor(m => m.Password, "", new { @class = "text-danger" })
+                    </div>
+                </div>
+                @*<div class="form-group">
+                        <div class="col-md-offset-2 col-md-10">
+                            <div class="checkbox">
+                                @Html.CheckBoxFor(m => m.RememberMe)
+                                @Html.LabelFor(m => m.RememberMe)
+                            </div>
+                        </div>
+                    </div>*@
 
 
+                <div class="form-group mt-3">
 
-            </div>
+                    <a href="@Url.Action("ForgotPassword","Account")"
+                       data-ajax="true"
+                       data-ajax-success="onSuccessGet('Recupero Password', data)"
+                       data-ajax-begin="alertWaid()">Dimenticato la password?</a>
+                </div>
 
-        </div>
-    </div>
-    <div class="col-md-4 mb-3 bg-image hover-zoom">
-        <div class="card h-100">
-            <div class="card-body">
 
-                <h4 class="card-title text-center" style="min-height:40px">Consulenti</h4>
+                @if (!Request.IsAjaxRequest())
+                {
+                    <div class="form-group mt-5">
+                        <div class="col-md-offset-2 col-md-10">
+                            <input type="submit" value="Accedi" class="btn btn-warning" />
+                        </div>
+                    </div>
 
-                <img class="img-fluid img-thumbnail rounded mb-3"
-                     src="~/Content/images/consulenti.png">
-
-                <a href="@Url.Action("Login","Account")"
-                   data-ajax="true"
-                   data-ajax-success="onSuccessGet('Login Consulenti', data)"
-                   data-ajax-begin="alertWaid()"
-                   class="btn btn-sm btn-warning col-md-12 col-sm-12 mt-1">Accedi</a>
-                <a href="@Url.Action("Consulente","Registrazione")"
-                   data-ajax="true"
-                   data-ajax-success="onSuccessGet('Registrazione Consulenti', data)"
-                   data-ajax-begin="alertWaid()"
-                   class="btn btn-sm btn-primary col-sm-12 mt-1">Registrazione</a>
-
-            </div>
-        </div>
-    </div>
-    <div class="col-md-4 mb-3 bg-image hover-zoom">
-        <div class="card h-100">
-            <div class="card-body">
-
-                <h4 class="card-title text-center" style="min-height:40px">Dipendenti</h4>
-                <img class="img-fluid img-thumbnail rounded mb-3"
-                     src="~/Content/images/dipendenti.png">
-
-                <a href="@Url.Action("Login","Account")"
-                   data-ajax="true"
-                   data-ajax-success="onSuccessGet('Login Dipendente', data)"
-                   data-ajax-begin="alertWaid()"
-                   class="btn btn-sm btn-warning col-sm-12 mt-1">Accedi</a>
-                <a href="@Url.Action("Dipendente","Registrazione")"
-                   data-ajax="true"
-                   data-ajax-success="onSuccessGet('Registrazione Dipendente', data)"
-                   data-ajax-begin="alertWaid()"
-                   class="btn btn-sm btn-primary col-sm-12 mt-1">Registrazione</a>
-
+                }
             </div>
         </div>
-    </div>
-    <div class="col-md-4 mb-3 bg-image hover-zoom">
-        <div class="card h-100">
-            <div class="card-body">
-
-                <h4 class="card-title text-center" style="min-height:40px">Sportello Datoriale</h4>
-                <img class="img-fluid img-thumbnail rounded mb-3"
-                     src="~/Content/images/datoriali.png">
-
-
-                <a href="@Url.Action("Login","Account")"
-                   data-ajax="true"
-                   data-ajax-success="onSuccessGet('Login Sportello Datoriale', data)"
-                   data-ajax-begin="alertWaid()"
-                   class="btn btn-sm btn-warning col-sm-12 mt-1">Accedi</a>
+        if (Request.IsAjaxRequest())
+        {
+            <div class="modal-footer mt-5">
+                <button type="submit" class="btn btn-warning">Accedi</button>
+                <button type="button" onclick="hideModal()" class="btn btn-primary">Chiudi</button>
             </div>
-        </div>
-    </div>
-    <div class="col-md-4 mb-3 bg-image hover-zoom">
-        <div class="card h-100">
-            <div class="card-body">
-
-                <h4 class="card-title text-center" style="min-height:40px">Sportello Sindacale</h4>
-                <img class="img-fluid img-thumbnail rounded mb-3"
-                     src="~/Content/images/sindacali.png">
-
-                <a href="@Url.Action("Login","Account")"
-                   data-ajax="true"
-                   data-ajax-success="onSuccessGet('Login Sportello Sindacale', data)"
-                   data-ajax-begin="alertWaid()"
-                   class="btn btn-sm btn-warning col-md-12 col-sm-12 mt-1">Accedi</a>
-            </div>
-        </div>
-    </div>
-    <div class="col-md-4 mb-3 bg-image hover-zoom">
-        <div class="card h-100">
-            <div class="card-body">
-
-                <h4 class="card-title text-center" style="min-height:40px">Sportello Ebinter</h4>
-                <img class="img-fluid img-thumbnail rounded mb-3"
-                     src="~/Content/images/ebinter.png">
-
-                <a href="@Url.Action("Login","Account")"
-                   data-ajax="true"
-                   data-ajax-success="onSuccessGet('Login Sportello Ebinter', data)"
-                   data-ajax-begin="alertWaid()"
-                   class="btn btn-sm btn-warning col-md-12 col-sm-12 mt-1">Accedi</a>
-            </div>
-        </div>
-    </div>
-
+        }
+    }
 
 
 
 </div>
-@section Scripts
-{
-    <script>
-        $(".pdescrizione").matchHeight();
-    </script>
-}
+<script>
+    function onSuccessLogin(data) {
+        alertClose();
+        if (data.isValid) {
+            alertSuccessNoCloseButton(data.message);
 
+            setTimeout(function () {
+                location.href = data.redirectUrl;
+            }, 1200)
+        }
+        else {
+            alertDanger(data.message);
+        }
+    }
+</script>

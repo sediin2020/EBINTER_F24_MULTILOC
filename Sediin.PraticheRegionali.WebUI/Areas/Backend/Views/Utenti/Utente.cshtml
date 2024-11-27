@@ -1,19 +1,19 @@
 ﻿@model Sediin.PraticheRegionali.WebUI.Areas.Backend.Models.UtentiViewModel
 @{
     var _isSportello = false;
-    switch (Enum.Parse(typeof(IdentityHelper.Roles), Model.Ruolo, true))
-    {
-        case IdentityHelper.Roles.Sp_CAF:
-        case IdentityHelper.Roles.Sp_Consulente:
-        case IdentityHelper.Roles.Sp_Datoriale:
-        case IdentityHelper.Roles.Sp_Sindacale:
-        case IdentityHelper.Roles.Sp_Ebinter:
-            _isSportello = true;
-            break;
-        default:
-            _isSportello = false;
-            break;
-    }
+    //switch (Enum.Parse(typeof(IdentityHelper.Roles), Model.Ruolo, true))
+    //{
+    //    case IdentityHelper.Roles.Sp_CAF:
+    //    case IdentityHelper.Roles.Sp_Consulente:
+    //    case IdentityHelper.Roles.Sp_Datoriale:
+    //    case IdentityHelper.Roles.Sp_Sindacale:
+    //    case IdentityHelper.Roles.Sp_Ebinter:
+    //        _isSportello = true;
+    //        break;
+    //    default:
+    //        _isSportello = false;
+    //        break;
+    //}
 
 }
 

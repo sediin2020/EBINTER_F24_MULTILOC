@@ -1,0 +1,57 @@
+﻿@model Sediin.PraticheRegionali.WebUI.Areas.Backend.Models.ProspettoRicercaModel
+
+@Scripts.Render("~/bundles/jqueryval")
+
+@using (Ajax.BeginForm("RicercaProspetto", new AjaxOptions
+{
+    UpdateTargetId = "resultRicerca",
+    OnBegin = "onBeginRicerca",
+    OnSuccess = "alertClose",
+    OnFailure = "handleError"
+}))
+{
+    @Html.AntiForgeryToken()
+   
+    <div class="form-horizontal">
+
+        <div class="row">
+            <div class="col-md-4">
+                <div class="form-group">
+                    @Html.Label("Anno", htmlAttributes: new { @class = "control-label" })
+                    <div class="col-md-12">
+                        @Html.TextBoxFor(model => model.ProspettoRicercaModel_Anno, new { @class = "form-control" })
+                        @Html.ValidationMessageFor(model => model.ProspettoRicercaModel_Anno, "", new { @class = "text-danger" })
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-4">
+                <div class="form-group">
+                    @Html.Label("Mese", htmlAttributes: new { @class = "control-label" })
+                    <div class="col-md-12">
+                        @Html.TextBoxFor(model => model.ProspettoRicercaModel_Mese, new { @class = "form-control" })
+                        @Html.ValidationMessageFor(model => model.ProspettoRicercaModel_Mese, "", new { @class = "text-danger" })
+                    </div>
+                </div>
+            </div>
+
+
+
+
+        </div>
+
+        @{
+            var _listOrderBy = new Dictionary<string, string>();
+            _listOrderBy.Add("Anno", "Anno");
+            _listOrderBy.Add("Mese", "Mese");
+
+        }
+
+        <hr />
+        <div class="form-group text-center">
+            <button type="submit" class="btn btn-primary">Avvia ricerca</button>
+        </div>
+    </div>
+}
+
+<script src="~/Scripts/unobtrusiveParseForm.js"></script>
+<script src="~/Scripts/checksumCFPiva.js"></script>
