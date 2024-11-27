@@ -1,9 +1,0 @@
-C:\Users\beatr\Source\Repos\EBAC\Sediin.PraticheRegionali.Utils\bin\Debug\Sediin.PraticheRegionali.Utils.dll
-C:\Users\beatr\Source\Repos\EBAC\Sediin.PraticheRegionali.Utils\bin\Debug\Sediin.PraticheRegionali.Utils.pdb
-C:\Users\beatr\Source\Repos\EBAC\Sediin.PraticheRegionali.Utils\bin\Debug\Newtonsoft.Json.dll
-C:\Users\beatr\Source\Repos\EBAC\Sediin.PraticheRegionali.Utils\bin\Debug\Newtonsoft.Json.xml
-C:\Users\beatr\Source\Repos\EBAC\Sediin.PraticheRegionali.Utils\obj\Debug\Sediin.PraticheRegionali.Utils.csproj.CoreCompileInputs.cache
-C:\Users\beatr\Source\Repos\EBAC\Sediin.PraticheRegionali.Utils\obj\Debug\Sediin.PraticheRegionali.Utils.csproj.CopyComplete
-C:\Users\beatr\Source\Repos\EBAC\Sediin.PraticheRegionali.Utils\obj\Debug\Sediin.PraticheRegionali.Utils.dll
-C:\Users\beatr\Source\Repos\EBAC\Sediin.PraticheRegionali.Utils\obj\Debug\Sediin.PraticheRegionali.Utils.pdb
-C:\Users\beatr\source\repos\EBAC\Sediin.PraticheRegionali.Utils\obj\Debug\Sediin.PraticheRegionali.Utils.csprojAssemblyReference.cache
