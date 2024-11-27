@@ -17,3 +17,12 @@
 /Sediin.PraticheRegionali.WebUI/bin/Sediin.PraticheRegionali.DOM.dll
 /Sediin.PraticheRegionali.WebUI/bin/Sediin.MVC.HtmlHelpers.pdb
 /Sediin.PraticheRegionali.WebUI/bin/Sediin.MVC.HtmlHelpers.dll
+/Sediin.MVC.Helper/bin/Debug
+/Sediin.PraticheRegionali.Utils/bin/Debug
+/Sediin.PraticheRegionali.DOM/bin/Debug
+/Sediin.PraticheRegionali.DOMTests/bin/Debug
+/Sediin.PraticheRegionali.DOMTests/obj/Debug
+/Sediin.PraticheRegionali.UtilsTests/bin/Debug
+/Sediin.PraticheRegionali.UtilsTests/obj/Debug
+/Sediin.PraticheRegionali.WebUITests/bin/Debug
+/Sediin.PraticheRegionali.WebUITests/obj/Debug
