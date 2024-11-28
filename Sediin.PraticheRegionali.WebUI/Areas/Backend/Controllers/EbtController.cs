@@ -122,7 +122,7 @@ namespace Sediin.PraticheRegionali.WebUI.Areas.Backend.Controllers
                     model.IbanStorico = _ebt.IbanStorico;
                     model.F24Percentuale = _ebt.F24Percentuale;
                     model.MultiLocPercentuale = _ebt.MultiLocPercentuale;
-                    model.F24_Percentuale = _ebt.F24_Percentuale/100; 
+                    //model.F24_Percentuale = _ebt.F24_Percentuale/100;  
                 }
 
                 //se ebt e già inserita
@@ -189,8 +189,8 @@ namespace Sediin.PraticheRegionali.WebUI.Areas.Backend.Controllers
 
                 //cast to ebt model
                 var _resultModel = Reflection.CreateModel<Ebt>(model);
-                _resultModel.F24_Percentuale = model.MultiLoc_Percentuale / 100;
-                _resultModel.MultiLoc_Percentuale=model.MultiLoc_Percentuale / 100;
+                //_resultModel.F24_Percentuale = model.MultiLoc_Percentuale / 100;
+                //_resultModel.MultiLoc_Percentuale=model.MultiLoc_Percentuale / 100;
                 unitOfWork.EbtRepository.InsertOrUpdate(_resultModel);
 
                 /////////////////////////////////////

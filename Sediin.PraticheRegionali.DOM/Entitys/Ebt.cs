@@ -23,7 +23,7 @@ namespace Sediin.PraticheRegionali.DOM.Entitys
         public string Email { get; set; }
 
         [MaxLength(175)]
-        [Required]
+        //[Required]
         [EmailAddress]
         public string Pec { get; set; }
 
@@ -42,7 +42,7 @@ namespace Sediin.PraticheRegionali.DOM.Entitys
         public string Iban_Operativo { get; set; }
 
         public string Note { get; set; }
-        [Required]
+        //[Required]
         [Display(Name = "% F24")]
         public decimal F24_Percentuale { get; set; }
         //[Required]

@@ -14,12 +14,20 @@
     OnFailure = "handleError"
 }))
 {
-    var _matricolaReadOnly = false;
+
 
     @Html.AntiForgeryToken()
     @Html.HiddenFor(model => model.EbtId)
-
-    <h3>EBT</h3>
+<div class="row">
+    <div class="col-6"><h3>EBT</h3></div>
+    <div class="col-6" >
+        <button id="buttonCloseModal" type="button" onclick="hideModal()" class="btn btn-danger">
+           <i class="fas fa-close"></i>
+        </button>
+    </div>
+</div>
+    
+   
     <hr />
 
     <div class="form-horizontal mt-4">
@@ -171,13 +179,7 @@
                     <div class="col-md-12">
                         @Html.TextBoxForReadOnly(model => model.F24_Percentuale, new
                    {
-                       @class = "form-control",
-                       data_inputmask_alias = "decimal",
-                       data_inputmask_max = "100",
-                       data_inputmask_digits = "2",
-                       data_inputmask_decimalSeparator=",",
-                       data_inputmask_allowMinus = "false",
-                       data_inputmask_digitsOptional = "false",
+                       @class = "form-control  percentage"
                    })
                         @Html.ValidationMessageFor(model => model.F24_Percentuale, "", new { @class = "text-danger" })
                     </div>
@@ -190,12 +192,7 @@
                     <div class="col-md-12">
                         @Html.TextBoxForReadOnly(model => model.MultiLoc_Percentuale, new
                    {
-                       @class = "form-control",
-                       data_inputmask_alias = "decimal", 
-                       data_inputmask_max = "100",
-                       data_inputmask_digits ="2",
-                       data_inputmask_allowMinus="false", 
-                       data_inputmask_digitsOptional="false",
+                       @class = "form-control percentage"
                    })
                         @Html.ValidationMessageFor(model => model.MultiLoc_Percentuale, "", new { @class = "text-danger" })
                     </div>
@@ -323,7 +320,7 @@
                                     </tr>
                                 </thead>
                                 <tbody>
-                                    @if (Model.IbanStorico?.Count >0 )
+                                    @if (Model.IbanStorico?.Count > 0)
                                     {
                                         foreach (var item in Model.IbanStorico.Where(i => !string.IsNullOrEmpty(i.Iban_Operativo)))
                                         {
@@ -358,7 +355,7 @@
                                     </tr>
                                 </thead>
                                 <tbody>
-                                    @if (Model.F24Percentuale?.Count>0)
+                                    @if (Model.F24Percentuale?.Count > 0)
                                     {
                                         foreach (var item in Model.F24Percentuale)
                                         {
@@ -395,7 +392,7 @@
                                     </tr>
                                 </thead>
                                 <tbody>
-                                    @if (Model.MultiLocPercentuale?.Count>0)
+                                    @if (Model.MultiLocPercentuale?.Count > 0)
                                     {
                                         foreach (var item in Model.MultiLocPercentuale)
                                         {
@@ -427,9 +424,9 @@
     $().ready(function () {
         $('#Accordo').inputmask();
         $('#Sospeso').inputmask();
-        $('#F24_Percentuale_xx').inputmask();
-        $('#MultiLoc_Percentuale').inputmask();
+        $('.percentage').inputmask('decimal', { allowMinus: false, radixPoint: ',', digits: 3, max:100 });
     });
+
        @Html.ButtonCloseModal(false)
 </script>
 
